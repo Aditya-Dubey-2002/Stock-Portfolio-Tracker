@@ -5,10 +5,14 @@ import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import axios from 'axios';
 import { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+// require('dotenv').config();
+import config from '../../config';
 
 const SignUp: React.FC = () => {
   const [fullName, setFullname] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [repassword,setRepassword] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,6 +24,10 @@ const SignUp: React.FC = () => {
     setLoading(true);
 
     // Data to be sent to the API
+    if(password!==repassword){
+      alert('The passwords do not match');
+      return;
+    }
     const userData = {
       fullName,
       email,
@@ -30,11 +38,22 @@ const SignUp: React.FC = () => {
 
     try {
       // Make API call to register the user
-      const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+      const signUpUrl = config.SERVER_URL+'/api/auth/register';
+      const response = await axios.post(signUpUrl, userData);
       console.log('User registered successfully:', response.data);
       if (response.data.token !== null) {
         // Store token in localStorage (or sessionStorage)
         localStorage.setItem('token', response.data.token); // Store the token
+        const token = response.data.token;
+        const decodedToken: any = jwtDecode(token);
+        const expiryTime = decodedToken.exp * 1000; // Convert seconds to milliseconds
+        // scheduleAutoLogout(decodedToken.exp * 1000);
+        // Schedule logout when token expires
+        setTimeout(() => {
+          localStorage.removeItem('token');
+          alert('Session expired. Please log in again.');
+          window.location.href = '/auth/signup';
+        }, expiryTime - Date.now());
         navigate('/');
       }
 
@@ -310,6 +329,8 @@ const SignUp: React.FC = () => {
                     <div className="relative">
                       <input
                         type="password"
+                        name='repassword'
+                        onChange={(e) => setRepassword(e.target.value)}
                         placeholder="Re-enter your password"
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />

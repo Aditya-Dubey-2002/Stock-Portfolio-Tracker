@@ -1,9 +1,69 @@
+import axios from 'axios';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
+import { useState, useEffect } from 'react';
 import CoverOne from '../images/cover/cover-01.png';
 import userSix from '../images/user/user-06.png';
 import { Link } from 'react-router-dom';
+import Loader from '../common/Loader/index';
+import config from '../config';
+import { jwtDecode } from 'jwt-decode';
 
-const Profile = () => {
+interface UserProfile {
+  fullName: string;
+  email: string;
+  bio: string;
+  balance: number;
+  image: string;
+}
+
+const Profile: React.FC = () => {
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        setError('No token found. Please log in.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const decodedToken: any = jwtDecode(token);
+        const userId = decodedToken.userId; // Extracting userId from the token
+
+        const response = await axios.get(`${config.SERVER_URL}/api/user/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUserProfile(response.data.userDetails);
+        // console.log(response) // Store the user details in state
+      } catch (err: any) {
+        console.error('Error fetching profile:', err);
+        setError(err.response?.data?.error || 'Failed to fetch user profile');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!userProfile) {
+    return <div>No profile data found.</div>;
+  }
   return (
     <>
       <Breadcrumb pageName="Profile" />
@@ -88,41 +148,17 @@ const Profile = () => {
           </div>
           <div className="mt-4">
             <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
-              Danish Heilium
+              {userProfile.fullName}
             </h3>
-            <p className="font-medium">Ui/Ux Designer</p>
-            <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
+            <p className="font-medium">{userProfile.email}</p>
+            <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-1 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
+                <span className="text-sm">Current Balance</span>
                 <span className="font-semibold text-black dark:text-white">
-                  259
+                  {userProfile.balance}
                 </span>
-                <span className="text-sm">Posts</span>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
-                <span className="font-semibold text-black dark:text-white">
-                  129K
-                </span>
-                <span className="text-sm">Followers</span>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
-                <span className="font-semibold text-black dark:text-white">
-                  2K
-                </span>
-                <span className="text-sm">Following</span>
-              </div>
-            </div>
 
-            <div className="mx-auto max-w-180">
-              <h4 className="font-semibold text-black dark:text-white">
-                About Me
-              </h4>
-              <p className="mt-4.5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Pellentesque posuere fermentum urna, eu condimentum mauris
-                tempus ut. Donec fermentum blandit aliquet. Etiam dictum dapibus
-                ultricies. Sed vel aliquet libero. Nunc a augue fermentum,
-                pharetra ligula sed, aliquam lacus.
-              </p>
+              </div>
             </div>
 
             <div className="mt-6.5">

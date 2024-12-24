@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+// require('dotenv').config();
+import config from '../../config';
 
 
 const SignIn: React.FC = () => {
@@ -11,11 +14,19 @@ const SignIn: React.FC = () => {
   const [fullName, setFullname] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  // const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
   // Handle form submission
+  // const scheduleAutoLogout = (expiryTime: number) => {
+  //   setTimeout(() => {
+  //     localStorage.removeItem('token');
+  //     alert('Session expired. Please log in again.');
+  //     window.location.href = '/login';
+  //   }, expiryTime - Date.now());
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload on form submission
     setLoading(true);
@@ -27,28 +38,43 @@ const SignIn: React.FC = () => {
       password,
     };
 
-    console.log(userData);
+    // console.log(userData);
 
     try {
       // Make API call to register the user
-      const response = await axios.post('http://localhost:5000/api/auth/login', userData);
+      const signInUrl = config.SERVER_URL+'/api/auth/login';
+      const response = await axios.post(signInUrl, userData);
       console.log('User logged in successfully:', response.data);
-
-      if(response.data.token!==null){
+      const token = response.data.token;
+      if (token !== null) {
         // Store token in localStorage (or sessionStorage)
-      localStorage.setItem('token', response.data.token); // Store the token
-      // console.log(localStorage.getItem('token'))
+        localStorage.setItem('token', token); // Store the token
+        // console.log(localStorage.getItem('token'))
+        const decodedToken: any = jwtDecode(token);
+        // console.log(decodedToken);
+        const expiryTime = decodedToken.exp * 1000; // Convert seconds to milliseconds
+        // scheduleAutoLogout(decodedToken.exp * 1000);
+        // Schedule logout when token expires
+        setTimeout(() => {
+          localStorage.removeItem('token');
+          alert('Session expired. Please log in again.');
+          window.location.href = '/auth/login';
+        }, expiryTime - Date.now());
         navigate('/');
       }
 
       // Optionally handle success (e.g., redirect to login page)
     } catch (error) {
-      setError('Registration failed, please try again.');
+      console.log(error);
+      if(error.status == 400){
+        alert('Invalid Credentials, Please try again');
+      }
+      // setError('Login failed, please try again.');
     } finally {
       setLoading(false);
     }
   };
-  
+
   return (
     <>
       <div style={{ margin: '20px' }}>
@@ -208,8 +234,8 @@ const SignIn: React.FC = () => {
                     <div className="relative">
                       <input
                         type="email"
-                        name = "email"
-                        onChange = {(e) => setEmail(e.target.value)}
+                        name="email"
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter your email"
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
@@ -242,7 +268,7 @@ const SignIn: React.FC = () => {
                       <input
                         type="password"
                         name="password"
-                        onChange = {(e) => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="6+ Characters, 1 Capital letter"
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
@@ -274,7 +300,7 @@ const SignIn: React.FC = () => {
                   <div className="mb-5">
                     <input
                       type="submit"
-  
+
                       value="Sign In"
                       className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                     />
