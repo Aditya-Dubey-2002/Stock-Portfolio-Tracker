@@ -5,6 +5,8 @@ const stockController = require('../controllers/stockController');
 // Route to get a list of all stock tickers
 router.get('/list', stockController.getStockList);
 
+router.get('/100list', stockController.get100StockList);
+
 // Route to search for stocks based on a query
 router.get('/search', stockController.getStockSearch);
 

@@ -4,67 +4,191 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import { TailSpin } from 'react-loader-spinner'; // Import spinner
 // require('dotenv').config();
 import config from '../../config';
 
 const SignUp: React.FC = () => {
   const [fullName, setFullname] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [repassword,setRepassword] = useState<string>('');
+  const [repassword, setRepassword] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [statusMessage, setStatusMessage] = useState<string>(''); 
   const navigate = useNavigate();
   // Handle form submission
+  interface Stock {
+    label: string;
+    value: string;
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload on form submission
     setLoading(true);
-
-    // Data to be sent to the API
-    if(password!==repassword){
+    setStatusMessage('Verifying password match...');
+    if (password !== repassword) {
       alert('The passwords do not match');
+      setLoading(false);
       return;
     }
+
     const userData = {
       fullName,
       email,
       password,
     };
 
-    console.log(userData);
-
     try {
-      // Make API call to register the user
-      const signUpUrl = config.SERVER_URL+'/api/auth/register';
+      setStatusMessage('Registering user...');
+      // Register the user
+      const signUpUrl = `${config.SERVER_URL}/api/auth/register`;
       const response = await axios.post(signUpUrl, userData);
-      console.log('User registered successfully:', response.data);
-      if (response.data.token !== null) {
-        // Store token in localStorage (or sessionStorage)
-        localStorage.setItem('token', response.data.token); // Store the token
+
+      if (response.data.token) {
+        // Store token in localStorage
         const token = response.data.token;
+        localStorage.setItem('token', token);
+
+        // Decode token to get expiry time
         const decodedToken: any = jwtDecode(token);
-        const expiryTime = decodedToken.exp * 1000; // Convert seconds to milliseconds
-        // scheduleAutoLogout(decodedToken.exp * 1000);
+        const expiryTime = decodedToken.exp * 1000;
+
         // Schedule logout when token expires
         setTimeout(() => {
           localStorage.removeItem('token');
           alert('Session expired. Please log in again.');
-          window.location.href = '/auth/signup';
+          navigate('/auth/signup');
         }, expiryTime - Date.now());
-        navigate('/');
-      }
 
-      // Optionally handle success (e.g., redirect to login page)
+        // Fetch stock list
+        const stocks = await fetchStocks();
+
+        if (stocks.length === 0) {
+          alert('No stocks available at the moment.');
+          setLoading(false);
+          return;
+        }
+
+        // Allocate 5 random stocks
+        const allocatedStocks = allocateRandomStocks(stocks, 5);
+
+        // Place buy orders for the allocated stocks
+        await placeBuyOrders(await allocatedStocks);
+
+        alert('Signup successful and stocks allocated!');
+        navigate('/'); // Redirect to home or dashboard
+      }
     } catch (error) {
+      console.error('Error during registration:', error);
       setError('Registration failed, please try again.');
     } finally {
       setLoading(false);
     }
   };
-  return (
+
+  // Function to fetch the list of stocks
+  const fetchStocks = async (): Promise<Stock[]> => {
+    try {
+      setStatusMessage('Fetching stock data...');
+      const response = await axios.get(`${config.SERVER_URL}/api/stock/100list`, {
+        params: { exchange: 'US' },
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+
+      // Map response to Stock type
+      return response.data.map((stock: { name: string; symbol: string }) => ({
+        label: `${stock.name} (${stock.symbol})`,
+        value: stock.symbol,
+      }));
+    } catch (error) {
+      console.error('Error fetching stock list:', error);
+      return [];
+    }
+  };
+
+  const priceMap = new Map<string, number>();
+
+
+  // Function to allocate random stocks
+  const allocateRandomStocks = async (stocks: Stock[], numStocks: number): Promise<Stock[]> => {
+    setStatusMessage('Allocating random stocks...');
+    const allocatedStocks: Stock[] = [];
+    const usedIndices = new Set<number>();
+
+    while (allocatedStocks.length < numStocks) {
+      const randomIndex = Math.floor(Math.random() * stocks.length);
+
+      if (!usedIndices.has(randomIndex)) {
+        allocatedStocks.push(stocks[randomIndex]);
+        usedIndices.add(randomIndex);
+      }
+    }
+
+    // Fetch the prices for each allocated stock
+    for (const stock of allocatedStocks) {
+      const price = await fetchStockPrice(stock.value); // Assume `value` is the stock symbol or ID
+      if (price !== null) {
+        priceMap.set(stock.value, price); // Add stockId and price to the map
+      } else {
+        console.error(`Failed to fetch price for stock: ${stock.value}`);
+      }
+    }
+
+    return allocatedStocks;
+  };
+  //fetching price for each stock
+  const fetchStockPrice = async (stockSymbol: string): Promise<number | null> => {
+    try {
+      // Fetch stock quote from the API
+      const response = await fetch(`${config.SERVER_URL}/api/stock/quote/${stockSymbol}`);
+      const data = await response.json();
+
+      // Assuming the price is in response.data.c
+      return data.c; // Return the stock price from the API response
+    } catch (error) {
+      console.error(`Error fetching stock quote for ${stockSymbol}:`, error);
+      return null; // Return undefined in case of an error
+    }
+  };
+  // Function to place buy orders
+  const placeBuyOrders = async (allocatedStocks: Stock[]) => {
+    setStatusMessage('Placing buy orders...');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found for placing orders.');
+      return;
+    }
+    const orderPromises = allocatedStocks.map((stock) => {
+      const orderData = {
+        stockId: stock.value,
+        orderType: 'buy',
+        price: priceMap.get(stock.value), // Assuming a dummy price for the order
+        quantity: 1,
+      };
+      console.log(orderData.price);
+
+      return axios.post(`${config.SERVER_URL}/api/orders`, orderData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    });
+
+    try {
+      await Promise.all(orderPromises);
+      console.log('Orders placed successfully.');
+    } catch (error) {
+      console.error('Error placing orders:', error);
+    } finally{
+      setLoading(false);
+      setStatusMessage('');
+    }
+  };
+  return loading?(<><div>
+    <TailSpin height="80" width="80" color="#4fa94d" ariaLabel="loading" />
+    <p>{statusMessage}</p> {/* Display the status message */}
+  </div></>):(
+    
     <>
       <div style={{ margin: '20px' }}>
         <Breadcrumb pageName="Sign Up" />
@@ -382,7 +506,7 @@ const SignUp: React.FC = () => {
         </div>
       </div>
     </>
-  );
-};
+  )};
+;
 
 export default SignUp;

@@ -8,6 +8,7 @@ import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
+import Portfolio from './pages/Dashboard/Portfolio';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
@@ -67,6 +68,17 @@ function App() {
                   <ProtectedRoute>
                   <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                   <ECommerce />
+                  </ProtectedRoute>
+                </>
+              }
+            />
+            <Route
+              path = "/portfolio"
+              element={
+                <>
+                  <ProtectedRoute>
+                  <PageTitle title="Portfolio" />
+                  <Portfolio />
                   </ProtectedRoute>
                 </>
               }

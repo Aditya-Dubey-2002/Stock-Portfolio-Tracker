@@ -6,6 +6,7 @@ const authRoutes = require('./src/routes/authRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const orderRoutes = require('./src/routes/orderRoutes');
 const stockRoutes = require('./src/routes/stockRoutes');
+const holdingsRoutes = require('./src/routes/holdingsRoutes');
 dotenv.config();
 
 const app = express();
@@ -23,7 +24,11 @@ app.use('/api/orders', orderRoutes);
 // Use the stock routes
 app.use('/api/stock', stockRoutes);
 
+// Holdings Route
+app.use('/api/holdings', holdingsRoutes);
+
 // Sync the database and start the server
+
 sequelize.sync()
     .then(() => {
         app.listen(5000, () => {

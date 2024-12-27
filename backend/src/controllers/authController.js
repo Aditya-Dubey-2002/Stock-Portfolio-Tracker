@@ -2,6 +2,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 require('dotenv').config(); // Ensure environment variables are loaded
+const stockAllocation = require('../services/stockAllocation');
+const { response } = require('express');
+
+
 
 // Register a new user
 const register = async (req, res) => {
@@ -25,11 +29,13 @@ const register = async (req, res) => {
             password: hashedPassword,
         });
 
-        console.log(user);
+        // console.log(user);
 
         // Generate JWT token
         const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
+        
+        // const allocatedStocks = await stockAllocation.allocateRandomStocks(5,user.userId);
+        // console.log(allocatedStocks);
         // Send response with token
         res.status(201).json({ token });
         console.log("Registration Successful");

@@ -7,33 +7,39 @@ const db = require('../config/db.js');
 const createOrder = async (req, res) => {
     const { stockId, orderType, price, quantity } = req.body;
     const userId = req.user.userId; // Get user from JWT token
-    console.log(userId);
+    // console.log(userId);
 
     if (orderType === 'buy') {
         try {
+            // Fetch user details
             const user = await User.findByPk(userId);
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
 
-            const buyPrice = price;
+            // Calculate the total amount for the order
+            const buyPrice = parseFloat(price);
             const totalAmount = quantity * buyPrice;
 
-            // console.log(user.balance);
+            // Check if the user has sufficient balance
             if (user.balance < totalAmount) {
                 return res.status(400).json({ message: 'Insufficient balance' });
             }
 
-            user.balance -= totalAmount;
+            // Deduct the balance
+            user.balance = parseFloat(user.balance) - totalAmount;
             await user.save();
 
+            // Check if the user already has the stock in their holdings
             const holding = await Holding.findOne({ where: { userId, stockId, buyPrice } });
 
             if (holding) {
-                holding.quantity += quantity;
-                holding.totalPrice += totalAmount;
+                // If holding exists, update the quantity and total price
+                holding.quantity = parseFloat(holding.quantity) + quantity;
+                holding.totalPrice = parseFloat(holding.totalPrice)+ totalAmount;
                 await holding.save();
             } else {
+                // Create new holding if not exists
                 await Holding.create({
                     userId,
                     stockId,
@@ -43,6 +49,7 @@ const createOrder = async (req, res) => {
                 });
             }
 
+            // Create the order in the database
             const order = await Order.create({
                 userId,
                 stockId,
@@ -50,10 +57,19 @@ const createOrder = async (req, res) => {
                 quantity,
                 amount: totalAmount
             });
+            // console.log(order);
+            // Check if the order was successfully created
+            if (order.orderId>0) {
+                console.log(`Successfully placed buy order for ${stockId}`);
+                return res.status(201).json({ message: 'Buy order placed successfully', order });
+            } else {
+                console.error('Error: Failed to create the order');
+                return res.status(500).json({ message: 'Error placing buy order' });
+            }
 
-            return res.status(201).json({ message: 'Buy order placed successfully', order });
         } catch (err) {
-            console.error(err);
+            // Log the error and send a proper response
+            console.error('Error placing buy order:', err);
             return res.status(500).json({ message: 'Error placing buy order', error: err.message });
         }
     } else if (orderType === 'sell') {
@@ -76,12 +92,12 @@ const createOrder = async (req, res) => {
                 const availableQuantity = holding.quantity;
 
                 if (availableQuantity <= totalQuantityToSell) {
-                    totalAmount += availableQuantity * sellPrice;
-                    totalQuantityToSell -= availableQuantity;
+                    totalAmount = parseFloat(totalAmount)+ availableQuantity * sellPrice;
+                    totalQuantityToSell = parseFloat(holding.quantity) - availableQuantity;
                     await holding.destroy();
                 } else {
-                    totalAmount += totalQuantityToSell * sellPrice;
-                    holding.quantity -= totalQuantityToSell;
+                    totalAmount = parseFloat(totalAmount)+ totalQuantityToSell * sellPrice;
+                    holding.quantity = parseFloat(holding.quantity) - totalQuantityToSell;
                     await holding.save();
                     totalQuantityToSell = 0;
                 }
@@ -97,7 +113,7 @@ const createOrder = async (req, res) => {
             }
 
             user.balance = parseFloat(user.balance) + totalAmount;
-            console.log(user.balance);
+            // console.log(user.balance);
             await user.save();
 
             const order = await Order.create({
