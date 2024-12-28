@@ -5,7 +5,7 @@ const db = require('../config/db.js');
 
 const getHoldings = async (req, res) => {
     const { userId } = req.params;
-    console.log(userId);
+    // console.log(userId);
     try {
         const holdings = await Holding.findAll({ where: { userId: userId } });
         if (holdings.length === 0) {

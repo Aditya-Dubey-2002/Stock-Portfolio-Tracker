@@ -37,16 +37,33 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 `${config.SERVER_URL}/api/holdings/${userId}`,
                 { headers }
             );
+            console.log(holdingsData);
     
-            // Separate the data into columns
+            // Aggregate holdings by stockId
+            const aggregatedHoldings: Record<string, { quantity: number; totalInvested: number }> = {};
+    
+            holdingsData.forEach((holding: any) => {
+                if (!aggregatedHoldings[holding.stockId]) {
+                    aggregatedHoldings[holding.stockId] = {
+                        quantity: 0,
+                        totalInvested: 0,
+                    };
+                }
+    
+                aggregatedHoldings[holding.stockId].quantity += parseFloat(holding.quantity);
+                aggregatedHoldings[holding.stockId].totalInvested +=
+                    holding.quantity * parseFloat(holding.buyPrice);
+            });
+    
+            // Separate aggregated data into columns
             const stocks: string[] = [];
             const investments: number[] = [];
             const quantities: number[] = [];
     
-            holdingsData.forEach((holding: any) => {
-                stocks.push(holding.stockId);
-                quantities.push(holding.quantity);
-                investments.push(holding.quantity * parseFloat(holding.buyPrice));
+            Object.entries(aggregatedHoldings).forEach(([stockId, { quantity, totalInvested }]) => {
+                stocks.push(stockId);
+                quantities.push(quantity);
+                investments.push(totalInvested);
             });
     
             setHoldingStocks(stocks);
@@ -75,6 +92,7 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             setLoading(false);
         }
     };
+    
 
     // Fetch holdings on mount
     useEffect(() => {
