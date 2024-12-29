@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import Select from 'react-select';
 import axios from 'axios';
+import Loader from '../../common/Loader';
 import config from '../../config';
 
 // Define StockOption type
@@ -182,7 +183,7 @@ const PlaceOrderForm = () => {
                     type="number"
                     placeholder="Stock Price"
                     value={stockPrice}
-                    onChange={(e)=>setStockPrice(e.target.value)}
+                    onChange={(e)=>setStockPrice(parseFloat(e.target.value))}
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     // readOnly
                   />

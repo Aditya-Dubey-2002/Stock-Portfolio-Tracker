@@ -1,5 +1,6 @@
 import React from 'react';
 import useHoldings from '../../hooks/useHoldings';
+import Loader from '../../common/Loader';
 
 const HoldingsTable = () => {
     const {
@@ -26,10 +27,10 @@ const HoldingsTable = () => {
                 <p className="text-black dark:text-white">{`$${holdingInvestments[index].toFixed(2)}`}</p>
             </div>
             <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-meta-3">{holdingCurrentValues[index]}</p>
+                <p className="text-meta-3">${holdingCurrentValues[index]}</p>
             </div>
             <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{holdingStockCurrentPrices[index]}</p>
+                <p className="text-black dark:text-white">${holdingStockCurrentPrices[index]}</p>
             </div>
             <div className="flex items-center justify-center p-2.5 xl:p-5">
                 <p className="text-black dark:text-white">{holdingQuantities[index]}</p>
@@ -40,7 +41,7 @@ const HoldingsTable = () => {
         </div>
     );
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Loader />;
     if (error) return <p>{error}</p>;
 
     return (

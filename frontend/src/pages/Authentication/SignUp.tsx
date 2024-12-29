@@ -9,6 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 import { TailSpin } from 'react-loader-spinner'; // Import spinner
 // require('dotenv').config();
 import config from '../../config';
+import Loader from '../../common/Loader';
 
 const SignUp: React.FC = () => {
   const [fullName, setFullname] = useState<string>('');
@@ -185,7 +186,7 @@ const SignUp: React.FC = () => {
     }
   };
   return loading?(<><div>
-    <TailSpin height="80" width="80" color="#4fa94d" ariaLabel="loading" />
+    <Loader />
     <p>{statusMessage}</p> {/* Display the status message */}
   </div></>):(
     

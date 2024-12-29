@@ -18,6 +18,7 @@ import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
 import ProtectedRoute from './ProtectedRoute';
+import Stock from './pages/Stock';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -68,6 +69,17 @@ function App() {
                   <ProtectedRoute>
                   <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                   <ECommerce />
+                  </ProtectedRoute>
+                </>
+              }
+            />
+            <Route
+              path = "/stock/:symbol"
+              element={
+                <>
+                  <ProtectedRoute>
+                  {/* <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" /> */}
+                  <Stock />
                   </ProtectedRoute>
                 </>
               }
