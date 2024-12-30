@@ -7,6 +7,6 @@ const authenticateToken = require('../middleware/authMiddleware');
 router.post('/', authenticateToken, createOrder);
 
 // Get orders for a user (protected)
-router.get('/:userId', authenticateToken, getOrders);
+router.get('/', authenticateToken, getOrders);
 
 module.exports = router;

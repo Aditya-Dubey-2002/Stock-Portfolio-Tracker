@@ -22,60 +22,58 @@ const ECommerce: React.FC = () => {
     loading,
     error,
   } = useHoldings();
-  
+
   // Calculate total value and total invested
   let totalValue: number = 0;
   let totalInvested: number = 0;
-  
+
   for (let val of holdingCurrentValues) {
     totalValue += val;
   }
-  
+
   for (let inv of holdingInvestments) {
     totalInvested += inv;
   }
-  
+  totalValue = parseFloat(totalValue.toFixed(2));
   // Calculate total profit/loss
   let totalProfitLoss = totalValue - totalInvested;
-  
+
   // Calculate net percentage (total value vs invested)
   const netPct = (((totalValue - totalInvested) / totalInvested) * 100).toFixed(2);
-  
+
   // Find the top-performing stock
   let topPerformingStock = "";
   let topPerformingStockPercentage = -Infinity;
-  
+
   for (let i = 0; i < holdingStocks.length; i++) {
     const stockName = holdingStocks[i];
     const investedAmount = holdingInvestments[i];
     const currentValue = holdingCurrentValues[i];
     const currentPrice = holdingStockCurrentPrices[i];
     const quantity = holdingQuantities[i];
-  
+
     // Calculate percentage gain for each stock
     const stockValue = currentValue;
     const stockProfitLoss = stockValue - investedAmount;
     const stockPct = ((stockProfitLoss / investedAmount) * 100).toFixed(2);
-    console.log(stockProfitLoss);
+    // console.log(stockProfitLoss);
     // Track top-performing stock
     if (parseFloat(stockPct) > topPerformingStockPercentage) {
       topPerformingStockPercentage = parseFloat(stockPct);
       topPerformingStock = stockName;
     }
   }
-  totalProfitLoss = totalProfitLoss.toFixed(2);
+  totalProfitLoss = parseFloat(totalProfitLoss.toFixed(2));
   // Output the results
-  console.log("Total Profit/Loss: ", totalProfitLoss);
-  console.log("Net Percentage: ", netPct, "%");
-  console.log("Top Performing Stock: ", topPerformingStock, "with", topPerformingStockPercentage, "% gain");
-  
+  // console.log(holdingStockCurrentPrices);
+
   // const netP = ((netPct).toFixed(2));
-  
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-          <CardDataStats title="Portfolio Value" total={loading?<Loader/>: "$"+totalValue} rate={loading?<Loader/>:netPct+"%"} levelDown={!loading && parseFloat(netPct) < 0} 
-  levelUp={!loading && parseFloat(netPct) >= 0} >
+        <CardDataStats title="Portfolio Value" total={loading ? <Loader /> : "$" + totalValue} rate={loading ? <Loader /> : netPct + "%"} levelDown={!loading && parseFloat(netPct) < 0}
+          levelUp={!loading && parseFloat(netPct) >= 0} >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -93,8 +91,8 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Profit/Loss" total={loading?<Loader/>:"$"+totalProfitLoss} rate={loading?<Loader/>:netPct+"%"} levelDown={!loading && parseFloat(netPct) < 0} 
-  levelUp={!loading && parseFloat(netPct) >= 0}>
+        <CardDataStats title="Total Profit/Loss" total={loading ? <Loader /> : "$" + totalProfitLoss} rate={loading ? <Loader /> : netPct + "%"} levelDown={!loading && parseFloat(netPct) < 0}
+          levelUp={!loading && parseFloat(netPct) >= 0}>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -116,7 +114,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Top Performing Stock" total={loading?<Loader/>:topPerformingStock} rate={loading?<Loader/>:topPerformingStockPercentage}  levelDown={!loading && parseFloat(topPerformingStockPercentage) < 0} levelUp={!loading && parseFloat(topPerformingStockPercentage) >=0}>
+        <CardDataStats title="Top Performing Stock" total={loading ? <Loader /> : topPerformingStock} rate={loading ? <Loader /> : topPerformingStockPercentage+"%"} levelDown={!loading && parseFloat(topPerformingStockPercentage) < 0} levelUp={!loading && parseFloat(topPerformingStockPercentage) >= 0}>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -156,14 +154,15 @@ const ECommerce: React.FC = () => {
       </div>
 
       <div className="gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <div className="w-full flex flex-row gap-4 mt-6">
-          <div className="w-2/5  bg-white rounded-lg shadow dark:bg-gray-800">
+        <div className="w-full flex flex-col md:flex-row gap-4 mt-6 align-center">
+          <div className="w-full md:w-2/5 h-full bg-white rounded-lg shadow dark:bg-gray-800">
             <ChartThree />
           </div>
-          <div className="w-3/5  bg-white rounded-lg shadow dark:bg-gray-800">
+          <div className="w-full md:w-3/5 h-4/5 bg-white rounded-lg shadow dark:bg-gray-800">
             <ChartOne />
           </div>
         </div>
+
         <div className="w-full col-span-12 xl:col-span-8">
           <HoldingsTable />
           <TableOne />

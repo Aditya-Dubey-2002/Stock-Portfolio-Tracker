@@ -7,6 +7,7 @@ import DarkModeSwitcher from './DarkModeSwitcher';
 import DropdownMessage from './DropdownMessage';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
+import config from '../../config';
 
 type StockOption = {
   label: string;
@@ -42,6 +43,26 @@ const Header = (props: {
     fetchStockOptions();
   }, []);
 
+  const [marketStatus, setMarketStatus] = useState<boolean>();
+  const [marketSession, setMarketSession] = useState<string>('');
+  const [marketHoliday, setMarketHoliday] = useState<string>('');
+
+  const fetchMarketStatus = async () => {
+    try {
+      const response = await axios.get(`${config.SERVER_URL}/api/stock/market/status`);
+      const statusData = response.data;
+      setMarketStatus(statusData.isOpen);
+      setMarketSession(statusData.session);
+      setMarketHoliday(statusData.holiday);
+    } catch (err) {
+      console.log('Error Fetching Market Status');
+    }
+  };
+
+  useEffect(() => {
+    fetchMarketStatus();
+  }, []);
+
   const handleStockSelect = (selectedOption: StockOption | null) => {
     if (selectedOption) {
       navigate(`/stock/${selectedOption.value}`);
@@ -70,15 +91,40 @@ const Header = (props: {
         </div>
 
         {/* Stock Search */}
-        <div className="w-full max-w-xl">
+        <div className="w-full max-w-md ">
           <Select
             options={stockOptions}
             onChange={handleStockSelect}
             isLoading={loading}
-            placeholder="Search for a stock..."
-            className="react-select-container"
+            placeholder="Search a stock for details..."
+            className="react-select-container dark:border-strokedark dark:bg-boxdark"
             classNamePrefix="react-select"
           />
+        </div>
+
+        {/* Market Status Indicator */}
+        <div className="flex items-center gap-3">
+          {marketStatus !== undefined && (
+            <div
+              className={`flex items-center ${
+                marketStatus ? 'text-green-500' : 'text-red-500'
+              }`}
+            >
+              <span className={`mr-2 font-bold`}>
+                {marketStatus ? 'Market is Open' : 'Market is Closed'}
+              </span>
+              <div
+                className={`w-4 h-4 rounded-full ${
+                  marketStatus ? 'bg-green-500' : 'bg-red-500'
+                }`}
+              />
+              {!marketStatus && (
+                <span className="ml-2 text-sm font-medium">
+                  {marketSession ? marketSession : marketHoliday}
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Actions */}

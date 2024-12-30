@@ -136,10 +136,9 @@ const createOrder = async (req, res) => {
 
 // Get orders for a user
 const getOrders = async (req, res) => {
-    const { userId } = req.params;
-
+    const userId = req.user.userId;
     try {
-        const orders = await Order.findAll({ where: { user_id: userId } });
+        const orders = await Order.findAll({ where: { userId: userId } });
         if (orders.length === 0) {
             return res.status(404).json({ message: 'No orders found' });
         }

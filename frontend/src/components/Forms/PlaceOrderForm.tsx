@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import Select from 'react-select';
@@ -29,6 +29,9 @@ const PlaceOrderForm = () => {
     label: string;
     value: string;
   }
+
+  
+
 
   // State to hold the stock options
   const [stockOptions, setStockOptions] = useState<StockOption[]>([]);
@@ -78,7 +81,7 @@ const PlaceOrderForm = () => {
         setStockPrice(undefined); // Or any default value
       }
     }
-    
+
   };
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,9 +173,9 @@ const PlaceOrderForm = () => {
                       type="text"
                       placeholder="Stock Symbol"
                       value={stockSymbol}
-                      onChange={(e)=>setStockSymbol(e.target.value)}
+                      onChange={(e) => setStockSymbol(e.target.value)}
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      // readOnly
+                    // readOnly
                     />
                   </div>
                 </div>
@@ -183,9 +186,9 @@ const PlaceOrderForm = () => {
                     type="number"
                     placeholder="Stock Price"
                     value={stockPrice}
-                    onChange={(e)=>setStockPrice(parseFloat(e.target.value))}
+                    onChange={(e) => setStockPrice(parseFloat(e.target.value))}
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    // readOnly
+                  // readOnly
                   />
                 </div>
 

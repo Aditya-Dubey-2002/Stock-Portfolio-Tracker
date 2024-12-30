@@ -1,6 +1,7 @@
 import React from 'react';
 import PlaceOrderForm from '../../components/Forms/PlaceOrderForm';
 import HoldingsTable from '../../components/Tables/HoldingsTable';
+import { useParams } from 'react-router-dom';
 
 const Portfolio = () => {
   return (

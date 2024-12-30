@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Loader from '../common/Loader/index';
 import config from '../config';
 import { jwtDecode } from 'jwt-decode';
+import OrdersTable from '../components/Tables/OrdersTable';
 
 interface UserProfile {
   fullName: string;
@@ -155,11 +156,13 @@ const Profile: React.FC = () => {
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                 <span className="text-sm">Current Balance</span>
                 <span className="font-semibold text-black dark:text-white">
-                  {userProfile.balance}
+                  ${userProfile.balance}
                 </span>
 
               </div>
             </div>
+
+            <OrdersTable />
 
             <div className="mt-6.5">
               <h4 className="mb-3.5 font-medium text-black dark:text-white">

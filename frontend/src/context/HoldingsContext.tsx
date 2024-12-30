@@ -128,7 +128,7 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   useEffect(() => {
     const interval = setInterval(() => {
       if (!loading) updateHoldings();
-    }, 10000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [loading, holdingStocks, holdingQuantities]);
 

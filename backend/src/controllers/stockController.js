@@ -1,8 +1,24 @@
 const axiosInstance = require('../config/finnhubClient');  // Import axios instance
 const stock100List = require('../data/stocksList');
 
-// Controller function to get a list of stocks based on exchange
+exports.getMarketStatus = async (req,res) =>{
+    try{
+        const response = await axiosInstance.get('/stock/market-status',{
+            params: { exchange: 'US' } // Example: Fetching US stock symbols
+        });
+        console.log(response.data);
+        res.status(200).json(response.data);
 
+    } catch(err){
+        console.error('Error fetching market status', err);
+        return res.status(500).json({
+            message: 'Error fetching market status',
+            error: err.message
+        });
+    }
+}
+
+// Controller function to get a list of stocks based on exchange
 exports.get100StockList = async (req, res) => {
     try {
         const response = stock100List;

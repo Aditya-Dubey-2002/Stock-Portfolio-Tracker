@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const stockController = require('../controllers/stockController');
 
+router.get('/market/status',stockController.getMarketStatus);
+
 // Route to get a list of all stock tickers
 router.get('/list', stockController.getStockList);
 
