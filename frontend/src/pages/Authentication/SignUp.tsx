@@ -73,10 +73,11 @@ const SignUp: React.FC = () => {
         }
 
         // Allocate 5 random stocks
-        const allocatedStocks = allocateRandomStocks(stocks, 5);
+        const allocatedStocks = await allocateRandomStocks(stocks, 5);
+        
 
         // Place buy orders for the allocated stocks
-        await placeBuyOrders(await allocatedStocks);
+        const orderPlacement = await placeBuyOrders(allocatedStocks);
 
         alert('Signup successful and stocks allocated!');
         navigate('/'); // Redirect to home or dashboard
@@ -186,13 +187,13 @@ const SignUp: React.FC = () => {
     }
   };
   return loading?(<><div>
-    <Loader />
+    <Loader statusMessage={statusMessage}/>
     <p>{statusMessage}</p> {/* Display the status message */}
   </div></>):(
     
     <>
       <div style={{ margin: '20px' }}>
-        <Breadcrumb pageName="Sign Up" />
+        {/* <Breadcrumb pageName="Sign Up" /> */}
 
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-wrap items-center">

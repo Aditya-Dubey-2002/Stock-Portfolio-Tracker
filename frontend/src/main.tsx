@@ -11,9 +11,9 @@ import { HoldingsProvider } from './context/HoldingsContext';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Router>
-      <HoldingsProvider>
+      {/* <HoldingsProvider> */}
         <App />
-    </HoldingsProvider>
+    {/* </HoldingsProvider> */}
     </Router>
   </React.StrictMode>,
 );

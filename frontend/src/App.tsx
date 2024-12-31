@@ -36,7 +36,7 @@ function App() {
   const isAuthPage = pathname === '/auth/signin' || pathname === '/auth/signup';
 
   return loading ? (
-    <Loader />
+    <Loader statusMessage={null} />
   ) : (
     <>
       {isAuthPage ? (

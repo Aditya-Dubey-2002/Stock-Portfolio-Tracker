@@ -27,6 +27,7 @@ const OrdersTable = () => {
             }
         });
         const data = response.data;
+        data.reverse();
         setOrdersData(data);
       } catch (error) {
         console.error('Error fetching orders:', error);

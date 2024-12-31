@@ -86,7 +86,7 @@ exports.getStockSearch = async (req, res) => {
 // Controller to get real-time stock quote by stock symbol
 exports.getStockQuote = async (req, res) => {
     const symbol = req.params.symbol; // Stock symbol (e.g., AAPL for Apple)
-    console.log(symbol);
+    // console.log(symbol);
     try {
         const response = await axiosInstance.get(`/quote`, {
             params: { symbol }
