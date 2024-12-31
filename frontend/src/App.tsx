@@ -19,6 +19,7 @@ import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
 import ProtectedRoute from './ProtectedRoute';
 import Stock from './pages/Stock';
+import { HoldingsProvider } from './context/HoldingsContext';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -60,6 +61,7 @@ function App() {
           />
         </Routes>
       ) : (
+        <HoldingsProvider>
         <DefaultLayout>
           <Routes>
             <Route
@@ -195,6 +197,7 @@ function App() {
             />
           </Routes>
         </DefaultLayout>
+        </HoldingsProvider>
       )}
     </>
   );
