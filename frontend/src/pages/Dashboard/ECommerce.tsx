@@ -22,48 +22,78 @@ const ECommerce: React.FC = () => {
     loading,
     error,
   } = useHoldings();
-
+  
+  console.log(holdingCurrentValues[holdingStocks[0]]);
   // Calculate total value and total invested
-  let totalValue: number = 0;
-  let totalInvested: number = 0;
-
-  for (let val of holdingCurrentValues) {
-    totalValue += val;
+  let totalValue = 0;
+  let totalInvested = 0;
+  
+  for (let stock in holdingCurrentValues) {
+    totalValue += holdingCurrentValues[stock];
   }
-
-  for (let inv of holdingInvestments) {
-    totalInvested += inv;
+  
+  for (let stock in holdingInvestments) {
+    totalInvested += holdingInvestments[stock];
   }
+  
   totalValue = parseFloat(totalValue.toFixed(2));
+  
   // Calculate total profit/loss
   let totalProfitLoss = totalValue - totalInvested;
-
+  
+  totalProfitLoss = parseFloat(totalProfitLoss.toFixed(2));
+  
   // Calculate net percentage (total value vs invested)
   const netPct = (((totalValue - totalInvested) / totalInvested) * 100).toFixed(2);
-
+  
   // Find the top-performing stock
   let topPerformingStock = "";
   let topPerformingStockPercentage = -Infinity;
-
-  for (let i = 0; i < holdingStocks.length; i++) {
-    const stockName = holdingStocks[i];
-    const investedAmount = holdingInvestments[i];
-    const currentValue = holdingCurrentValues[i];
-    const currentPrice = holdingStockCurrentPrices[i];
-    const quantity = holdingQuantities[i];
-
+  
+  for (let stock in holdingStocks) {
+    // console.log(holdingStocks[]);
+    const stockName = holdingStocks[stock];
+    const investedAmount = holdingInvestments[stockName];
+    const currentValue = holdingCurrentValues[stockName];
+    const currentPrice = holdingStockCurrentPrices[stockName];
+    const quantity = holdingQuantities[stockName];
+  
     // Calculate percentage gain for each stock
     const stockValue = currentValue;
     const stockProfitLoss = stockValue - investedAmount;
-    const stockPct = ((stockProfitLoss / investedAmount) * 100).toFixed(2);
-    // console.log(stockProfitLoss);
+    const stockPct = parseFloat(((stockProfitLoss / investedAmount) * 100).toFixed(2));
+  
     // Track top-performing stock
-    if (parseFloat(stockPct) > topPerformingStockPercentage) {
-      topPerformingStockPercentage = parseFloat(stockPct);
+    if ((stockPct) > topPerformingStockPercentage) {
+      topPerformingStockPercentage = (stockPct);
       topPerformingStock = stockName;
     }
   }
-  totalProfitLoss = parseFloat(totalProfitLoss.toFixed(2));
+  
+  // Calculate portfolio diversification
+  let maxValueStock = "";
+  let maxValue = -1;
+  let maxValueStockPct = 0;
+  
+  for (let stock in holdingStocks) {
+    const stockName = holdingStocks[stock];
+    const currentValue = (holdingCurrentValues[stockName]);
+  
+    if (currentValue > maxValue) {
+      maxValue = parseFloat(currentValue.toFixed(2));
+      maxValueStock = stockName;
+      maxValueStockPct = parseFloat(((currentValue / totalValue) * 100).toFixed(2));
+    }
+  }
+  
+  // Output results
+  console.log("Total Value:", totalValue);
+  console.log("Total Invested:", totalInvested);
+  console.log("Total Profit/Loss:", totalProfitLoss);
+  console.log("Net Percentage:", netPct);
+  console.log("Top Performing Stock:", topPerformingStock, "with", topPerformingStockPercentage, "%");
+  console.log("Max Value Stock:", maxValueStock, "with", maxValueStockPct, "% of portfolio");
+  
   // Output the results
   // console.log(holdingStockCurrentPrices);
 
@@ -132,7 +162,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Investment Growth" total="12.34%" rate="1.25%" levelUp>
+        <CardDataStats title={"Dominant Stock"} total={loading ? <Loader /> :maxValueStock} rate={"$"+holdingCurrentValues[maxValueStock] }>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -165,7 +195,7 @@ const ECommerce: React.FC = () => {
 
         <div className="w-full col-span-12 xl:col-span-8">
           <HoldingsTable />
-          <TableOne />
+          {/* <TableOne /> */}
         </div>
       </div>
     </>

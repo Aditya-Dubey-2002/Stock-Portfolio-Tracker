@@ -15,15 +15,13 @@ const HoldingsTable = () => {
         loading,
         error,
     } = useHoldings();
+
     const navigate = useNavigate();
-    const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'ascending' | 'descending' | null }>({
-        key: '',
-        direction: null,
-    });
-    console.log(holdingStockCurrentPrices);
+    const [sortConfig, setSortConfig] = useState({ key: '', direction: null });
     const [userBalance, setUserBalance] = useState('User Balance Loading...');
     const [userName, setUserName] = useState('User');
     const token = localStorage.getItem('token');
+
     const getBalance = async () => {
         try {
             const response = await axios.get(`${config.SERVER_URL}/api/user/profile`, {
@@ -31,22 +29,23 @@ const HoldingsTable = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            const profileBalance: string = response.data.userDetails.balance;
+            const profileBalance = response.data.userDetails.balance;
             setUserBalance(profileBalance);
             setUserName(response.data.userDetails.fullName);
         } catch (err) {
             console.log('Error fetching User balance');
         }
     };
+
     useEffect(() => {
         getBalance();
-    });
+    }, []);
 
     const getSortedData = () => {
-        if (!sortConfig.key || !sortConfig.direction) return holdingStocks.map((_, index) => index);
+        if (!sortConfig.key || !sortConfig.direction) return holdingStocks;
 
-        const sortedIndices = holdingStocks.map((_, index) => index);
-        sortedIndices.sort((a, b) => {
+        const sortedStocks = [...holdingStocks];
+        sortedStocks.sort((a, b) => {
             const columnDataA = getColumnData(sortConfig.key, a);
             const columnDataB = getColumnData(sortConfig.key, b);
 
@@ -55,29 +54,29 @@ const HoldingsTable = () => {
             return 0;
         });
 
-        return sortedIndices;
+        return sortedStocks;
     };
 
-    const getColumnData = (key: string, index: number) => {
+    const getColumnData = (key, stockId) => {
         switch (key) {
             case 'stockName':
-                return holdingStocks[index];
+                return stockId;
             case 'investment':
-                return holdingInvestments[index];
+                return holdingInvestments[stockId] || 0;
             case 'currentValue':
-                return holdingCurrentValues[index];
+                return holdingCurrentValues[stockId] || 0;
             case 'quantity':
-                return holdingQuantities[index];
+                return holdingQuantities[stockId] || 0;
             case 'price':
-                return holdingStockCurrentPrices[index];
+                return holdingStockCurrentPrices[stockId] || 0;
             default:
                 return null;
         }
     };
 
-    const handleSort = (key: string) => {
+    const handleSort = (key) => {
         setSortConfig((prev) => {
-            let direction: 'ascending' | 'descending' | null = 'ascending';
+            let direction = 'ascending';
             if (prev.key === key && prev.direction === 'ascending') direction = 'descending';
             if (prev.key === key && prev.direction === 'descending') direction = null;
 
@@ -85,35 +84,37 @@ const HoldingsTable = () => {
         });
     };
 
-    const renderSortIcon = (key: string) => {
+    const renderSortIcon = (key) => {
         if (sortConfig.key !== key) return <span className="text-gray-400">⇅</span>;
         if (sortConfig.direction === 'ascending') return <span className="text-primary">▲</span>;
         if (sortConfig.direction === 'descending') return <span className="text-primary">▼</span>;
         return <span className="text-gray-400">⇅</span>;
     };
 
-    const sortedIndices = getSortedData();
+    const sortedStocks = getSortedData();
 
-    const renderRow = (index: number) => {
-        const investment = holdingInvestments[index];
-        const value = holdingCurrentValues[index];
+    const renderRow = (stockId) => {
+        const investment = holdingInvestments[stockId] || 0;
+        const value = holdingCurrentValues[stockId] || 0;
+        const quantity = holdingQuantities[stockId] || 0;
+        const price = holdingStockCurrentPrices[stockId] || 0;
         const difference = value - investment;
         const diffColor = difference > 0 ? 'text-green-500' : 'text-red-500';
 
         return (
             <div
-                className={`grid grid-cols-5 sm:grid-cols-6 ${index === holdingStocks.length - 1 ? '' : 'border-b border-stroke dark:border-strokedark'
+                className={`grid grid-cols-5 sm:grid-cols-6 ${stockId === sortedStocks[sortedStocks.length - 1] ? '' : 'border-b border-stroke dark:border-strokedark'
                     }`}
-                key={index}
+                key={stockId}
             >
                 <div className="flex items-center p-2.5 xl:p-5">
-                    <p className="text-black dark:text-white">{holdingStocks[index]}</p>
+                    <p className="text-black dark:text-white">{stockId}</p>
                 </div>
                 <div className="flex items-center justify-center p-2.5 xl:p-5">
-                    <p className="text-black dark:text-white text-center">{holdingQuantities[index]}</p>
+                    <p className="text-black dark:text-white text-center">{quantity}</p>
                 </div>
                 <div className="flex items-center justify-center p-2.5 xl:p-5">
-                    <p className="text-black dark:text-white text-center">${holdingStockCurrentPrices[index]}</p>
+                    <p className="text-black dark:text-white text-center">${price}</p>
                 </div>
                 <div className="flex items-center justify-center p-2.5 xl:p-5">
                     <p className="text-black dark:text-white text-center">${investment.toFixed(2)}</p>
@@ -134,7 +135,7 @@ const HoldingsTable = () => {
     if (loading) return <Loader />;
 
     return (
-        <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-6 mb-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+        <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-3 mb-3 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
             <div className="flex justify-between items-center mb-4">
                 <h4 className="text-xl font-semibold text-black dark:text-white">{userName}'s Holdings</h4>
                 <h4 className="text-lg font-medium text-black dark:text-white">Current Balance: ${userBalance}</h4>
@@ -171,7 +172,7 @@ const HoldingsTable = () => {
                     </div>
                 </div>
 
-                {sortedIndices.map((index) => renderRow(index))}
+                {sortedStocks.map((stockId) => renderRow(stockId))}
             </div>
         </div>
     );

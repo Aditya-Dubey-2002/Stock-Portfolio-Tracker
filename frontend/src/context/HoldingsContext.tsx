@@ -5,10 +5,10 @@ import config from '../config';
 
 interface HoldingsContextProps {
   holdingStocks: string[];
-  holdingInvestments: number[];
-  holdingCurrentValues: number[];
-  holdingStockCurrentPrices: number[];
-  holdingQuantities: number[];
+  holdingInvestments: Record<string, number>;
+  holdingCurrentValues: Record<string, number>;
+  holdingStockCurrentPrices: Record<string, number>;
+  holdingQuantities: Record<string, number>;
   loading: boolean;
   error: string | null;
   updateHoldings: () => void;
@@ -18,10 +18,10 @@ export const HoldingsContext = createContext<HoldingsContextProps | undefined>(u
 
 export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [holdingStocks, setHoldingStocks] = useState<string[]>([]);
-  const [holdingInvestments, setHoldingInvestments] = useState<number[]>([]);
-  const [holdingCurrentValues, setHoldingCurrentValues] = useState<number[]>([]);
-  const [holdingStockCurrentPrices, setHoldingStockCurrentPrices] = useState<number[]>([]);
-  const [holdingQuantities, setHoldingQuantities] = useState<number[]>([]);
+  const [holdingInvestments, setHoldingInvestments] = useState<Record<string, number>>({});
+  const [holdingCurrentValues, setHoldingCurrentValues] = useState<Record<string, number>>({});
+  const [holdingStockCurrentPrices, setHoldingStockCurrentPrices] = useState<Record<string, number>>({});
+  const [holdingQuantities, setHoldingQuantities] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const token = localStorage.getItem('token');
@@ -64,13 +64,13 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       });
 
       const stocks: string[] = [];
-      const investments: number[] = [];
-      const quantities: number[] = [];
+      const investments: Record<string, number> = {};
+      const quantities: Record<string, number> = {};
 
       Object.entries(aggregatedHoldings).forEach(([stockId, { quantity, totalInvested }]) => {
         stocks.push(stockId);
-        quantities.push(parseFloat(quantity.toFixed(2)));
-        investments.push(parseFloat(totalInvested.toFixed(2)));
+        quantities[stockId] = parseFloat(quantity.toFixed(2));
+        investments[stockId] = parseFloat(totalInvested.toFixed(2));
       });
 
       setHoldingStocks(stocks);
@@ -79,12 +79,12 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       const cache = loadCache();
       const currentTime = Date.now();
-      const currentPrices: number[] = [];
+      const currentPrices: Record<string, number> = {};
       const fetchPromises: Promise<void>[] = [];
 
       stocks.forEach((stock) => {
         if (cache[stock] && currentTime - cache[stock].timestamp < 15000) {
-          currentPrices.push(cache[stock].price);
+          currentPrices[stock] = cache[stock].price;
         } else {
           fetchPromises.push(
             axios
@@ -92,7 +92,7 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               .then((response) => {
                 const price = parseFloat(response.data.c.toFixed(2));
                 cache[stock] = { price, timestamp: Date.now() };
-                currentPrices.push(price);
+                currentPrices[stock] = price;
               })
           );
         }
@@ -101,9 +101,10 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       await Promise.all(fetchPromises);
       saveCache(cache);
 
-      const newCurrentValues = currentPrices.map(
-        (price, index) => parseFloat((price * quantities[index]).toFixed(2))
-      );
+      const newCurrentValues: Record<string, number> = {};
+      Object.keys(currentPrices).forEach((stock) => {
+        newCurrentValues[stock] = parseFloat((currentPrices[stock] * quantities[stock]).toFixed(2));
+      });
 
       setHoldingStockCurrentPrices(currentPrices);
       setHoldingCurrentValues(newCurrentValues);
@@ -121,12 +122,12 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const headers = { Authorization: `Bearer ${token}` };
       const cache = loadCache();
       const currentTime = Date.now();
-      const currentPrices: number[] = [];
+      const currentPrices: Record<string, number> = {};
       const fetchPromises: Promise<void>[] = [];
 
       holdingStocks.forEach((stock) => {
         if (cache[stock] && currentTime - cache[stock].timestamp < 15000) {
-          currentPrices.push(cache[stock].price);
+          currentPrices[stock] = cache[stock].price;
         } else {
           fetchPromises.push(
             axios
@@ -134,7 +135,7 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               .then((response) => {
                 const price = parseFloat(response.data.c.toFixed(2));
                 cache[stock] = { price, timestamp: Date.now() };
-                currentPrices.push(price);
+                currentPrices[stock] = price;
               })
           );
         }
@@ -143,9 +144,10 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       await Promise.all(fetchPromises);
       saveCache(cache);
 
-      const newCurrentValues = currentPrices.map(
-        (price, index) => parseFloat((price * holdingQuantities[index]).toFixed(2))
-      );
+      const newCurrentValues: Record<string, number> = {};
+      Object.keys(currentPrices).forEach((stock) => {
+        newCurrentValues[stock] = parseFloat((currentPrices[stock] * holdingQuantities[stock]).toFixed(2));
+      });
 
       setHoldingStockCurrentPrices(currentPrices);
       setHoldingCurrentValues(newCurrentValues);

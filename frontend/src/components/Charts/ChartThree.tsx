@@ -26,29 +26,58 @@ const ChartThree: React.FC = () => {
     'currentValue'
   );
 
+  // Function to generate unique colors for the chart
+  const generateColors = (count: number): string[] => {
+    const colors: string[] = [];
+    for (let i = 0; i < count; i++) {
+      const hue = (i * 360) / count; // Distribute colors evenly across the hue spectrum
+      colors.push(`hsl(${hue}, 70%, 60%)`); // Adjust saturation and lightness as needed
+    }
+    return colors;
+  };
+
   useEffect(() => {
     if (!loading && !error) {
-      const values =
-        viewMode === 'currentValue' ? holdingCurrentValues : holdingInvestments;
-      const total = values.reduce((sum, value) => sum + value, 0);
-
-      const series = values.map((value) => (value / total) * 100);
-      const labels = holdingStocks.map(
-        (stock, index) => `${stock} (${series[index].toFixed(1)}%)`
+      // Get the stock names from holdingStocks
+      const stockNames = holdingStocks;
+  
+      // Calculate values based on the selected viewMode and the order of stockNames
+      const values = stockNames.map((stockName) =>
+        viewMode === 'currentValue'
+          ? holdingCurrentValues[stockName]
+          : holdingInvestments[stockName]
       );
 
+      // console.log(stockNames);
+  
+      // Calculate the total value
+      const total = values.reduce((sum, value) => sum + value, 0);
+  
+      // Calculate series percentages
+      const series = values.map((value) => (total ? (value / total) * 100 : 0));
+  
+      // Create labels based on stockNames and calculated series
+      const labels = stockNames.map(
+        (stockName, index) =>
+          `${stockName} (${series[index].toFixed(1)}%)`
+      );
+      // console.log(series);
       setState({ series, labels });
     }
   }, [holdingStocks, holdingInvestments, holdingCurrentValues, viewMode, loading, error]);
+  
+
+  // Dynamically generate colors based on the number of stocks
+  const chartColors = generateColors(Object.keys(holdingStocks).length);
 
   const options: ApexOptions = {
     chart: {
       fontFamily: 'Satoshi, sans-serif',
       type: 'donut',
-      width: '100%', // Adjust the width to make the chart responsive
-      height: 500, // Increase the height of the chart
+      width: '100%',
+      height: 500,
     },
-    colors: ['#3C50E0', '#6577F3', '#8FD0EF', '#0FADCF'],
+    colors: chartColors,
     labels: state.labels,
     legend: {
       show: true,
@@ -59,14 +88,28 @@ const ChartThree: React.FC = () => {
     },
     tooltip: {
       y: {
-        formatter: (value, { seriesIndex }) =>
-          `$${viewMode === 'currentValue' ? holdingCurrentValues[seriesIndex] : holdingInvestments[seriesIndex]}`,
+        formatter: (value, { seriesIndex }) => {
+          const stockKeys = (holdingStocks); // Assuming holdingStocks is an object
+          const stockKey = stockKeys[seriesIndex];
+          console.log(stockKey);
+          if (!stockKey) {
+            return 'N/A'; // Handle undefined stock keys gracefully
+          }
+
+          const dataValue =
+            viewMode === 'currentValue'
+              ? holdingCurrentValues[stockKey]
+              : holdingInvestments[stockKey];
+
+          // Ensure dataValue is a valid number
+          return `$${dataValue}`;
+        },
       },
     },
     plotOptions: {
       pie: {
         donut: {
-          size: '70%', // Adjust donut size for better appearance
+          size: '70%',
           background: 'transparent',
         },
       },
@@ -79,7 +122,7 @@ const ChartThree: React.FC = () => {
         breakpoint: 2600,
         options: {
           chart: {
-            width: 400, // Wider chart for larger screens
+            width: 400,
           },
         },
       },
@@ -87,13 +130,12 @@ const ChartThree: React.FC = () => {
         breakpoint: 640,
         options: {
           chart: {
-            width: 300, // Maintain smaller width for small screens
+            width: 300,
           },
         },
       },
     ],
   };
-  
 
   return (
     <div className="sm:px-7.5 col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5">

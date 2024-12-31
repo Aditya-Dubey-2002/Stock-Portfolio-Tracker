@@ -7,7 +7,7 @@ const Portfolio = () => {
   return (
     <div className="flex flex-row gap-6 ">
       {/* Left Column: Place Order Form */}
-      <div className="w-1/4 bg-white rounded-lg shadow-lg ">
+      <div className="w-1/4 bg-white rounded-lg shadow-lg mt-3 mb-3 ">
         <PlaceOrderForm />
       </div>
 
