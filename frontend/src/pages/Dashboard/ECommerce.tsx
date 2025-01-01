@@ -1,16 +1,15 @@
 import React from 'react';
 import CardDataStats from '../../components/CardDataStats';
-import ChartOne from '../../components/Charts/ChartOne';
 import ChartThree from '../../components/Charts/ChartThree';
-import ChartTwo from '../../components/Charts/ChartTwo';
-import ChatCard from '../../components/Chat/ChatCard';
-import MapOne from '../../components/Maps/MapOne';
-import TableOne from '../../components/Tables/TableOne';
 import useHoldings from '../../hooks/useHoldings';
 // import finnhubService from '../../services/finnhubService';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Loader from '../../common/Loader';
 import HoldingsTable from '../../components/Tables/HoldingsTable';
+import axios from 'axios';
+import config from '../../config';
+import PlaceOrderForm from '../../components/Forms/PlaceOrderForm';
+import SectorChart from '../../components/Charts/SectorChart';
 
 const ECommerce: React.FC = () => {
   const {
@@ -23,7 +22,7 @@ const ECommerce: React.FC = () => {
     error,
   } = useHoldings();
   
-  console.log(holdingCurrentValues[holdingStocks[0]]);
+  // console.log(holdingCurrentValues[holdingStocks[0]]);
   // Calculate total value and total invested
   let totalValue = 0;
   let totalInvested = 0;
@@ -87,13 +86,32 @@ const ECommerce: React.FC = () => {
   }
   
   // Output results
-  console.log("Total Value:", totalValue);
-  console.log("Total Invested:", totalInvested);
-  console.log("Total Profit/Loss:", totalProfitLoss);
-  console.log("Net Percentage:", netPct);
-  console.log("Top Performing Stock:", topPerformingStock, "with", topPerformingStockPercentage, "%");
-  console.log("Max Value Stock:", maxValueStock, "with", maxValueStockPct, "% of portfolio");
+  // console.log("Total Value:", totalValue);
+  // console.log("Total Invested:", totalInvested);
+  // console.log("Total Profit/Loss:", totalProfitLoss);
+  // console.log("Net Percentage:", netPct);
+  // console.log("Top Performing Stock:", topPerformingStock, "with", topPerformingStockPercentage, "%");
+  // console.log("Max Value Stock:", maxValueStock, "with", maxValueStockPct, "% of portfolio");
+  const [stockMap,setStockMap] = useState();
+  const fetchStocks = async () => {
+    try {
+      const response = await axios.get(`${config.SERVER_URL}/api/stock/100list`, {
+        params: { exchange: 'US' },
+      });
   
+      // Assuming the API returns an object with symbols as keys
+      const stockMap = response.data; // Example: { AAPL: { name: "Apple Inc.", symbol: "AAPL" }, ... }
+      // console.log(stockMap);
+      // Map the API response to the desired structure
+      
+  
+      // Update the stockOptions state
+      setStockMap(stockMap);
+    } catch (error) {
+      console.error('Error fetching stock options:', error);
+    }
+  };
+  // fetchStocks();
   // Output the results
   // console.log(holdingStockCurrentPrices);
 
@@ -144,7 +162,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Top Performing Stock" total={loading ? <Loader /> : topPerformingStock} rate={loading ? <Loader /> : topPerformingStockPercentage+"%"} levelDown={!loading && parseFloat(topPerformingStockPercentage) < 0} levelUp={!loading && parseFloat(topPerformingStockPercentage) >= 0}>
+        <CardDataStats title="Top Performing Stock" total={loading ? <Loader statusMessage={null} /> : topPerformingStock} rate={loading ? <Loader /> : topPerformingStockPercentage+"%"} levelDown={!loading && parseFloat(topPerformingStockPercentage) < 0} levelUp={!loading && parseFloat(topPerformingStockPercentage) >= 0}>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -188,15 +206,22 @@ const ECommerce: React.FC = () => {
           <div className="w-full md:w-2/5 h-full bg-white rounded-lg shadow dark:bg-gray-800">
             <ChartThree />
           </div>
-          <div className="w-full md:w-3/5 h-4/5 bg-white rounded-lg shadow dark:bg-gray-800">
-            <ChartOne />
+          <div className="w-full md:w-3/5 h-full bg-white rounded-lg shadow dark:bg-gray-800">
+            <SectorChart />
           </div>
         </div>
 
-        <div className="w-full col-span-12 xl:col-span-8">
-          <HoldingsTable />
-          {/* <TableOne /> */}
+        <div id='update-portfolio' className="flex flex-col lg:flex-row gap-6 mt-3 mb-3">
+        {/* Left Column: Place Order Form */}
+        <div className="w-full lg:w-1/4 rounded-lg shadow-lg">
+          <PlaceOrderForm />
         </div>
+
+        {/* Right Column: Holdings Table */}
+        <div className="w-full lg:w-3/4 rounded-lg shadow-lg">
+          <HoldingsTable />
+        </div>
+      </div>
       </div>
     </>
   );

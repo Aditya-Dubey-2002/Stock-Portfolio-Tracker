@@ -16,6 +16,30 @@ const HoldingsTable = () => {
         error,
     } = useHoldings();
 
+    const [stockMap, setStockMap] = useState();
+    const fetchStocks = async () => {
+        try {
+            const response = await axios.get(`${config.SERVER_URL}/api/stock/100list`, {
+                params: { exchange: 'US' },
+            });
+
+            // Assuming the API returns an object with symbols as keys
+            const stockMap = response.data; // Example: { AAPL: { name: "Apple Inc.", symbol: "AAPL" }, ... }
+            // console.log(stockMap);
+            // Map the API response to the desired structure
+
+
+            // Update the stockOptions state
+            // setStockMap(stockMap);
+        } catch (error) {
+            console.error('Error fetching stock options:', error);
+        }
+    };
+    // useEffect(()=>{
+    //     fetchStocks();
+    // })
+    // fetchStocks();
+
     const navigate = useNavigate();
     const [sortConfig, setSortConfig] = useState({ key: '', direction: null });
     const [userBalance, setUserBalance] = useState('User Balance Loading...');
@@ -132,49 +156,81 @@ const HoldingsTable = () => {
         );
     };
 
-    if (loading) return <Loader />;
+    if (loading) return <Loader statusMessage={null} />;
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-3 mb-3 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-            <div className="flex justify-between items-center mb-4">
-                <h4 className="text-xl font-semibold text-black dark:text-white">{userName}'s Holdings</h4>
-                <h4 className="text-lg font-medium text-black dark:text-white">Current Balance: ${userBalance}</h4>
-            </div>
-            <div className="flex flex-col">
-                <div className="grid grid-cols-5 sm:grid-cols-6 rounded-sm bg-gray-2 dark:bg-meta-4">
-                    <div className="p-2.5 xl:p-5 cursor-pointer" onClick={() => handleSort('stockName')}>
-                        <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
-                            Name {renderSortIcon('stockName')}
-                        </h5>
-                    </div>
-                    <div className="p-2.5 text-center xl:p-5 cursor-pointer" onClick={() => handleSort('quantity')}>
-                        <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
-                            Quantity {renderSortIcon('quantity')}
-                        </h5>
-                    </div>
-                    <div className="p-2.5 text-center xl:p-5 cursor-pointer" onClick={() => handleSort('price')}>
-                        <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
-                            Current Price {renderSortIcon('price')}
-                        </h5>
-                    </div>
-                    <div className="p-2.5 text-center xl:p-5 cursor-pointer" onClick={() => handleSort('investment')}>
-                        <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
-                            Total Investment {renderSortIcon('investment')}
-                        </h5>
-                    </div>
-                    <div className="p-2.5 text-center xl:p-5 cursor-pointer" onClick={() => handleSort('currentValue')}>
-                        <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
-                            Current Value {renderSortIcon('currentValue')}
-                        </h5>
-                    </div>
-                    <div className="p-2.5 text-center xl:p-5">
-                        <h5 className="text-sm font-medium uppercase xsm:text-base">Action</h5>
-                    </div>
-                </div>
+  {/* Header Section */}
+  <div className="flex justify-between items-center mb-4">
+    <h4 className="text-xl font-semibold text-black dark:text-white">
+      {userName}'s Holdings
+    </h4>
+    <h4 className="text-lg font-medium text-black dark:text-white">
+      Current Balance: ${userBalance}
+    </h4>
+  </div>
 
-                {sortedStocks.map((stockId) => renderRow(stockId))}
-            </div>
-        </div>
+  {/* Table Section */}
+  <div className="flex flex-col">
+    {/* Table Header */}
+    <div className="grid grid-cols-5 sm:grid-cols-6 rounded-sm bg-gray-2 dark:bg-meta-4">
+      <div
+        className="p-2.5 xl:p-5 cursor-pointer"
+        onClick={() => handleSort("stockName")}
+      >
+        <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
+          Name {renderSortIcon("stockName")}
+        </h5>
+      </div>
+      <div
+        className="p-2.5 text-center xl:p-5 cursor-pointer"
+        onClick={() => handleSort("quantity")}
+      >
+        <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
+          Quantity {renderSortIcon("quantity")}
+        </h5>
+      </div>
+      <div
+        className="p-2.5 text-center xl:p-5 cursor-pointer"
+        onClick={() => handleSort("price")}
+      >
+        <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
+          Current Price {renderSortIcon("price")}
+        </h5>
+      </div>
+      <div
+        className="p-2.5 text-center xl:p-5 cursor-pointer"
+        onClick={() => handleSort("investment")}
+      >
+        <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
+          Total Investment {renderSortIcon("investment")}
+        </h5>
+      </div>
+      <div
+        className="p-2.5 text-center xl:p-5 cursor-pointer"
+        onClick={() => handleSort("currentValue")}
+      >
+        <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
+          Current Value {renderSortIcon("currentValue")}
+        </h5>
+      </div>
+      <div className="p-2.5 text-center xl:p-5">
+        <h5 className="text-sm font-medium uppercase xsm:text-base">Action</h5>
+      </div>
+    </div>
+
+    {/* Scrollable Rows */}
+    <div
+      className="overflow-y-auto"
+      style={{
+        maxHeight: "550px", // Adjust max height as needed
+      }}
+    >
+      {sortedStocks.map((stockId) => renderRow(stockId))}
+    </div>
+  </div>
+</div>
+
     );
 };
 

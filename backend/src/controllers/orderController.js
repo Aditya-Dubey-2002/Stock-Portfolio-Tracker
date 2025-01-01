@@ -1,6 +1,6 @@
 const Order = require('../models/order.js');
 const User = require('../models/User');
-const Holding = require('../models/holdings.js')
+const Holding = require('../models/holdings.js');
 const db = require('../config/db.js');
 
 // Create an order
@@ -8,90 +8,86 @@ const createOrder = async (req, res) => {
     const { stockId, orderType, price, quantity } = req.body;
     const userId = req.user.userId; // Get user from JWT token
 
-    // Start a transaction
-    const transaction = await db.transaction();
+    // Retry mechanism to handle potential lock timeout issues
+    const MAX_RETRIES = 3;
+    let retries = MAX_RETRIES;
 
-    try {
-        // Fetch user details with a lock
-        const user = await User.findByPk(userId, {
-            transaction,
-            lock: transaction.LOCK.UPDATE, // Apply a row-level lock
-        });
+    while (retries > 0) {
+        const transaction = await db.transaction();
+        try {
+            // Fetch user details with a row-level lock
+            const user = await User.findByPk(userId, {
+                transaction,
+                lock: transaction.LOCK.UPDATE,
+            });
 
-        if (!user) {
-            await transaction.rollback();
-            return res.status(404).json({ message: 'User not found' });
-        }
-        if (orderType === 'buy') {
-            // Fetch user details within the transaction
-            const user = await User.findByPk(userId, { transaction });
-            if (!user) {
-                await transaction.rollback();
-                return res.status(404).json({ message: 'User not found' });
-            }
+            if (!user) throw new Error('User not found');
 
-            // Calculate the total amount for the order
-            const buyPrice = parseFloat(price);
-            const totalAmount = parseFloat(quantity * buyPrice);
+            if (orderType === 'buy') {
+                const totalAmount = parseFloat(quantity * price);
 
-            // Check if the user has sufficient balance
-            if (user.balance < totalAmount) {
-                await transaction.rollback();
-                return res.status(400).json({ message: 'Insufficient balance' });
-            }
-
-            // Deduct the balance
-            user.balance = parseFloat(user.balance) - totalAmount;
-            console.log(user.balance);
-            await user.save({ transaction });
-
-            // Check if the user already has the stock in their holdings
-            const holding = await Holding.findOne({ where: { userId, stockId, buyPrice }, transaction });
-
-            if (holding) {
-                // If holding exists, update the quantity and total price
-                holding.quantity = parseFloat(holding.quantity) + quantity;
-                holding.totalPrice = parseFloat(holding.totalPrice) + totalAmount;
-                await holding.save({ transaction });
-            } else {
-                // Create new holding if not exists
-                await Holding.create({
-                    userId,
-                    stockId,
-                    quantity,
-                    buyPrice,
-                    totalPrice: totalAmount
-                }, { transaction });
-            }
-
-            // Create the order in the database
-            const order = await Order.create({
-                userId,
-                stockId,
-                orderType: 'buy',
-                quantity,
-                amount: totalAmount
-            }, { transaction });
-
-            // Commit the transaction
-            await transaction.commit();
-
-            console.log(`Successfully placed buy order for ${stockId}`);
-            return res.status(201).json({ message: 'Buy order placed successfully', order });
-        }
-        else if (orderType === 'sell') {
-            try {
-                const holdings = await Holding.findAll({ where: { userId, stockId } });
-
-                if (!holdings || holdings.length === 0) {
-                    return res.status(400).json({ message: 'No holdings for this stock' });
+                // Check if the user has sufficient balance
+                if (user.balance < totalAmount) {
+                    throw new Error('Insufficient balance');
                 }
 
-                const sellPrice = price;
-                holdings.sort((a, b) => a.buyPrice - b.buyPrice);
+                // Deduct balance
+                user.balance = parseFloat(user.balance) - totalAmount;
+                await user.save({ transaction });
+
+                // Check and update holdings
+                const holding = await Holding.findOne({
+                    where: { userId, stockId, buyPrice: price },
+                    transaction,
+                });
+
+                if (holding) {
+                    holding.quantity = parseFloat(holding.quantity) + quantity;
+                    holding.totalPrice = parseFloat(holding.totalPrice) + totalAmount;
+                    await holding.save({ transaction });
+                } else {
+                    await Holding.create(
+                        {
+                            userId,
+                            stockId,
+                            quantity,
+                            buyPrice: price,
+                            totalPrice: totalAmount,
+                        },
+                        { transaction }
+                    );
+                }
+
+                // Create order
+                const order = await Order.create(
+                    {
+                        userId,
+                        stockId,
+                        orderType: 'buy',
+                        quantity,
+                        amount: totalAmount,
+                    },
+                    { transaction }
+                );
+
+                await transaction.commit();
+                return res.status(201).json({ message: 'Buy order placed successfully', order });
+            } else if (orderType === 'sell') {
+                const holdings = await Holding.findAll({
+                    where: { userId, stockId },
+                    transaction,
+                    lock: transaction.LOCK.UPDATE,
+                });
+
+                if (!holdings || holdings.length === 0) {
+                    throw new Error('No holdings for this stock');
+                }
 
                 let totalQuantityToSell = quantity;
                 let totalAmount = 0;
+
+                // Sort holdings by buy price (FIFO)
+                holdings.sort((a, b) => a.buyPrice - b.buyPrice);
 
                 for (const holding of holdings) {
                     if (totalQuantityToSell <= 0) break;
@@ -99,65 +95,67 @@ const createOrder = async (req, res) => {
                     const availableQuantity = holding.quantity;
 
                     if (availableQuantity <= totalQuantityToSell) {
-                        totalAmount = parseFloat(totalAmount) + availableQuantity * sellPrice;
-                        totalQuantityToSell = parseFloat(holding.quantity) - availableQuantity;
-                        await holding.destroy();
+                        totalAmount += availableQuantity * price;
+                        totalQuantityToSell -= availableQuantity;
+                        await holding.destroy({ transaction });
                     } else {
-                        totalAmount = parseFloat(totalAmount) + totalQuantityToSell * sellPrice;
-                        holding.quantity = parseFloat(holding.quantity) - totalQuantityToSell;
-                        await holding.save();
+                        totalAmount += totalQuantityToSell * price;
+                        holding.quantity = availableQuantity - totalQuantityToSell;
+                        await holding.save({ transaction });
                         totalQuantityToSell = 0;
                     }
                 }
 
                 if (totalQuantityToSell > 0) {
-                    return res.status(400).json({ message: 'Not enough stock to sell' });
-                }
-
-                const user = await User.findByPk(userId);
-                if (!user) {
-                    return res.status(404).json({ message: 'User not found' });
+                    throw new Error('Not enough stock to sell');
                 }
 
                 user.balance = parseFloat(user.balance) + totalAmount;
+                await user.save({ transaction });
 
+                const order = await Order.create(
+                    {
+                        userId,
+                        stockId,
+                        orderType: 'sell',
+                        quantity,
+                        amount: totalAmount,
+                    },
+                    { transaction }
+                );
 
-                await user.save();
-
-                const order = await Order.create({
-                    userId,
-                    stockId,
-                    orderType: 'sell',
-                    quantity,
-                    amount: totalAmount
-                });
-
+                await transaction.commit();
                 return res.status(201).json({ message: 'Sell order placed successfully', order });
-            } catch (err) {
-                console.error(err);
-                return res.status(500).json({ message: 'Error placing sell order', error: err.message });
+            } else {
+                throw new Error('Invalid order type');
             }
-        } else {
-            return res.status(400).json({ message: 'Invalid order type' });
+        } catch (err) {
+            await transaction.rollback();
+
+            if (err.code === 'ER_LOCK_WAIT_TIMEOUT' && retries > 1) {
+                retries -= 1;
+                continue; // Retry transaction
+            }
+
+            console.error('Error placing order:', err);
+            return res.status(500).json({ message: err.message });
         }
-    } catch (err) {
-        // Rollback the transaction on error
-        await transaction.rollback();
-        console.error('Error placing order:', err);
-        return res.status(500).json({ message: 'Error placing order', error: err.message });
     }
+
+    return res.status(500).json({ message: 'Transaction failed after multiple retries' });
 };
 
 // Get orders for a user
 const getOrders = async (req, res) => {
     const userId = req.user.userId;
     try {
-        const orders = await Order.findAll({ where: { userId: userId } });
+        const orders = await Order.findAll({ where: { userId } });
         if (orders.length === 0) {
             return res.status(404).json({ message: 'No orders found' });
         }
         res.json(orders);
     } catch (err) {
+        console.error('Error fetching orders:', err);
         res.status(500).json({ message: 'Failed to fetch orders', error: err.message });
     }
 };

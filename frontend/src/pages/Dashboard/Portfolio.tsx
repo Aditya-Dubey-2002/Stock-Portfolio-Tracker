@@ -1,21 +1,22 @@
-import React from 'react';
 import PlaceOrderForm from '../../components/Forms/PlaceOrderForm';
 import HoldingsTable from '../../components/Tables/HoldingsTable';
-import { useParams } from 'react-router-dom';
 
 const Portfolio = () => {
   return (
-    <div className="flex flex-row gap-6 ">
-      {/* Left Column: Place Order Form */}
-      <div className="w-1/4 bg-white rounded-lg shadow-lg mt-3 mb-3 ">
-        <PlaceOrderForm />
-      </div>
+    <>
+      {/* <Breadcrumb pageName="Portfolio" /> */}
+      <div className="flex flex-col lg:flex-row gap-6 mt-3 mb-3">
+        {/* Left Column: Place Order Form */}
+        <div className="w-full lg:w-1/4   ">
+          <PlaceOrderForm />
+        </div>
 
-      {/* Right Column: Holdings Table */}
-      {/* <div className="w-3/4 bg-white rounded-lg shadow-lg p-4"> */}
-        <HoldingsTable />
-      {/* </div> */}
-    </div>
+        {/* Right Column: Holdings Table */}
+        <div className="w-full lg:w-3/4   ">
+          <HoldingsTable />
+        </div>
+      </div>
+    </>
   );
 };
 

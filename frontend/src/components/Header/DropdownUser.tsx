@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { Link,Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/user-01.png';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+import config from '../../config';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -9,11 +12,22 @@ const DropdownUser = () => {
   const handleLogout = () => {
     // Clear the token from localStorage
     localStorage.removeItem('token');
-  
+
     // Redirect the user to the login page or any other page
     navigate('/auth/signin');
   };
+  const token = localStorage.getItem('token');
+  const [userName,setUserName] = useState('');
+  useState(async ()=>{
+    const response = await axios.get(`${config.SERVER_URL}/api/user/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setUserName(response.data.userDetails.fullName);
+  })
   
+
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
@@ -23,9 +37,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {userName}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          {/* <span className="block text-xs">UX Designer</span> */}
         </span>
 
         <span className="h-12 w-12 rounded-full">

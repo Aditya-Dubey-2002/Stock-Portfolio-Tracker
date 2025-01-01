@@ -28,10 +28,16 @@ const Header = (props: {
       setLoading(true);
       try {
         const response = await axios.get('http://localhost:5000/api/stock/100list');
-        const options = response.data.map((stock: { name: string; symbol: string }) => ({
-          label: `${stock.name} (${stock.symbol})`,
-          value: stock.symbol,
+    
+        // Assuming the response.data is an object where keys are symbols
+        const stockMap = response.data; // Example: { AAPL: { name: "Apple Inc.", symbol: "AAPL" }, ... }
+    
+        // Map the object to the desired structure
+        const options = Object.keys(stockMap).map((symbol) => ({
+          label: `${stockMap[symbol].name} (${symbol})`,
+          value: symbol,
         }));
+    
         setStockOptions(options);
       } catch (error) {
         console.error('Error fetching stock options:', error);
@@ -39,8 +45,10 @@ const Header = (props: {
         setLoading(false);
       }
     };
-
+    
+    // Call the function
     fetchStockOptions();
+    
   }, []);
 
   const [marketStatus, setMarketStatus] = useState<boolean>();
@@ -131,8 +139,8 @@ const Header = (props: {
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">
             <DarkModeSwitcher />
-            <DropdownNotification />
-            <DropdownMessage />
+            {/* <DropdownNotification /> */}
+            {/* <DropdownMessage /> */}
           </ul>
           <DropdownUser />
         </div>

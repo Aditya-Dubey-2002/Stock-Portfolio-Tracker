@@ -85,13 +85,14 @@ const SignIn: React.FC = () => {
             <div className="hidden w-full xl:block xl:w-1/2">
               <div className="py-17.5 px-26 text-center">
                 <Link className="mb-5.5 inline-block" to="/">
-                  <img className="hidden dark:block" src={Logo} alt="Logo" />
-                  <img className="dark:hidden" src={LogoDark} alt="Logo" />
+                  {/* <img className="hidden dark:block" src={Logo} alt="Logo" /> */}
+                  <h1 className="text-4xl hidden font-bold tracking-wide text-white">StockItUp</h1>
+                  <h1 className="text-4xl dark:hidden font-bold tracking-wide text-black">StockItUp</h1>
+                  {/* <img className="dark:hidden" src={LogoDark} alt="Logo" /> */}
                 </Link>
 
                 <p className="2xl:px-20">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                  suspendisse.
+                Log in to access your personalized dashboard and stay updated with the latest stock insights.
                 </p>
 
                 <span className="mt-15 inline-block">
@@ -221,9 +222,9 @@ const SignIn: React.FC = () => {
 
             <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
               <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-                <span className="mb-1.5 block font-medium">Start for free</span>
+                <span className="mb-1.5 block font-medium">Start now!</span>
                 <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                  Sign In to TailAdmin
+                  Sign In to StockItUp
                 </h2>
 
                 <form onSubmit={handleSubmit}>

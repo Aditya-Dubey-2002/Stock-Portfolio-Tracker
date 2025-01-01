@@ -6,7 +6,7 @@ exports.getMarketStatus = async (req,res) =>{
         const response = await axiosInstance.get('/stock/market-status',{
             params: { exchange: 'US' } // Example: Fetching US stock symbols
         });
-        console.log(response.data);
+        // console.log(response.data);
         res.status(200).json(response.data);
 
     } catch(err){
@@ -21,7 +21,7 @@ exports.getMarketStatus = async (req,res) =>{
 // Controller function to get a list of stocks based on exchange
 exports.get100StockList = async (req, res) => {
     try {
-        const response = stock100List;
+        const response = Object.fromEntries(stock100List);
 
         const stocks = response; // Assuming response.data is an array of stock objects
         const result = stocks;
