@@ -1,33 +1,23 @@
 const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv');
-const fs = require('fs');
 
-dotenv.config(); // Load the environment variables from the .env file
+require('dotenv').config(); // Load the environment variables from the .env file
 
-// Set up the SSL option if required
-const sslOption = process.env.DB_SSL === 'true' ? {
-  ssl: {
-    require: true,
-    rejectUnauthorized: false, // Disable certificate verification for ease of connection
-  },
-} : {};
-
+// Create a new instance of Sequelize with your database credentials
 const sequelize = new Sequelize(
   process.env.DB_NAME, // The name of your database
   process.env.DB_USER, // The username to access the database
   process.env.DB_PASSWORD, // The password to access the database
   {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT, // Use the DB port from the .env file
-    dialect: 'mysql',
+    host: process.env.DB_HOST || 'localhost', // The host of your database (default is localhost)
+    dialect: 'mysql', // The type of database you are using (mysql in this case)
     logging: false, // Set to true if you want to log SQL queries
     pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000,
+      max: 5, // Max number of connections in the pool
+      min: 0, // Min number of connections in the pool
+      acquire: 30000, // Maximum time (in ms) to wait for a connection to be established
+      idle: 10000, // Maximum time (in ms) to wait for a connection to be released
     },
-    ...sslOption, // Add SSL option if required
   }
 );
 
