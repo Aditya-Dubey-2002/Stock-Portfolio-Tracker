@@ -19,7 +19,7 @@ interface SectorData {
 }
 
 const SectorChart: React.FC = () => {
-  const { holdingStocks, holdingCurrentValues, holdingInvestments,loading } = useHoldings();
+  const { holdingStocks, holdingCurrentValues, holdingInvestments, loading } = useHoldings();
   const [sectorData, setSectorData] = useState<SectorData[]>([]);
   const [stockMap, setStockMap] = useState<{ [key: string]: StockInfo }>({});
 
@@ -59,21 +59,21 @@ const SectorChart: React.FC = () => {
         if (!sectorTotals[sector]) {
           sectorTotals[sector] = { currentValue: 0, investmentValue: 0 };
         }
-        sectorTotals[sector].currentValue += currentValue;
-        sectorTotals[sector].investmentValue += investmentValue;
+        sectorTotals[sector].currentValue += parseFloat(currentValue.toFixed(2));
+        sectorTotals[sector].investmentValue += parseFloat(investmentValue.toFixed(2));
       } else {
         if (!sectorTotals['Unknown']) {
           sectorTotals['Unknown'] = { currentValue: 0, investmentValue: 0 };
         }
-        sectorTotals['Unknown'].currentValue += currentValue;
-        sectorTotals['Unknown'].investmentValue += investmentValue;
+        sectorTotals['Unknown'].currentValue += parseFloat(currentValue.toFixed(2));
+        sectorTotals['Unknown'].investmentValue += parseFloat(investmentValue.toFixed(2));
       }
     });
 
     const formattedData: SectorData[] = Object.keys(sectorTotals).map((sector) => ({
       name: sector,
-      currentValue: sectorTotals[sector].currentValue,
-      investmentValue: sectorTotals[sector].investmentValue,
+      currentValue: parseFloat(sectorTotals[sector].currentValue.toFixed(2)),
+      investmentValue: parseFloat(sectorTotals[sector].investmentValue.toFixed(2)),
     }));
 
     setSectorData(formattedData);
@@ -122,6 +122,7 @@ const SectorChart: React.FC = () => {
         style: {
           colors: '#6B7280',
         },
+        formatter: (value: number) => `$ ${value.toFixed(2)}`,
       },
     },
     tooltip: {
@@ -144,25 +145,28 @@ const SectorChart: React.FC = () => {
   const chartSeries = [
     {
       name: 'Current Value',
-      data: sectorData.map((item) => item.currentValue),
+      data: sectorData.map((item) => parseFloat(item.currentValue.toFixed(2))),
     },
     {
       name: 'Investment Value',
-      data: sectorData.map((item) => item.investmentValue),
+      data: sectorData.map((item) => parseFloat(item.investmentValue.toFixed(2))),
     },
   ];
 
-  return (loading?<Loader statusMessage={null}/>:<>
-    <div className="rounded-lg shadow-default bg-white dark:bg-gray-800 p-4">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-3">Sector Allocation</h2>
-      <ReactApexChart
-        options={chartOptions}
-        series={chartSeries}
-        type="bar"
-        height={300}
-      />
-    </div>
-    </>
+  return (
+    loading ? (
+      <Loader statusMessage={null} />
+    ) : (
+      <div className="rounded-lg shadow-default bg-white dark:bg-gray-800 p-4">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-3">Sector Allocation</h2>
+        <ReactApexChart
+          options={chartOptions}
+          series={chartSeries}
+          type="bar"
+          height={300}
+        />
+      </div>
+    )
   );
 };
 

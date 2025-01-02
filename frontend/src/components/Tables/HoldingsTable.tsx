@@ -16,6 +16,7 @@ const HoldingsTable = () => {
         error,
     } = useHoldings();
 
+    console.log(holdingCurrentValues);
     const [stockMap, setStockMap] = useState();
     const fetchStocks = async () => {
         try {
@@ -132,7 +133,7 @@ const HoldingsTable = () => {
                 key={stockId}
             >
                 <div className="flex items-center p-2.5 xl:p-5">
-                    <p className="text-black dark:text-white">{stockId}</p>
+                    <a href={`/stock/${stockId}`}><p className="text-black dark:text-white">{stockId}</p></a>
                 </div>
                 <div className="flex items-center justify-center p-2.5 xl:p-5">
                     <p className="text-black dark:text-white text-center">{quantity}</p>
@@ -150,7 +151,7 @@ const HoldingsTable = () => {
                     </p>
                 </div>
                 <div className="flex items-center justify-center p-2.5 xl:p-5">
-                    <button className="rounded bg-primary px-4 py-2 text-white hover:bg-primary-dark">Place Order</button>
+                    <button className="rounded bg-primary px-4 py-2 text-white hover:bg-primary-dark" onClick={()=>{navigate(`/update-portfolio?stockSymbol=${stockId}`)}}>Place Order</button>
                 </div>
             </div>
         );

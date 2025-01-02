@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import Select from 'react-select';
 import axios from 'axios';
-import Loader from '../../common/Loader';
 import config from '../../config';
 
 // Define StockOption type
@@ -13,7 +10,10 @@ type StockOption = {
   price: number;
 };
 
-const PlaceOrderForm = () => {
+type PlaceOrderFormProps = {
+  selectedStockSymbol: string;
+};
+const PlaceOrderForm :React.FC<PlaceOrderFormProps>= ({selectedStockSymbol}) => {
   const [stockName, setStockName] = useState('');
   const [stockSymbol, setStockSymbol] = useState('');
   const [stockPrice, setStockPrice] = useState<number | undefined>(undefined);
@@ -65,6 +65,28 @@ const PlaceOrderForm = () => {
   useEffect(() => {
     fetchStockOptions();
   }, []);
+
+
+  const fetchStockPrice = async (symbol: string) => {
+    try {
+      const response = await axios.get(`${config.SERVER_URL}/api/stock/quote/${symbol}`);
+      setStockPrice(response.data.c);
+    } catch (error) {
+      console.error('Error fetching stock price:', error);
+      setStockPrice(undefined);
+    }
+  };
+  useEffect(() => {
+    if (selectedStockSymbol) {
+      const matchingStock = stockOptions.find((option) => option.value === selectedStockSymbol);
+      if (matchingStock) {
+        setSelectedStock(matchingStock);
+        setStockSymbol(matchingStock.value);
+        setStockName(matchingStock.label);
+        fetchStockPrice(selectedStockSymbol);
+      }
+    }
+  }, [selectedStockSymbol, stockOptions]);
 
   const handleStockSelect = async (selectedOption: StockOption | null) => {
     if (selectedOption) {
@@ -191,6 +213,7 @@ const PlaceOrderForm = () => {
                       placeholder="Search for a stock"
                       value={selectedStock}
                     />
+                    {/* <SelectStock options={stockOptions} selectedStock= {selectedStock}/> */}
                   </div>
 
                   {/* Stock Symbol Field */}

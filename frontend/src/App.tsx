@@ -87,11 +87,11 @@ function App() {
               }
             />
             <Route
-              path = "/portfolio"
+              path = "/update-portfolio"
               element={
                 <>
                   <ProtectedRoute>
-                  <PageTitle title="Portfolio" />
+                  <PageTitle title="Update Portfolio" />
                   <Portfolio />
                   </ProtectedRoute>
                 </>

@@ -8,6 +8,8 @@ import DropdownMessage from './DropdownMessage';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import config from '../../config';
+import StockSelect from '../Forms/SelectGroup/StockSelect';
+import SelectGroupTwo from '../Forms/SelectGroup/SelectGroupTwo';
 
 type StockOption = {
   label: string;
@@ -99,15 +101,17 @@ const Header = (props: {
         </div>
 
         {/* Stock Search */}
-        <div className="w-full max-w-md ">
-          <Select
+        <div className="w-full max-w-md  dark:border-strokedark dark:bg-boxdark">
+          {/* <Select
             options={stockOptions}
             onChange={handleStockSelect}
             isLoading={loading}
             placeholder="Search a stock for details..."
             className="react-select-container dark:border-strokedark dark:bg-boxdark"
             classNamePrefix="react-select"
-          />
+          /> */}
+          <StockSelect options={stockOptions}/>
+          {/* <SelectGroupTwo/> */}
         </div>
 
         {/* Market Status Indicator */}

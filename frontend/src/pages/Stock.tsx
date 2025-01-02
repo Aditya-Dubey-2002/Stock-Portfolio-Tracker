@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import config from "../config";
 import Loader from "../common/Loader";
+import { useNavigate } from "react-router-dom";
 
 const Stock: React.FC = () => {
   const { symbol } = useParams<{ symbol: string }>();
@@ -10,6 +11,7 @@ const Stock: React.FC = () => {
   const [stockQuote, setStockQuote] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchStockDetails = async () => {
       try {
@@ -39,7 +41,7 @@ const Stock: React.FC = () => {
     fetchStockDetails();
   }, [symbol]);
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader statusMessage={''} />;
 
   return (
     <div className="">
@@ -105,7 +107,7 @@ const Stock: React.FC = () => {
 
       {/* Actions Section */}
       <div className="flex gap-4">
-        <button className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md shadow hover:bg-blue-700">
+        <button className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md shadow hover:bg-blue-700" onClick={()=>{navigate(`/update-portfolio?stockSymbol=${symbol}`)}}>
           Buy
         </button>
         {/* <button className="px-6 py-2 bg-yellow-500 text-white font-semibold rounded-md shadow hover:bg-yellow-600">

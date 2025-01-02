@@ -154,6 +154,7 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setError(null);
     } catch (err) {
       console.error('Failed to update holdings:', err);
+      alert('Failed to update holdings');
       setError('Failed to update holdings.');
     }
   };

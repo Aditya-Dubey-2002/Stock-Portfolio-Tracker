@@ -10,6 +10,7 @@ import axios from 'axios';
 import config from '../../config';
 import PlaceOrderForm from '../../components/Forms/PlaceOrderForm';
 import SectorChart from '../../components/Charts/SectorChart';
+import { useLocation } from 'react-router-dom';
 
 const ECommerce: React.FC = () => {
   const {
@@ -21,34 +22,34 @@ const ECommerce: React.FC = () => {
     loading,
     error,
   } = useHoldings();
-  
+
   // console.log(holdingCurrentValues[holdingStocks[0]]);
   // Calculate total value and total invested
   let totalValue = 0;
   let totalInvested = 0;
-  
+
   for (let stock in holdingCurrentValues) {
     totalValue += holdingCurrentValues[stock];
   }
-  
+
   for (let stock in holdingInvestments) {
     totalInvested += holdingInvestments[stock];
   }
-  
+
   totalValue = parseFloat(totalValue.toFixed(2));
-  
+
   // Calculate total profit/loss
   let totalProfitLoss = totalValue - totalInvested;
-  
+
   totalProfitLoss = parseFloat(totalProfitLoss.toFixed(2));
-  
+
   // Calculate net percentage (total value vs invested)
   const netPct = (((totalValue - totalInvested) / totalInvested) * 100).toFixed(2);
-  
+
   // Find the top-performing stock
   let topPerformingStock = "";
   let topPerformingStockPercentage = -Infinity;
-  
+
   for (let stock in holdingStocks) {
     // console.log(holdingStocks[]);
     const stockName = holdingStocks[stock];
@@ -56,35 +57,35 @@ const ECommerce: React.FC = () => {
     const currentValue = holdingCurrentValues[stockName];
     const currentPrice = holdingStockCurrentPrices[stockName];
     const quantity = holdingQuantities[stockName];
-  
+
     // Calculate percentage gain for each stock
     const stockValue = currentValue;
     const stockProfitLoss = stockValue - investedAmount;
     const stockPct = parseFloat(((stockProfitLoss / investedAmount) * 100).toFixed(2));
-  
+
     // Track top-performing stock
     if ((stockPct) > topPerformingStockPercentage) {
       topPerformingStockPercentage = (stockPct);
       topPerformingStock = stockName;
     }
   }
-  
+
   // Calculate portfolio diversification
   let maxValueStock = "";
   let maxValue = -1;
   let maxValueStockPct = 0;
-  
+
   for (let stock in holdingStocks) {
     const stockName = holdingStocks[stock];
     const currentValue = (holdingCurrentValues[stockName]);
-  
+
     if (currentValue > maxValue) {
       maxValue = parseFloat(currentValue.toFixed(2));
       maxValueStock = stockName;
       maxValueStockPct = parseFloat(((currentValue / totalValue) * 100).toFixed(2));
     }
   }
-  
+
   // Output results
   // console.log("Total Value:", totalValue);
   // console.log("Total Invested:", totalInvested);
@@ -92,19 +93,19 @@ const ECommerce: React.FC = () => {
   // console.log("Net Percentage:", netPct);
   // console.log("Top Performing Stock:", topPerformingStock, "with", topPerformingStockPercentage, "%");
   // console.log("Max Value Stock:", maxValueStock, "with", maxValueStockPct, "% of portfolio");
-  const [stockMap,setStockMap] = useState();
+  const [stockMap, setStockMap] = useState();
   const fetchStocks = async () => {
     try {
       const response = await axios.get(`${config.SERVER_URL}/api/stock/100list`, {
         params: { exchange: 'US' },
       });
-  
+
       // Assuming the API returns an object with symbols as keys
       const stockMap = response.data; // Example: { AAPL: { name: "Apple Inc.", symbol: "AAPL" }, ... }
       // console.log(stockMap);
       // Map the API response to the desired structure
-      
-  
+
+
       // Update the stockOptions state
       setStockMap(stockMap);
     } catch (error) {
@@ -116,7 +117,9 @@ const ECommerce: React.FC = () => {
   // console.log(holdingStockCurrentPrices);
 
   // const netP = ((netPct).toFixed(2));
-
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  // const stockSymbol = queryParams.get('stockSymbol') || '';
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
@@ -162,7 +165,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Top Performing Stock" total={loading ? <Loader statusMessage={null} /> : topPerformingStock} rate={loading ? <Loader /> : topPerformingStockPercentage+"%"} levelDown={!loading && parseFloat(topPerformingStockPercentage) < 0} levelUp={!loading && parseFloat(topPerformingStockPercentage) >= 0}>
+        <CardDataStats title="Top Performing Stock" total={loading ? <Loader statusMessage={null} /> : topPerformingStock} rate={loading ? <Loader /> : topPerformingStockPercentage + "%"} levelDown={!loading && parseFloat(topPerformingStockPercentage) < 0} levelUp={!loading && parseFloat(topPerformingStockPercentage) >= 0}>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -180,7 +183,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title={"Dominant Stock"} total={loading ? <Loader /> :maxValueStock} rate={"$"+holdingCurrentValues[maxValueStock] }>
+        <CardDataStats title={"Dominant Stock"} total={loading ? <Loader /> : maxValueStock} rate={"$" + holdingCurrentValues[maxValueStock]}>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -211,17 +214,17 @@ const ECommerce: React.FC = () => {
           </div>
         </div>
 
-        <div id='update-portfolio' className="flex flex-col lg:flex-row gap-6 mt-3 mb-3">
-        {/* Left Column: Place Order Form */}
-        <div className="w-full lg:w-1/4 rounded-lg shadow-lg">
-          <PlaceOrderForm />
-        </div>
+        <div  className="flex flex-col lg:flex-row gap-6 mt-3 mb-3 pt-1.5 pb-1.5">
+          {/* Left Column: Place Order Form */}
+          {/* <div className="w-full lg:w-1/4 rounded-lg shadow-lg">
+            <PlaceOrderForm selectedStockSymbol={''} />
+          </div> */}
 
-        {/* Right Column: Holdings Table */}
-        <div className="w-full lg:w-3/4 rounded-lg shadow-lg">
-          <HoldingsTable />
+          {/* Right Column: Holdings Table */}
+          <div className="w-full lg:w-full rounded-lg shadow-lg">
+            <HoldingsTable />
+          </div>
         </div>
-      </div>
       </div>
     </>
   );
