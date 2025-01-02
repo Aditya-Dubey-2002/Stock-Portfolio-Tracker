@@ -1,5 +1,5 @@
 const sequelize = require('./config/db.js');  // Path to your database config
-const User = require('./models/User');  // Import the User model
+const User = require('./models/user.js');  // Import the User model
 
 // Sync all models
 

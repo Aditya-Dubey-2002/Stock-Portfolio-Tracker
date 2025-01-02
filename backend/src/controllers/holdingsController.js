@@ -1,5 +1,5 @@
 const Order = require('../models/order.js');
-const User = require('../models/User.js');
+const User = require('../models/user.js');
 const Holding = require('../models/holdings.js')
 const db = require('../config/db.js');
 

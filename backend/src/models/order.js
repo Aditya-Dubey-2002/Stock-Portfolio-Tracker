@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const User = require('./User');
+const User = require('./user');
 const Holdings = require('./holdings'); // If you have the Holdings model imported here
 
 const Order = sequelize.define('Order', {
