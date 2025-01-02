@@ -12,7 +12,7 @@ const Holding = sequelize.define('Holding', {
         type: DataTypes.INTEGER,
         references: {
             model: User,
-            key: 'user_id',
+            key: 'userId',
         },
         allowNull: false,
     },
