@@ -1,12 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const sequelize = require('./src/config/db');
-const authRoutes = require('./src/routes/authRoutes');
-const userRoutes = require('./src/routes/userRoutes');
-const orderRoutes = require('./src/routes/orderRoutes');
-const stockRoutes = require('./src/routes/stockRoutes');
-const holdingsRoutes = require('./src/routes/holdingsRoutes');
+const sequelize = require('./src/config/db.js');
+const authRoutes = require('./src/routes/authRoutes.js');
+const userRoutes = require('./src/routes/userRoutes.js');
+const orderRoutes = require('./src/routes/orderRoutes.js');
+const stockRoutes = require('./src/routes/stockRoutes.js');
+const holdingsRoutes = require('./src/routes/holdingsRoutes.js');
 dotenv.config();
 
 const app = express();

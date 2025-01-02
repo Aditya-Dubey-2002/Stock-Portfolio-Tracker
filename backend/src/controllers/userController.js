@@ -1,4 +1,4 @@
-const db = require('../config/db'); // Your DB connection logic
+const db = require('../config/db.js'); // Your DB connection logic
 
 const getUserProfile = async (req, res) => {
   const userId = req.user.userId; // Extracted from the middleware

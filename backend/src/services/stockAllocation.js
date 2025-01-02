@@ -1,8 +1,8 @@
 const axios = require('axios');  // For making HTTP requests to the stock API
-const axiosInstance = require('../config/finnhubClient');  // Import axios instance
-const { createOrder } = require('../controllers/orderController'); // Import the createOrder function from the orderController
-const stocks = require('../data/stocksList'); // Import your stocks list
-const { getStockQuote } = require('../controllers/stockController');
+const axiosInstance = require('../config/finnhubClient.js');  // Import axios instance
+const { createOrder } = require('../controllers/orderController.js'); // Import the createOrder function from the orderController
+const stocks = require('../data/stocksList.js'); // Import your stocks list
+const { getStockQuote } = require('../controllers/stockController.js');
 
 // Function to allocate random stocks and place buy orders
 const allocateRandomStocks = async (numStocks = 5, userId) => {

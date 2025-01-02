@@ -1,5 +1,5 @@
-const axiosInstance = require('../config/finnhubClient');  // Import axios instance
-const stock100List = require('../data/stocksList');
+const axiosInstance = require('../config/finnhubClient.js');  // Import axios instance
+const stock100List = require('../data/stocksList.js');
 
 exports.getMarketStatus = async (req,res) =>{
     try{

@@ -1,8 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/User.js');
 require('dotenv').config(); // Ensure environment variables are loaded
-const stockAllocation = require('../services/stockAllocation');
+const stockAllocation = require('../services/stockAllocation.js');
 const { response } = require('express');
 
 

@@ -1,4 +1,4 @@
-const sequelize = require('./config/database');  // Path to your database config
+const sequelize = require('./config/db.js');  // Path to your database config
 const User = require('./models/User');  // Import the User model
 
 // Sync all models
