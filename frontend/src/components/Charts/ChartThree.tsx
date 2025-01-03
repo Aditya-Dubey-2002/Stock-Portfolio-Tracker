@@ -157,7 +157,7 @@ const ChartThree: React.FC = () => {
             <option value="currentValue">By Current Value</option>
             <option value="investment">By Investment</option>
           </select>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+          {/* <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
           <svg
               width="20"
               height="20"
@@ -173,7 +173,7 @@ const ChartThree: React.FC = () => {
                 strokeLinejoin="round"
               />
             </svg>
-          </span>
+          </span> */}
 
         </div>
       </div>

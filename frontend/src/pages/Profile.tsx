@@ -67,7 +67,7 @@ const Profile: React.FC = () => {
   }
   return (
     <>
-      <Breadcrumb pageName="Profile" />
+      {/* <Breadcrumb pageName="Profile" /> */}
 
       <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="relative z-20 h-35 md:h-65">

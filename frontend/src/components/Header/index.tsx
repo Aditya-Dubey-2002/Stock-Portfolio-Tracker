@@ -101,7 +101,7 @@ const Header = (props: {
         </div>
 
         {/* Stock Search */}
-        <div className="w-full max-w-md  dark:border-strokedark dark:bg-boxdark">
+        <div className="w-full max-w-sm  dark:border-strokedark dark:bg-boxdark">
           {/* <Select
             options={stockOptions}
             onChange={handleStockSelect}

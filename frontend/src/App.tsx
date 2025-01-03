@@ -69,7 +69,7 @@ function App() {
               element={
                 <>
                   <ProtectedRoute>
-                  <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="StockItUp Dashboard | StockItUp - Stock Portfolio Tracker" />
                   <ECommerce />
                   </ProtectedRoute>
                 </>
@@ -80,7 +80,7 @@ function App() {
               element={
                 <>
                   <ProtectedRoute>
-                  {/* <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" /> */}
+                  <PageTitle title="Stock Page" />
                   <Stock />
                   </ProtectedRoute>
                 </>
@@ -111,7 +111,7 @@ function App() {
               element={
                 <>
                   <ProtectedRoute>
-                  <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Profile" />
                   <Profile />
                   </ProtectedRoute>
                 </>
