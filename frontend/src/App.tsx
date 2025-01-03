@@ -45,7 +45,7 @@ function App() {
             path="/auth/signin"
             element={
               <>
-                <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <PageTitle title="Signin | StockItUp" />
                 <SignIn />
               </>
             }
@@ -54,7 +54,7 @@ function App() {
             path="/auth/signup"
             element={
               <>
-                <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <PageTitle title="Signup | StockItUp" />
                 <SignUp />
               </>
             }
@@ -155,7 +155,7 @@ function App() {
               element={
                 <>
                 <ProtectedRoute>
-                  <PageTitle title="Settings | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Settings" />
                   <Settings />
                   </ProtectedRoute>
                 </>
