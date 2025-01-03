@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BsSearch } from 'react-icons/bs';
 import config from '../../../config';
 
 interface SelectStockProps {
@@ -56,9 +57,9 @@ const SelectStock: React.FC<SelectStockProps> = ({ options }) => {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <div className="relative z-20 bg-white dark:bg-form-input">
-        <span className="absolute top-1/2 left-4 z-30 -translate-y-1/2">
-          <svg
+      <div className="relative  bg-white dark:bg-form-input">
+        <span className="absolute  top-1/2 left-4 z-30 -translate-y-1/2">
+          {/* <svg
             width="20"
             height="20"
             viewBox="0 0 20 20"
@@ -72,7 +73,8 @@ const SelectStock: React.FC<SelectStockProps> = ({ options }) => {
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-          </svg>
+          </svg> */}
+          <BsSearch/>
         </span>
 
         <input

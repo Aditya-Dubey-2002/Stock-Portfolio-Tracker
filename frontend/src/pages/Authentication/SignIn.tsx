@@ -58,7 +58,7 @@ const SignIn: React.FC = () => {
         setTimeout(() => {
           localStorage.removeItem('token');
           alert('Session expired. Please log in again.');
-          window.location.href = '/auth/login';
+          window.location.href = '/auth/signin';
         }, expiryTime - Date.now());
         navigate('/');
       }
