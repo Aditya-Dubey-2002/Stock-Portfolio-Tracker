@@ -199,7 +199,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     />
                   </svg>
 
-                  Portfolio
+                  Update Portfolio
                 </NavLink>
               </li>
               {/* <!-- Menu Item Portfolio --> */}

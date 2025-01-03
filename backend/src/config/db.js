@@ -9,7 +9,8 @@ const sequelize = new Sequelize(
   process.env.DB_USER, // The username to access the database
   process.env.DB_PASSWORD, // The password to access the database
   {
-    host: process.env.DB_HOST || 'localhost', // The host of your database (default is localhost)
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT, // The host of your database (default is localhost)
     dialect: 'mysql', // The type of database you are using (mysql in this case)
     logging: false, // Set to true if you want to log SQL queries
     pool: {

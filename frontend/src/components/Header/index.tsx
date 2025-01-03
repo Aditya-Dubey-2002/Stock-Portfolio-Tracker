@@ -29,7 +29,7 @@ const Header = (props: {
     const fetchStockOptions = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${config.SERVER_URL}:5000/api/stock/100list`);
+        const response = await axios.get(`${config.SERVER_URL}/api/stock/100list`);
     
         // Assuming the response.data is an object where keys are symbols
         const stockMap = response.data; // Example: { AAPL: { name: "Apple Inc.", symbol: "AAPL" }, ... }

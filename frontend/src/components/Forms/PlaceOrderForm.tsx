@@ -13,7 +13,7 @@ type StockOption = {
 type PlaceOrderFormProps = {
   selectedStockSymbol: string;
 };
-const PlaceOrderForm :React.FC<PlaceOrderFormProps>= ({selectedStockSymbol}) => {
+const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) => {
   const [stockName, setStockName] = useState('');
   const [stockSymbol, setStockSymbol] = useState('');
   const [stockPrice, setStockPrice] = useState<number | undefined>(undefined);
@@ -43,7 +43,7 @@ const PlaceOrderForm :React.FC<PlaceOrderFormProps>= ({selectedStockSymbol}) => 
       const response = await axios.get(`${config.SERVER_URL}/api/stock/100list`, {
         params: { exchange: 'US' },
       });
-  
+
       // Assuming the API returns an object with symbols as keys
       const stockMap = response.data; // Example: { AAPL: { name: "Apple Inc.", symbol: "AAPL" }, ... }
       // console.log(stockMap);
@@ -52,14 +52,14 @@ const PlaceOrderForm :React.FC<PlaceOrderFormProps>= ({selectedStockSymbol}) => 
         label: `${stockMap[symbol].name} (${symbol})`,
         value: symbol,
       }));
-  
+
       // Update the stockOptions state
       setStockOptions(options);
     } catch (error) {
       console.error('Error fetching stock options:', error);
     }
   };
-  
+
 
   // Fetch stock options on component mount
   useEffect(() => {
@@ -120,7 +120,7 @@ const PlaceOrderForm :React.FC<PlaceOrderFormProps>= ({selectedStockSymbol}) => 
 
   const handleCheckboxChange = async () => {
     setPlaceAtCurrentPrice(!placeAtCurrentPrice);
-    if(!placeAtCurrentPrice){
+    if (!placeAtCurrentPrice) {
       try {
         // Fetch stock quote from the API
         const response = await fetch(`${config.SERVER_URL}/api/stock/quote/${stockSymbol}`);
@@ -136,7 +136,8 @@ const PlaceOrderForm :React.FC<PlaceOrderFormProps>= ({selectedStockSymbol}) => 
     }
   };
 
-  const handlePlaceOrder = async () => {
+  const handlePlaceOrder = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
     if (!selectedStock) {
       setOrderStatus('Please select a stock.');
       return;
@@ -160,7 +161,7 @@ const PlaceOrderForm :React.FC<PlaceOrderFormProps>= ({selectedStockSymbol}) => 
       console.log(orderData);
 
       // Send POST request to place the order
-      const response = await axios.post('http://localhost:5000/api/orders', orderData, {
+      const response = await axios.post(`${config.SERVER_URL}/api/orders`, orderData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming JWT token in localStorage
         }
@@ -169,13 +170,12 @@ const PlaceOrderForm :React.FC<PlaceOrderFormProps>= ({selectedStockSymbol}) => 
 
       if (response.status === 201) {
         setOrderStatus('Order placed successfully.');
-        
         alert(response.data.message);
         window.location.reload();
       } else {
         alert(response.data.message);
         setOrderStatus('Error placing order.');
-        // alert(setOrderStatus);
+        alert(setOrderStatus);
       }
     } catch (error) {
       console.error('Error placing order:', error);
@@ -282,9 +282,18 @@ const PlaceOrderForm :React.FC<PlaceOrderFormProps>= ({selectedStockSymbol}) => 
                   </label>
                 </div>
 
-                <button onClick={handlePlaceOrder} className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                {/* <button onClick={handlePlaceOrder} className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                   Place Order
+                </button> */}
+                <button
+                  type="button" // Explicitly set the button type
+                  onClick={handlePlaceOrder}
+                  disabled={loading} // Disable the button while loading
+                  className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                >
+                  {loading ? 'Placing Order...' : 'Place Order'}
                 </button>
+
               </div>
             </form>
           </div>
