@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
 import config from '../../config';
+import { useNavigate } from 'react-router-dom';
 
 // Define StockOption type
 type StockOption = {
@@ -29,6 +30,7 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
     label: string;
     value: string;
   }
+  const navigate = useNavigate();
 
   // const selectedSymbol = props.stockSymbol;
   // setStockName(selectedSymbol);
@@ -171,6 +173,8 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
       if (response.status === 201) {
         setOrderStatus('Order placed successfully.');
         alert(response.data.message);
+        setLoading(false);
+        navigate('/update-portfolio');
         window.location.reload();
       } else {
         alert(response.data.message);
@@ -288,10 +292,11 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
                 <button
                   type="button" // Explicitly set the button type
                   onClick={handlePlaceOrder}
-                  disabled={loading} // Disable the button while loading
+                  // disabled={loading} // Disable the button while loading
                   className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                 >
                   {loading ? 'Placing Order...' : 'Place Order'}
+                  {/* Place Order */}
                 </button>
 
               </div>
