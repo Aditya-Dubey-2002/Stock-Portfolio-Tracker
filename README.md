@@ -80,18 +80,18 @@ First, clone the repository to your local machine:
 
 #### 2. Set Up the Backend
 
-##### 1. Navigate to the backend directory:
+Navigate to the backend directory:
 
 ```bash
 cd backend
 ```
-##### 2. Install dependencies: Ensure that you have Node.js installed, then install the necessary dependencies:
+Install dependencies: Ensure that you have Node.js installed, then install the necessary dependencies:
 
 ```bash
 npm install
 ```
 
-##### 3. Set up the database:
+Set up the database:
 
 Create a MySQL database for your project. You can do this via the MySQL CLI or use a GUI tool like MySQL Workbench.
 ```sql
@@ -108,7 +108,7 @@ DB_PORT=3306 # optional, can be commented in src/config/db.js
 JWT_SECRET=your_secret_key
 FINNHUB_API_KEY=your_finnhub_api_key
 ```
-##### 4. Run the Backend: To start the backend, use:
+Run the Backend: To start the backend, use:
 
 ```bash
 npm start
@@ -117,19 +117,19 @@ This will start your Express server, and the backend will be available at http:/
 
 
 #### 3. Set Up the Frontend
-##### 1. Navigate to the frontend directory:
+Navigate to the frontend directory:
 
 ```bash
 cd frontend
 ```
 
-##### 2. Install dependencies: Ensure that you have Node.js installed, then install the necessary dependencies:
+Install dependencies: Ensure that you have Node.js installed, then install the necessary dependencies:
 
 ```bash
 npm install
 ```
 
-##### 3. Configure the Backend URL: Open the src/config.tsx file in the frontend and update the SERVER_URL value to point to your local backend:
+Configure the Backend URL: Open the src/config.tsx file in the frontend and update the SERVER_URL value to point to your local backend:
 
 ```tsx
 const config = {
@@ -141,7 +141,7 @@ const config = {
 export default config;
 ```
 
-##### 4. Start the Frontend: To start the frontend, use:
+Start the Frontend: To start the frontend, use:
 
 ```bash
 npm run dev
