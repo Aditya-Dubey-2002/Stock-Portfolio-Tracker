@@ -67,7 +67,7 @@ To get this project up and running on your local machine for development and tes
 - [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install/) (For managing dependencies)
 
 
-### ⚙️Setup Instructions
+### Setup Instructions
 
 #### 1. Clone the Repository
 
