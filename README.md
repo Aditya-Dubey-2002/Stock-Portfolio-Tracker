@@ -203,13 +203,11 @@ Below is a detailed explanation of each page, along with placeholders for screen
 - **Sign-Up Page**:  
   Allows new users to register by providing their full name, email, and password. Successful registration allocates a default portfolio with five random stocks based on real-time prices.  
 
-  ![image](https://github.com/user-attachments/assets/488e1f68-a68c-4693-be5f-107a3017d10a)
  
 
 - **Login Page**:  
   Enables users to securely log in to their accounts.  
 
-  ![image](https://github.com/user-attachments/assets/0ae5f08e-e5df-450a-913f-a11581cc0788)
 
 
 #### **2. Dashboard**  
@@ -219,7 +217,6 @@ Below is a detailed explanation of each page, along with placeholders for screen
   - **Bar Chart**: Sector-wise distribution.
   ![image](https://github.com/user-attachments/assets/589c0e3b-8150-4c3f-8c49-69234370a76a)
 - Provides a holdings table with key details and an option to place orders.  
-  ![image](https://github.com/user-attachments/assets/1db07b62-5d89-492f-b1be-dad8db9440db)
 
 
 
@@ -232,7 +229,6 @@ Below is a detailed explanation of each page, along with placeholders for screen
 - **Holdings Table**:  
   Updated dynamically after each transaction, showing stock details like quantity, investment, and current value.  
 
-  ![image](https://github.com/user-attachments/assets/e960e671-ea55-4e82-8fa3-1997f21ae3cd)
  
 
 #### **4. Profile Page**  
@@ -242,14 +238,13 @@ Below is a detailed explanation of each page, along with placeholders for screen
   - Time of order.  
   - Quantity and amount.  
 
-  ![image](https://github.com/user-attachments/assets/fd0d976b-6e97-4ff1-a494-0d0ab46cadca)
 
 
 #### **5. Stock Details Page**  
 - Accessed via the header search bar or holdings table.  
 - Provides detailed stock information, real-time news, and market insights.  
 
-  ![image](https://github.com/user-attachments/assets/3539cd48-4c69-4c1f-aa4c-033faa0014d0)
+  
 
 ---
 
