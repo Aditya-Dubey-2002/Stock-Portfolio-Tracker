@@ -67,7 +67,7 @@ To get this project up and running on your local machine for development and tes
 - [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install/) (For managing dependencies)
 
 
-### Setup Instructions
+### ⚙️Setup Instructions
 
 #### 1. Clone the Repository
 
@@ -174,5 +174,85 @@ Database Connection: Ensure that your MySQL database is correctly set up and run
 
 ### Running Tests
 Currently, there are no tests written for the application. However, you can manually test the core features by interacting with the frontend and backend. We will add automated tests in future updates.
+
+---
+
+## 🛠️Features
+
+### **Key Functionalities**
+
+StockItUp provides the following key features:  
+- **Stock CRUD Operations**: Add, view, update, and delete stock holdings with a user-friendly interface.  
+- **Dynamic Portfolio Tracking**: Real-time stock prices integrated to calculate the total portfolio value and update key metrics dynamically every 15 seconds.  
+- **Dashboard with Key Metrics**: Comprehensive portfolio overview, including:  
+  - Total value.  
+  - Top-performing stocks.  
+  - Portfolio distribution through interactive charts.  
+- **Default Portfolio Initialization**: Upon sign-up, each user is allocated a portfolio with five randomly selected stocks based on real-time prices.  
+- **Responsive Design**: Fully responsive web application for seamless usage across devices.  
+- **Profile Management**: View order history and current balance in the profile section.  
+- **Stock Search and Details**: Search for specific stocks using the search bar and view detailed information, including real-time news and insights.  
+- **Robust Deployment**: Deployed on reliable platforms with separate hosting for frontend, backend, and database for high scalability and reliability.  
+
+---
+### **Brief Description of Each Page**
+
+Below is a detailed explanation of each page, along with placeholders for screenshots.  
+
+#### **1. Authentication Pages**  
+- **Sign-Up Page**:  
+  Allows new users to register by providing their full name, email, and password. Successful registration allocates a default portfolio with five random stocks based on real-time prices.  
+
+  ![image](https://github.com/user-attachments/assets/488e1f68-a68c-4693-be5f-107a3017d10a)
+ 
+
+- **Login Page**:  
+  Enables users to securely log in to their accounts.  
+
+  ![image](https://github.com/user-attachments/assets/0ae5f08e-e5df-450a-913f-a11581cc0788)
+
+
+#### **2. Dashboard**  
+- Displays portfolio metrics such as total value, profit/loss, and dominant/top-performing stocks.  
+- Includes interactive charts:  
+  - **Pie Chart**: Portfolio distribution (current total value and investment).
+  - **Bar Chart**: Sector-wise distribution.
+  ![image](https://github.com/user-attachments/assets/589c0e3b-8150-4c3f-8c49-69234370a76a)
+- Provides a holdings table with key details and an option to place orders.  
+  ![image](https://github.com/user-attachments/assets/1db07b62-5d89-492f-b1be-dad8db9440db)
+
+
+
+
+#### **3. Update Portfolio Page**  
+- **Place Order Form**:  
+  - Auto-fills details for existing stocks or allows users to search by symbol.  
+  - Options for buy/sell orders with real-time price updates.  
+  - Manual price entry for future features (trigger orders based on conditions).  
+- **Holdings Table**:  
+  Updated dynamically after each transaction, showing stock details like quantity, investment, and current value.  
+
+  ![image](https://github.com/user-attachments/assets/e960e671-ea55-4e82-8fa3-1997f21ae3cd)
+ 
+
+#### **4. Profile Page**  
+- Displays current balance and a detailed list of all past orders, including:  
+  - Stock name.  
+  - Order type (buy/sell).  
+  - Time of order.  
+  - Quantity and amount.  
+
+  ![image](https://github.com/user-attachments/assets/fd0d976b-6e97-4ff1-a494-0d0ab46cadca)
+
+
+#### **5. Stock Details Page**  
+- Accessed via the header search bar or holdings table.  
+- Provides detailed stock information, real-time news, and market insights.  
+
+  ![image](https://github.com/user-attachments/assets/3539cd48-4c69-4c1f-aa4c-033faa0014d0)
+
+---
+
+
 
 
