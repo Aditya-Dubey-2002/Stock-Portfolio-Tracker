@@ -66,7 +66,6 @@ To get this project up and running on your local machine for development and tes
 - [MySQL](https://dev.mysql.com/downloads/) (For the backend database)
 - [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install/) (For managing dependencies)
 
----
 
 ### Setup Instructions
 
@@ -78,7 +77,6 @@ First, clone the repository to your local machine:
   git clone https://github.com/Aditya-Dubey-2002/Stock-Portfolio-Tracker/
   cd Stock-Portfolio-Tracker
   ```
----
 
 #### 2. Set Up the Backend
 
@@ -117,7 +115,6 @@ npm start
 ```
 This will start your Express server, and the backend will be available at http://localhost:5000.
 
----
 
 #### 3. Set Up the Frontend
 ##### 1. Navigate to the frontend directory:
@@ -151,8 +148,6 @@ npm run dev
 ```
 This will start the Vite development server, and the frontend will be available at http://localhost:5173.
 
----
-
 #### 4. Set Up Finnhub API
 To integrate the Finnhub API for real-time stock prices, follow these steps:
 
@@ -162,7 +157,6 @@ Add your API Key to the .env file in the backend directory under the FINNHUB_API
 ```bash
 FINNHUB_API_KEY=your_finnhub_api_key
 ```
----
 
 #### 5. API Integration
 The frontend and backend will communicate through API requests. You should ensure that the backend is running and properly configured to fetch the real-time stock price data.
