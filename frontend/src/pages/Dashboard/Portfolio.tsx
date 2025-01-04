@@ -9,7 +9,7 @@ const Portfolio = () => {
   return (
     <>
       {/* <Breadcrumb pageName="Portfolio" /> */}
-      <div className="flex flex-col lg:flex-row gap-6 mt-3 mb-3">
+      <div className="flex flex-col lg:flex-row gap-6 mb-3">
         {/* Left Column: Place Order Form */}
         <div className="w-full lg:w-1/4   ">
           <PlaceOrderForm selectedStockSymbol={stockSymbol}/>

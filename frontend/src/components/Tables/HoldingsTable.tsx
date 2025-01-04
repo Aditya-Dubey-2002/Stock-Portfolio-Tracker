@@ -170,7 +170,7 @@ const HoldingsTable = () => {
   if (loading) return <Loader statusMessage={null} />;
 
   return (
-    <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-3 mb-3 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+    <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-1 mb-3 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       {/* Header Section */}
       <div className="sm:flex justify-between flex-row items-center mb-6">
         <h4 className="text-xl font-semibold text-black dark:text-white">
@@ -246,7 +246,7 @@ const HoldingsTable = () => {
         {/* Scrollable Rows */}
         <div
           className="overflow-y-auto "
-          style={{ maxHeight: '550px' }}
+          style={{ maxHeight: '450px' }}
         >
           {sortedStocks.map((stockId) => renderRow(stockId))}
         </div>

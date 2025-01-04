@@ -196,7 +196,7 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
     <>
       {/* Breadcrumb can be uncommented if needed */}
       {/* <Breadcrumb pageName="Form Layout" /> */}
-      <div className="grid grid-cols-1 gap-4 mt-3 mb-3 sm:grid-cols justify-center">
+      <div className="grid grid-cols-1 gap-4 mt-1 mb-3 sm:grid-cols justify-center">
         <div className="flex flex-col gap-4">
           {/* Place Order Form */}
           <div className="w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

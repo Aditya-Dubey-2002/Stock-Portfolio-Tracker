@@ -166,7 +166,7 @@ const Profile: React.FC = () => {
 
             <div className="mt-6.5">
               <h4 className="mb-3.5 font-medium text-black dark:text-white">
-                Follow me on
+                Created by <br/>Aditya Dubey
               </h4>
               <div className="flex items-center justify-center gap-3.5">
                 <Link
