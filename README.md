@@ -248,17 +248,17 @@ Below is a detailed explanation of each page, along with placeholders for screen
 
 ---
 
-# Stock Portfolio Tracker API Documentation
+## Stock Portfolio Tracker API Documentation
 
-## Base URL
+### Base URL
 - **Production**: `https://stock-portfolio-tracker-2oud.onrender.com`
 - **Local**: `http://localhost:5000`
 
 ---
 
-## Authentication Routes
+### Authentication Routes
 
-### Register User
+#### Register User
 **POST** `/api/auth/register`
 - **Request Body**:
 ```json
@@ -288,7 +288,7 @@ Below is a detailed explanation of each page, along with placeholders for screen
     }
     ```
 
-### Login User
+#### Login User
 **POST** `/api/auth/login`
 - **Request Body**:
 ```json
@@ -319,9 +319,9 @@ Below is a detailed explanation of each page, along with placeholders for screen
 
 ---
 
-## User Routes
+### User Routes
 
-### Get User Profile
+#### Get User Profile
 **GET** `/api/user/profile`
 - **Headers**:
   - Authorization: `Bearer <JWT Token>`
@@ -353,9 +353,9 @@ Below is a detailed explanation of each page, along with placeholders for screen
 
 ---
 
-## Holdings Routes
+### Holdings Routes
 
-### Get User Holdings
+#### Get User Holdings
 **GET** `/api/holdings/:userId`
 - **Headers**:
   - Authorization: `Bearer <JWT Token>`
@@ -394,9 +394,9 @@ Below is a detailed explanation of each page, along with placeholders for screen
 
 ---
 
-## Order Routes
+### Order Routes
 
-### Create Order
+#### Create Order
 **POST** `/api/orders`
 - **Headers**:
   - Authorization: `Bearer <JWT Token>`
@@ -437,7 +437,7 @@ Below is a detailed explanation of each page, along with placeholders for screen
     }
     ```
 
-### Get Orders
+#### Get Orders
 **GET** `/api/orders`
 - **Headers**:
   - Authorization: `Bearer <JWT Token>`
@@ -469,9 +469,9 @@ Below is a detailed explanation of each page, along with placeholders for screen
 
 ---
 
-## Stock Routes
+### Stock Routes
 
-### Get Market Status
+#### Get Market Status
 **GET** `/api/stock/market/status`
 - **Response**:
   - **200 OK**:
@@ -493,7 +493,7 @@ Below is a detailed explanation of each page, along with placeholders for screen
     }
     ```
 
-### Get Stock List
+#### Get Stock List
 **GET** `/api/stock/list`
 - **Response**:
   - **200 OK**:
@@ -518,7 +518,7 @@ Below is a detailed explanation of each page, along with placeholders for screen
     }
     ```
 
-### Get Stock Quote
+#### Get Stock Quote
 **GET** `/api/stock/quote/:symbol`
 - **Response**:
   - **200 OK**:
@@ -540,7 +540,7 @@ Below is a detailed explanation of each page, along with placeholders for screen
     }
     ```
 
-### Get Stock Details for Portfolio Metrics
+#### Get Stock Details for Portfolio Metrics
 **GET** `/api/stock/details/:symbol`
 - **Response**:
   - **200 OK**:
@@ -574,7 +574,7 @@ Below is a detailed explanation of each page, along with placeholders for screen
     }
     ```
 
-### Get Top 100 Stock List
+#### Get Top 100 Stock List
 **GET** `/api/stock/100list`
 - **Response**:
   - **200 OK**:
@@ -602,7 +602,7 @@ Below is a detailed explanation of each page, along with placeholders for screen
 
 ---
 
-### Rate Limiting
+#### Rate Limiting
 - Stock-related endpoints (connected to Finnhub API) have a rate limit of **60 requests/minute**.
 
 
