@@ -197,7 +197,8 @@ StockItUp provides the following key features:
 ---
 ### **Brief Description of Each Page**
 
-Below is a detailed explanation of each page, along with placeholders for screenshots.  
+User Flow Diagram
+![image](https://github.com/user-attachments/assets/7304900a-ed1a-43c9-87f2-ad8f918943e2)
 
 #### **1. Authentication Pages**  
 - **Sign-Up Page**:  
@@ -215,7 +216,6 @@ Below is a detailed explanation of each page, along with placeholders for screen
 - Includes interactive charts:  
   - **Pie Chart**: Portfolio distribution (current total value and investment).
   - **Bar Chart**: Sector-wise distribution.
-  ![image](https://github.com/user-attachments/assets/589c0e3b-8150-4c3f-8c49-69234370a76a)
 - Provides a holdings table with key details and an option to place orders.  
 
 
@@ -245,6 +245,109 @@ Below is a detailed explanation of each page, along with placeholders for screen
 - Provides detailed stock information, real-time news, and market insights.  
 
   
+
+---
+
+## Application Architecture
+
+### High-Level Overview
+The architecture consists of three primary components: **Frontend**, **Backend**, and **Database**, integrated to provide a seamless experience for portfolio tracking and stock management.
+
+High Level System Design Diagram
+![image](https://github.com/user-attachments/assets/2d97825f-416b-459c-a21b-6cbd5a3a54ca)
+
+
+
+---
+
+### Frontend
+
+The frontend is built with **React.js**, employing a range of libraries to enhance the user experience and streamline development:
+
+- **Tailwind CSS**: Simplifies UI design with utility-first styling and pre-defined classes.
+- **TailAdmin**: A pre-designed dashboard template ensures a familiar and intuitive user interface.
+- **ApexCharts & ECharts**: Enable dynamic and interactive stock data visualizations.
+- **React Router**: Handles smooth navigation between pages without reloading.
+- **Axios**: Facilitates HTTP communication with the backend.
+- **React Toastify & React Hot Toast**: Provide instant feedback to users via notifications for successful actions or errors.
+
+Key Highlights:
+- Dynamic charts and visualizations for stock performance metrics.
+- User-friendly navigation and pre-built components ensure seamless usability.
+- Responsive design and styling enhance accessibility across devices.
+
+---
+
+### Backend
+
+The backend is powered by **Node.js** and **Express.js**, designed to handle business logic, API communication, and database interactions effectively.
+
+#### Core Technologies:
+- **Node.js**: Provides a robust server-side runtime for handling multiple requests efficiently.
+- **Express.js**: Simplifies the creation of RESTful APIs for seamless frontend-backend integration.
+- **Sequelize ORM**: Simplifies database interactions with object-oriented operations and structured queries.
+- **JWT (JSON Web Tokens)**: Ensures secure user authentication and session management.
+- **Bcrypt.js**: Safeguards user passwords with strong encryption.
+
+#### Features:
+- RESTful APIs to handle user authentication, portfolio data, and stock order processing.
+- Secure operations with token-based authentication (JWT) and password hashing.
+- Efficient database communication using Sequelize, abstracting complex SQL queries.
+- Integration with external APIs via **Axios** to fetch real-time stock price data.
+
+Sequence Diagram for Placing Order
+![image](https://github.com/user-attachments/assets/e5f0eff7-e6e4-4ee1-a0b3-6b7b8ebb754b)
+
+---
+
+### Database
+
+The database architecture consists of three primary tables: **Users**, **Orders**, and **Holdings**. These tables are designed to ensure robust data management and maintain application integrity.
+
+#### Schema Details:
+- **Users**: Stores user information, including personal details, bio, balance, and profile image.
+- **Holdings**: Tracks user stock holdings with details like quantity, purchase price, and total investment.
+- **Orders**: Logs buy and sell orders with information about stock type, order type, and timestamps.
+
+Example Schemas:
+```javascript
+const User = sequelize.define('User', {
+    userId: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    fullName: { type: Sequelize.STRING, allowNull: false },
+    email: { type: Sequelize.STRING, unique: true, allowNull: false },
+    password: { type: Sequelize.STRING, allowNull: false },
+    balance: { type: Sequelize.INTEGER, defaultValue: 10000 },
+});
+
+const Holding = sequelize.define('Holding', {
+    holdingId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    userId: { type: DataTypes.INTEGER, references: { model: User, key: 'userId' } },
+    stockId: { type: DataTypes.STRING, allowNull: false },
+    quantity: { type: DataTypes.INTEGER, allowNull: false },
+    buyPrice: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+    totalPrice: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+});
+
+const Order = sequelize.define('Order', {
+    orderId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    userId: { type: DataTypes.INTEGER, references: { model: User, key: 'userId' } },
+    stockId: { type: DataTypes.STRING, allowNull: false },
+    orderType: { type: DataTypes.ENUM('buy', 'sell'), allowNull: false },
+    quantity: { type: DataTypes.INTEGER, allowNull: false },
+    amount: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+});
+```
+#### Database Integrity:
+- Transactions: Ensure ACID properties are maintained during critical operations like stock purchases or sales.
+- Caching: Frontend caching prevents repetitive API calls for similar requests made within 15 seconds.
+
+#### Real-Time Data Handling
+The application dynamically updates stock prices and metrics every 15 seconds, ensuring users have the latest market data without overwhelming external APIs.
+Approach:
+- Store static data (e.g., holdings, investments) in the database to reduce real-time dependencies.
+- Fetch real-time stock prices in the backend, process metrics (current values, top-performing stocks), and pass them to the frontend.
+- Implement caching on the frontend to avoid redundant API calls for frequently requested data.
+- This architecture ensures a balance between real-time updates and system efficiency, providing users with an optimal experience while maintaining API call limits.
 
 ---
 
