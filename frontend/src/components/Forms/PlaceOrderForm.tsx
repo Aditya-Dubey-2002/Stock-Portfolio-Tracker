@@ -109,6 +109,9 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
         // Handle error, maybe set stockPrice to null or show an error message
         setStockPrice(undefined); // Or any default value
       }
+      finally{
+        setLoading(false);
+      }
     }
 
   };
@@ -140,9 +143,13 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
 
   const handlePlaceOrder = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
+    
     if (!selectedStock) {
-      setOrderStatus('Please select a stock.');
-      return;
+      if(!stockSymbol){
+        alert("Please select a stock or enter a valid stock symbol.");
+        setOrderStatus('Please select a stock.');
+        return;
+      }
     }
 
     if (quantity <= 0) {
@@ -184,7 +191,6 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
     } catch (error) {
       console.error('Error placing order:', error);
       alert(error.response.data.message);
-
       setOrderStatus('Error placing order.');
       // alert(setOrderStatus);
     } finally {

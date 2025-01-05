@@ -6,7 +6,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
     // console.log(token);
   if (!token) {
     // Redirect to login page if no token exists
-    return <Navigate to="/auth/signin" />;
+    return <Navigate to="/welcome" />;
   }
 
   try {
@@ -20,7 +20,8 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   } catch (error) {
     // Invalid token
     localStorage.removeItem('token');
-    return <Navigate to="/login" />;
+    alert('Invalid Token. Please Log in again');
+    return <Navigate to="/welcome" />;
   }
 
   return <>{children}</>;  // Render children (protected page) if token exists

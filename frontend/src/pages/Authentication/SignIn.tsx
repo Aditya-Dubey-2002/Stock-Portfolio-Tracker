@@ -77,7 +77,7 @@ const SignIn: React.FC = () => {
 
   return (
     <>
-      <div style={{ margin: '20px' }}>
+      <div className='w-full' >
         {/* <Breadcrumb pageName="Sign In" /> */}
 
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

@@ -20,6 +20,7 @@ import DefaultLayout from './layout/DefaultLayout';
 import ProtectedRoute from './ProtectedRoute';
 import Stock from './pages/Stock';
 import { HoldingsProvider } from './context/HoldingsContext';
+import WelcomePage from './pages/Welcome';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -33,7 +34,7 @@ function App() {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  const isAuthPage = pathname === '/auth/signin' || pathname === '/auth/signup';
+  const isAuthPage = pathname === '/auth/signin' || pathname === '/auth/signup' || pathname === '/welcome';
 
   return loading ? (
     <Loader statusMessage={null} />
@@ -56,6 +57,15 @@ function App() {
               <>
                 <PageTitle title="Signup | StockItUp" />
                 <SignUp />
+              </>
+            }
+          />
+          <Route
+            path="Welcome"
+            element={
+              <>
+                <PageTitle title="Welcome | StockItUp" />
+                <WelcomePage />
               </>
             }
           />
@@ -101,7 +111,7 @@ function App() {
               path="/calendar"
               element={
                 <>
-                  <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Calendar " />
                   <Calendar />
                 </>
               }
@@ -122,7 +132,7 @@ function App() {
               element={
                 <>
                 <ProtectedRoute>
-                  <PageTitle title="Form Elements | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Form Elements " />
                   <FormElements />
                   </ProtectedRoute>
                 </>
@@ -133,7 +143,7 @@ function App() {
               element={
                 <>
                   <ProtectedRoute>
-                  <PageTitle title="Form Layout | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Form Layout " />
                   <FormLayout />
                   </ProtectedRoute>
                 </>
@@ -144,7 +154,7 @@ function App() {
               element={
                 <>
                 <ProtectedRoute>
-                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Tables " />
                   <Tables />
                   </ProtectedRoute>
                 </>
@@ -166,7 +176,7 @@ function App() {
               element={
                 <>
                 <ProtectedRoute>
-                  <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Basic Chart" />
                   <Chart />
                   </ProtectedRoute>
                 </>
@@ -177,7 +187,7 @@ function App() {
               element={
                 <>
                 <ProtectedRoute>
-                  <PageTitle title="Alerts | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Alerts " />
                   <Alerts />
                   </ProtectedRoute>
                 </>
@@ -188,7 +198,7 @@ function App() {
               element={
                 <>
                 <ProtectedRoute>
-                  <PageTitle title="Buttons | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Buttons" />
                   <Buttons />
                   </ProtectedRoute>
                 </>
