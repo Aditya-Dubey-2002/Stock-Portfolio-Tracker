@@ -703,10 +703,44 @@ Approach:
     }
     ```
 
----
 
 #### Rate Limiting
 - Stock-related endpoints (connected to Finnhub API) have a rate limit of **60 requests/minute**.
+
+---
+
+## 🚧 Challenges, Limitations, and Future Improvements
+
+### 🔥 Challenges Faced
+1. **API Rate Limit Handling**:  
+   Managing the refresh rate was tricky as frequent calls exceeded the API limit. This was resolved by implementing **local storage caching** to reduce redundant API calls within 15 seconds.
+
+2. **Syncing Random Stock Allocations with User Balance**:  
+   While placing buy orders for randomly allocated stocks, inconsistencies arose between user balances and holdings. This was fixed by leveraging **database transactions** to maintain ACID properties.
+
+3. **Writing Documentation**:  
+   Let’s just say it was a test of endurance—but hey, it builds character, right? 😄
+
+---
+
+### 🚫 Limitations and 🌟 Future Improvements
+1. **Refresh Time (15s)**:  
+   The refresh interval for fetching real-time stock prices is limited to 15 seconds due to API rate constraints. Future improvements can reduce the refresh time by optimizing API usage or integrating **WebSockets** for live updates.
+
+2. **Caching in Local Storage**:  
+   While effective, caching is limited to the local storage. A more robust solution could involve **server-side caching** or tools like **Redis** for improved performance.
+
+3. **Historical Data Integration**:  
+   Free version of Finnhub API does not provide historical price data, limiting features like historical performance charts. Upgrading to a paid API plan can unlock this functionality, enabling better analysis.
+
+4. **Order Placement Automation**:  
+   Introducing a feature for automated order placement when target values are matched would greatly enhance user experience. This functionality is highly promising and could make the app smarter and more proactive in future updates.
+
+By addressing these challenges and implementing the proposed improvements, the application is on the right track to becoming a more powerful and engaging tool for users. 🚀
+
+---
+
+
 
 
 
