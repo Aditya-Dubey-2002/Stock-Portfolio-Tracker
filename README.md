@@ -8,8 +8,8 @@ StockItUp is a modern **stock portfolio tracker application** designed to help u
 This project was developed as part of the **CapX Full Stack Developer Internship Hiring Assignment** to demonstrate end-to-end application development skills, including frontend, backend, database integration, and deployment.
 
 ## 🚀 Deployment Links
-- 🌐 **Live Application**: [StockItUp on Vercel](https://stock-portfolio-tracker-adityadubey-five.vercel.app/) *(Replace `#` with the live link)*  
-- 🛠️ **Backend API Base URL**: [StockItUp Backend on Render](https://stock-portfolio-tracker-2oud.onrender.com) *(Replace `#` with the live link)*  
+- 🌐 **Live Application**: [StockItUp on Vercel](https://stock-portfolio-tracker-adityadubey-five.vercel.app/)  
+- 🛠️ **Backend API Base URL**: [StockItUp Backend on Render](https://stock-portfolio-tracker-2oud.onrender.com) *(https://stock-portfolio-tracker-2oud.onrender.com)*  
 
 ---
 
