@@ -785,13 +785,16 @@ Approach:
 1. **Refresh Time (15s)**:  
    The refresh interval for fetching real-time stock prices is limited to 15 seconds due to API rate constraints. Future improvements can reduce the refresh time by optimizing API usage or integrating **WebSockets** for live updates.
 
-2. **Caching in Local Storage**:  
+2. **Currently Only US Stock Exchange Stocks Supported**:  
+   At present, the application is limited to stocks listed on the US stock exchange. Future updates could expand the coverage to include global stock exchanges.
+
+3. **Caching in Local Storage**:  
    While effective, caching is limited to the local storage. A more robust solution could involve **server-side caching** or tools like **Redis** for improved performance.
 
-3. **Historical Data Integration**:  
+4. **Historical Data Integration**:  
    Free version of Finnhub API does not provide historical price data, limiting features like historical performance charts. Upgrading to a paid API plan can unlock this functionality, enabling better analysis.
 
-4. **Order Placement Automation**:  
+5. **Order Placement Automation**:  
    Introducing a feature for automated order placement when target values are matched would greatly enhance user experience. This functionality is highly promising and could make the app smarter and more proactive in future updates.
 
 By addressing these challenges and implementing the proposed improvements, the application is on the right track to becoming a more powerful and engaging tool for users. 🚀
