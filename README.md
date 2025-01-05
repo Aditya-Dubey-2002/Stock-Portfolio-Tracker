@@ -1,8 +1,23 @@
+# 📝 Project Overview: StockItUp
+
+StockItUp is a modern **stock portfolio tracker application** designed to help users manage their investments efficiently. With this tool, users can:  
+- 📊 **View their portfolio metrics and visualizations** through interactive charts and dashboards.  
+- ➕ **Add**, ✏️ **update**, 📄 **view**, and ❌ **delete stocks** from their portfolio effortlessly.  
+- 💡 Track their portfolio’s total value dynamically using **real-time stock prices** integrated from external APIs.
+
+This project was developed as part of the **CapX Full Stack Developer Internship Hiring Assignment** to demonstrate end-to-end application development skills, including frontend, backend, database integration, and deployment.
+
+## 🚀 Deployment Links
+- 🌐 **Live Application**: [StockItUp on Vercel](https://stock-portfolio-tracker-adityadubey-five.vercel.app/) *(Replace `#` with the live link)*  
+- 🛠️ **Backend API Base URL**: [StockItUp Backend on Render](https://stock-portfolio-tracker-2oud.onrender.com) *(Replace `#` with the live link)*  
+
+---
+
 # Table of Contents
 
 1. [📝 Project Overview: StockItUp](#-project-overview-stockitup)  
 2. [🚀 Deployment Links](#-deployment-links)  
-3. [💻 Technologies Used](#technologies-used)  
+3. [💻 Technologies Used](#-technologies-used)  
    - [Frontend](#frontend)  
    - [Backend](#backend)  
    - [Deployment](#deployment)  
@@ -10,11 +25,11 @@
 5. [🚀 Getting Started](#-getting-started)  
    - [Prerequisites](#prerequisites)  
    - [Setup Instructions](#setup-instructions)  
-     1. [Clone the Repository](#clone-the-repository)  
-     2. [Set Up the Backend](#set-up-the-backend)  
-     3. [Set Up the Frontend](#set-up-the-frontend)  
-     4. [Set Up Finnhub API](#set-up-finnhub-api)  
-     5. [API Integration](#api-integration)  
+     1. [Clone the Repository](#1-clone-the-repository)  
+     2. [Set Up the Backend](#2-set-up-the-backend)  
+     3. [Set Up the Frontend](#3-set-up-the-frontend)  
+     4. [Set Up Finnhub API](#4-set-up-finnhub-api)  
+     5. [API Integration](#5-api-integration)  
    - [Troubleshooting](#troubleshooting)  
    - [Running Tests](#running-tests)  
 6. [🛠️ Features](#features)  
@@ -30,7 +45,7 @@
      - [Schema Details](#schema-details)  
      - [Database Integrity](#database-integrity)  
    - [Real-Time Data Handling](#real-time-data-handling)  
-8. [Stock Portfolio Tracker API Documentation](#stock-portfolio-tracker-api-documentation)  
+8. [StockItUp API Documentation](#stockitup-api-documentation)  
    - [Base URL](#base-url)  
    - [Authentication Routes](#authentication-routes)  
      - [Register User](#register-user)  
@@ -51,23 +66,10 @@
    - [Rate Limiting](#rate-limiting)  
 9. [🚧 Challenges, Limitations, and Future Improvements](#-challenges-limitations-and-future-improvements)  
    - [🔥 Challenges Faced](#-challenges-faced)  
-   - [🚫 Limitations and 🌟 Future Improvements](#limitations-and--future-improvements)  
+   - [🚫 Limitations and 🌟 Future Improvements](#-limitations-and--future-improvements)  
 10. [🤝 Contribution](#-contribution)  
 11. [📜 License](#-license)  
 12. [🙌 Acknowledgments](#-acknowledgments)  
-
-# 📝 Project Overview: StockItUp
-
-StockItUp is a modern **stock portfolio tracker application** designed to help users manage their investments efficiently. With this tool, users can:  
-- 📊 **View their portfolio metrics and visualizations** through interactive charts and dashboards.  
-- ➕ **Add**, ✏️ **update**, 📄 **view**, and ❌ **delete stocks** from their portfolio effortlessly.  
-- 💡 Track their portfolio’s total value dynamically using **real-time stock prices** integrated from external APIs.
-
-This project was developed as part of the **CapX Full Stack Developer Internship Hiring Assignment** to demonstrate end-to-end application development skills, including frontend, backend, database integration, and deployment.
-
-## 🚀 Deployment Links
-- 🌐 **Live Application**: [StockItUp on Vercel](#) *(Replace `#` with the live link)*  
-- 🛠️ **Backend API Base URL**: [StockItUp Backend on Render](#) *(Replace `#` with the live link)*  
 
 ---
 
@@ -407,7 +409,7 @@ Approach:
 
 ---
 
-## Stock Portfolio Tracker API Documentation
+## StockItUp API Documentation
 
 ### Base URL
 - **Production**: `https://stock-portfolio-tracker-2oud.onrender.com`
