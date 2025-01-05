@@ -248,6 +248,364 @@ Below is a detailed explanation of each page, along with placeholders for screen
 
 ---
 
+# Stock Portfolio Tracker API Documentation
+
+## Base URL
+- **Production**: `https://stock-portfolio-tracker-2oud.onrender.com`
+- **Local**: `http://localhost:5000`
+
+---
+
+## Authentication Routes
+
+### Register User
+**POST** `/api/auth/register`
+- **Request Body**:
+```json
+{
+  "fullName": "John Doe",
+  "email": "john@example.com",
+  "password": "securePassword123"
+}
+```
+- **Response**:
+  - **201 Created**:
+    ```json
+    {
+      "token": "<JWT Token>"
+    }
+    ```
+  - **400 Bad Request**:
+    ```json
+    {
+      "message": "User already exists"
+    }
+    ```
+  - **500 Internal Server Error**:
+    ```json
+    {
+      "message": "Server error"
+    }
+    ```
+
+### Login User
+**POST** `/api/auth/login`
+- **Request Body**:
+```json
+{
+  "email": "john@example.com",
+  "password": "securePassword123"
+}
+```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "token": "<JWT Token>"
+    }
+    ```
+  - **400 Bad Request**:
+    ```json
+    {
+      "message": "Invalid credentials"
+    }
+    ```
+  - **500 Internal Server Error**:
+    ```json
+    {
+      "message": "Server error"
+    }
+    ```
+
+---
+
+## User Routes
+
+### Get User Profile
+**GET** `/api/user/profile`
+- **Headers**:
+  - Authorization: `Bearer <JWT Token>`
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "userDetails": {
+        "fullName": "John Doe",
+        "email": "john@example.com",
+        "bio": "Investor and trader",
+        "balance": 10000.50,
+        "image": "<Profile Image URL>"
+      }
+    }
+    ```
+  - **401 Unauthorized**:
+    ```json
+    {
+      "error": "Access denied, token missing"
+    }
+    ```
+  - **404 Not Found**:
+    ```json
+    {
+      "error": "User not found"
+    }
+    ```
+
+---
+
+## Holdings Routes
+
+### Get User Holdings
+**GET** `/api/holdings/:userId`
+- **Headers**:
+  - Authorization: `Bearer <JWT Token>`
+- **Response**:
+  - **200 OK**:
+    ```json
+    [
+      {
+        "holdingId": 1,
+        "stockId": "AAPL",
+        "quantity": 10,
+        "buyPrice": 145.50,
+        "totalPrice": 1455.00
+      },
+      {
+        "holdingId": 2,
+        "stockId": "MSFT",
+        "quantity": 5,
+        "buyPrice": 300.00,
+        "totalPrice": 1500.00
+      }
+    ]
+    ```
+  - **401 Unauthorized**:
+    ```json
+    {
+      "error": "Access denied, token missing"
+    }
+    ```
+  - **404 Not Found**:
+    ```json
+    {
+      "message": "No holdings found"
+    }
+    ```
+
+---
+
+## Order Routes
+
+### Create Order
+**POST** `/api/orders`
+- **Headers**:
+  - Authorization: `Bearer <JWT Token>`
+- **Request Body**:
+```json
+{
+  "stockId": "AAPL",
+  "orderType": "buy",
+  "price": 150.00,
+  "quantity": 5
+}
+```
+- **Response**:
+  - **201 Created**:
+    ```json
+    {
+      "message": "Buy order placed successfully",
+      "order": {
+        "orderId": 1,
+        "userId": 101,
+        "stockId": "AAPL",
+        "orderType": "buy",
+        "quantity": 5,
+        "amount": 750.00
+      }
+    }
+    ```
+  - **400 Bad Request**:
+    ```json
+    {
+      "message": "Insufficient balance"
+    }
+    ```
+  - **500 Internal Server Error**:
+    ```json
+    {
+      "message": "Transaction failed after multiple retries"
+    }
+    ```
+
+### Get Orders
+**GET** `/api/orders`
+- **Headers**:
+  - Authorization: `Bearer <JWT Token>`
+- **Response**:
+  - **200 OK**:
+    ```json
+    [
+      {
+        "orderId": 1,
+        "stockId": "AAPL",
+        "orderType": "buy",
+        "quantity": 5,
+        "amount": 750.00
+      }
+    ]
+    ```
+  - **404 Not Found**:
+    ```json
+    {
+      "message": "No orders found"
+    }
+    ```
+  - **500 Internal Server Error**:
+    ```json
+    {
+      "message": "Failed to fetch orders"
+    }
+    ```
+
+---
+
+## Stock Routes
+
+### Get Market Status
+**GET** `/api/stock/market/status`
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+    "exchange": "US",
+    "holiday": null,
+    "isOpen": false,
+    "session": "pre-market",
+    "timezone": "America/New_York",
+    "t": 1697018041
+    }
+    ```
+  - **500 Internal Server Error**:
+    ```json
+    {
+      "message": "Error fetching market status",
+      "error": "Error details"
+    }
+    ```
+
+### Get Stock List
+**GET** `/api/stock/list`
+- **Response**:
+  - **200 OK**:
+    ```json
+    [
+      {
+        "currency": "USD",
+        "description": "UAN POWER CORP",
+        "displaySymbol": "UPOW",
+        "figi": "BBG000BGHYF2",
+        "mic": "OTCM",
+        "symbol": "UPOW",
+        "type": "Common Stock"
+    },
+    ]
+    ```
+  - **500 Internal Server Error**:
+    ```json
+    {
+      "message": "Error fetching stock list",
+      "error": "Error details"
+    }
+    ```
+
+### Get Stock Quote
+**GET** `/api/stock/quote/:symbol`
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "c": 261.74,
+      "h": 263.31,
+      "l": 260.68,
+      "o": 261.07,
+      "pc": 259.45,
+      "t": 1582641000 
+    }
+    ```
+  - **500 Internal Server Error**:
+    ```json
+    {
+      "message": "Error fetching stock quote",
+      "error": "Error details"
+    }
+    ```
+
+### Get Stock Details for Portfolio Metrics
+**GET** `/api/stock/details/:symbol`
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "country": "US",
+      "currency": "USD",
+      "exchange": "NASDAQ/NMS (GLOBAL MARKET)",
+      "ipo": "1980-12-12",
+      "marketCapitalization": 1415993,
+      "name": "Apple Inc",
+      "phone": "14089961010",
+      "shareOutstanding": 4375.47998046875,
+      "ticker": "AAPL",
+      "weburl": "https://www.apple.com/",
+      "logo": "https://static.finnhub.io/logo/87cb30d8-80df-11ea-8951-00000000092a.png",
+      "finnhubIndustry":"Technology"
+    }
+    ```
+  - **404 Not Found**:
+    ```json
+    {
+      "message": "Stock details not found"
+    }
+    ```
+  - **500 Internal Server Error**:
+    ```json
+    {
+      "message": "Error fetching stock details",
+      "error": "Error details"
+    }
+    ```
+
+### Get Top 100 Stock List
+**GET** `/api/stock/100list`
+- **Response**:
+  - **200 OK**:
+    ```json
+    [
+      {
+        "name": "Apple Inc.",
+        "symbol": "AAPL",
+        "category": "Technology"
+      },
+      {
+        "name": "Amazon.com, Inc.",
+        "symbol": "AMZN",
+        "category": "Consumer Discretionary"
+      }
+    ]
+    ```
+  - **500 Internal Server Error**:
+    ```json
+    {
+      "message": "Error fetching stock list",
+      "error": "Error details"
+    }
+    ```
+
+---
+
+### Rate Limiting
+- Stock-related endpoints (connected to Finnhub API) have a rate limit of **60 requests/minute**.
+
+
 
 
 
