@@ -7,6 +7,10 @@ StockItUp is a modern **stock portfolio tracker application** designed to help u
 
 This project was developed as part of the **CapX Full Stack Developer Internship Hiring Assignment** to demonstrate end-to-end application development skills, including frontend, backend, database integration, and deployment.
 
+## 🚀 Deployment Links
+- 🌐 **Live Application**: [StockItUp on Vercel](#) *(Replace `#` with the live link)*  
+- 🛠️ **Backend API Base URL**: [StockItUp Backend on Render](#) *(Replace `#` with the live link)*  
+
 ---
 
 ## 💻 Technologies Used
@@ -35,12 +39,6 @@ This project was developed as part of the **CapX Full Stack Developer Internship
 - **Frontend**: [Vercel](https://vercel.com/): Platform for deploying frontend applications.
 - **Backend**: [Render](https://render.com/): Platform for deploying backend APIs.
 - **Database**: [Aiven](https://aiven.io/): Managed service for hosting MySQL databases.
-
----
-
-## 🚀 Deployment Links
-- 🌐 **Live Application**: [StockItUp on Vercel](#) *(Replace `#` with the live link)*  
-- 🛠️ **Backend API Base URL**: [StockItUp Backend on Render](#) *(Replace `#` with the live link)*  
 
 ---
 
@@ -740,8 +738,45 @@ By addressing these challenges and implementing the proposed improvements, the a
 
 ---
 
+## 🤝 Contribution
 
+We welcome contributions to enhance this project! To get started:  
+1. Fork the repository.  
+2. Clone your fork locally:  
+   ```bash
+   git clone https://github.com/<your-username>/<repo-name>.git
+   ```
+3. Create a new branch for your feature or fix:
+```bash
+git checkout -b feature/your-feature-name
+```
+4. Make your changes and commit them with clear, descriptive messages.
+Push your branch to your forked repository:
+```bash
+git push origin feature/your-feature-name
+```
+5. Open a pull request on the original repository.
 
+Guidelines:
+
+- Ensure code is well-documented and follows best practices.
+- Write clear and concise commit messages.
+- Check for existing issues or discussions related to your contribution.
+- Respect the coding style and structure of the project.
+---
+## 📜 License
+
+This project is licensed under the **MIT License**.  
+You are free to use, modify, and distribute the code, as long as proper credit is given to the original author.  
+
+For more details, refer to the [LICENSE](./LICENSE) file in the repository.
+
+---
+
+## 🙌 Acknowledgments
+
+Special thanks to **TailAdmin** for their pre-designed dashboard template, which significantly streamlined the UI development process. 🎨
+And to everyone in the open-source community for their valuable contributions! 🎉
 
 
 
