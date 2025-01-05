@@ -262,15 +262,19 @@ User Flow Diagram
 - **Sign-Up Page**:  
   Allows new users to register by providing their full name, email, and password. Successful registration allocates a default portfolio with five random stocks based on real-time prices.  
 
- 
+
 
 - **Login Page**:  
-  Enables users to securely log in to their accounts.  
+  Enables users to securely log in to their accounts.
+
 
 
 
 #### **2. Dashboard**  
-- Displays portfolio metrics such as total value, profit/loss, and dominant/top-performing stocks.  
+
+- Displays portfolio metrics such as total value, profit/loss, and dominant/top-performing stocks.
+  ![image](https://github.com/user-attachments/assets/54f7ab46-631d-4127-babf-9f303c8233ef)
+
 - Includes interactive charts:  
   - **Pie Chart**: Portfolio distribution (current total value and investment).
   - **Bar Chart**: Sector-wise distribution.
@@ -279,18 +283,34 @@ User Flow Diagram
 
 
 
-#### **3. Update Portfolio Page**  
-- **Place Order Form**:  
-  - Auto-fills details for existing stocks or allows users to search by symbol.  
-  - Options for buy/sell orders with real-time price updates.  
-  - Manual price entry for future features (trigger orders based on conditions).  
-- **Holdings Table**:  
-  Updated dynamically after each transaction, showing stock details like quantity, investment, and current value.  
+#### **3. Update Portfolio Page**
+
+- **Add Stock to Holdings** (Create):  
+  - The real-time price for the stock is **automatically populated** in the form input, ensuring accurate and up-to-date information for the user.  
+  - Users can uncheck **buy at current price** and manually enter a value. This feature is **ONLY for testing purposes**.  
+  - Once added, the stock appears in the **Holdings Table** with the relevant details such as quantity, investment, and current value, all updated dynamically based on real-time market data.
+
+- **View Stock Holdings** (Read):  
+  - Users can **view** their current portfolio by accessing the **Holdings Table**, which displays the stock's name, quantity, investment, and current market value.  
+  - The **Holdings Table** dynamically updates with real-time price changes, allowing users to track portfolio performance at any given moment. The **dashboard page** also gets updated accordingly.
+
+- **Edit Stock Holdings** (Update):  
+  - Users can **edit** their holdings by updating the quantity or changing the purchase price, either by **buying** more stock or **selling** some shares.  
+  - Real-time prices are **automatically added** to the input fields to provide the most up-to-date data, which helps users make informed decisions when adjusting their holdings.  
+  - After the change, the **Holdings Table** is updated with the new quantity, investment amount, and the stock's current value.
+
+- **Remove Stock from Portfolio** (Delete):  
+  - Users can **delete** a stock from their portfolio by selling all the holdings of that particular stock.  
+  - Once sold, the stock will no longer appear in the **Holdings Table**, and the portfolio's total value will be updated accordingly.
+
+- **Real-Time Price Integration**:  
+  - One of the key features of the application is the **real-time price updates**, which are automatically fetched and displayed in the **Place Order Form**, reflected in the **Holdings Table**, and the **dashboard page** as well.  
+  
 
  
 
 #### **4. Profile Page**  
-- Displays current balance and a detailed list of all past orders, including:  
+- Displays Profile image, email, current balance and a detailed list of all past orders, including:  
   - Stock name.  
   - Order type (buy/sell).  
   - Time of order.  
