@@ -34,7 +34,12 @@ This project was developed as part of the **CapX Full Stack Developer Internship
    - [Running Tests](#running-tests)  
 6. [🛠️ Features](#features)  
    - [Key Functionalities](#key-functionalities)  
-   - [Brief Description of Each Page](#brief-description-of-each-page)  
+   - [Brief Description of Each Page](#brief-description-of-each-page)
+     - [Authentication Pages](#1-authentication-pages)
+     - [Dashboard Page](#2-dashboard)
+     - [Update Portfolio Page](#3-update-portfolio-page)
+     - [Profile Page](#4-profile-page)
+     - [Stock Details Page](#5-stock-details-page)     
 7. [Application Architecture](#application-architecture)  
    - [High-Level Overview](#high-level-overview)  
    - [Frontend](#frontend-1)  
@@ -285,6 +290,9 @@ User Flow Diagram
 
 #### **3. Update Portfolio Page**
 
+![image](https://github.com/user-attachments/assets/ca7a9f52-fd4b-4cdb-bc1e-4d9836da7989)
+
+
 - **Add Stock to Holdings** (Create):  
   - The real-time price for the stock is **automatically populated** in the form input, ensuring accurate and up-to-date information for the user.  
   - Users can uncheck **buy at current price** and manually enter a value. This feature is **ONLY for testing purposes**.  
@@ -310,6 +318,9 @@ User Flow Diagram
  
 
 #### **4. Profile Page**  
+
+![image](https://github.com/user-attachments/assets/0531cab0-f7f2-4362-9e68-0e993b466100)
+
 - Displays Profile image, email, current balance and a detailed list of all past orders, including:  
   - Stock name.  
   - Order type (buy/sell).  
@@ -318,7 +329,11 @@ User Flow Diagram
 
 
 
-#### **5. Stock Details Page**  
+#### **5. Stock Details Page** 
+
+![image](https://github.com/user-attachments/assets/5e695c80-78df-48cc-8f32-fe8244f50ae0)
+
+
 - Accessed via the header search bar or holdings table.  
 - Provides detailed stock information, real-time news, and market insights.  
 
