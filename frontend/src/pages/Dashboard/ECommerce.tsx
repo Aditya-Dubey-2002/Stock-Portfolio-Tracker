@@ -221,9 +221,9 @@ const ECommerce: React.FC = () => {
           </div> */}
 
           {/* Right Column: Holdings Table */}
-          <div className="w-full lg:w-full rounded-lg shadow-lg">
+          {/* <div className="w-full lg:w-full rounded-lg shadow-lg"> */}
             <HoldingsTable />
-          </div>
+          {/* </div> */}
         </div>
       </div>
     </>
