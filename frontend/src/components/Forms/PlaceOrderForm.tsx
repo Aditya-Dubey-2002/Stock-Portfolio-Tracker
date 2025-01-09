@@ -3,6 +3,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import config from '../../config';
 import { useNavigate } from 'react-router-dom';
+import useHoldings from '../../hooks/useHoldings';
 
 // Define StockOption type
 type StockOption = {
@@ -24,6 +25,8 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
   const [orderStatus, setOrderStatus] = useState(''); // To store order status message
   const [loading, setLoading] = useState(false); // To handle loading state
   const [orderType, setOrderType] = useState('buy');
+
+  const {fetchInitialHoldings} = useHoldings();
 
   // Define the StockOption type
   interface StockOption {
@@ -182,7 +185,8 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
         alert(response.data.message);
         setLoading(false);
         navigate('/update-portfolio');
-        window.location.reload();
+        fetchInitialHoldings();
+        // window.location.reload();
       } else {
         alert(response.data.message);
         setOrderStatus('Error placing order.');

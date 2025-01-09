@@ -37,7 +37,7 @@ function App() {
   const isAuthPage = pathname === '/auth/signin' || pathname === '/auth/signup' || pathname === '/welcome';
 
   return loading ? (
-    <Loader statusMessage={null} />
+    <Loader statusMessage={null} ><PageTitle title="Loading..." /></Loader>
   ) : (
     <>
       {isAuthPage ? (
@@ -46,8 +46,10 @@ function App() {
             path="/auth/signin"
             element={
               <>
-                <PageTitle title="Signin | StockItUp" />
-                <SignIn />
+                <div className='bg-white dark:bg-boxdark'>
+                  <PageTitle title="Signin | StockItUp" />
+                  <SignIn />
+                </div>
               </>
             }
           />
@@ -72,141 +74,141 @@ function App() {
         </Routes>
       ) : (
         <HoldingsProvider>
-        <DefaultLayout>
-          <Routes>
-            <Route
-              path = "/"
-              element={
-                <>
-                  <ProtectedRoute>
-                  <PageTitle title="StockItUp Dashboard | StockItUp - Stock Portfolio Tracker" />
-                  <ECommerce />
-                  </ProtectedRoute>
-                </>
-              }
-            />
-            <Route
-              path = "/stock/:symbol"
-              element={
-                <>
-                  <ProtectedRoute>
-                  <PageTitle title="Stock Page" />
-                  <Stock />
-                  </ProtectedRoute>
-                </>
-              }
-            />
-            <Route
-              path = "/update-portfolio"
-              element={
-                <>
-                  <ProtectedRoute>
-                  <PageTitle title="Update Portfolio" />
-                  <Portfolio />
-                  </ProtectedRoute>
-                </>
-              }
-            />
-            <Route
-              path="/calendar"
-              element={
-                <>
-                  <PageTitle title="Calendar " />
-                  <Calendar />
-                </>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <>
-                  <ProtectedRoute>
-                  <PageTitle title="Profile" />
-                  <Profile />
-                  </ProtectedRoute>
-                </>
-              }
-            />
-            <Route
-              path="/forms/form-elements"
-              element={
-                <>
-                <ProtectedRoute>
-                  <PageTitle title="Form Elements " />
-                  <FormElements />
-                  </ProtectedRoute>
-                </>
-              }
-            />
-            <Route
-              path="/forms/form-layout"
-              element={
-                <>
-                  <ProtectedRoute>
-                  <PageTitle title="Form Layout " />
-                  <FormLayout />
-                  </ProtectedRoute>
-                </>
-              }
-            />
-            <Route
-              path="/tables"
-              element={
-                <>
-                <ProtectedRoute>
-                  <PageTitle title="Tables " />
-                  <Tables />
-                  </ProtectedRoute>
-                </>
-              }
-            />
-            <Route
-              path="/settings"
-              element={
-                <>
-                <ProtectedRoute>
-                  <PageTitle title="Settings" />
-                  <Settings />
-                  </ProtectedRoute>
-                </>
-              }
-            />
-            <Route
-              path="/chart"
-              element={
-                <>
-                <ProtectedRoute>
-                  <PageTitle title="Basic Chart" />
-                  <Chart />
-                  </ProtectedRoute>
-                </>
-              }
-            />
-            <Route
-              path="/ui/alerts"
-              element={
-                <>
-                <ProtectedRoute>
-                  <PageTitle title="Alerts " />
-                  <Alerts />
-                  </ProtectedRoute>
-                </>
-              }
-            />
-            <Route
-              path="/ui/buttons"
-              element={
-                <>
-                <ProtectedRoute>
-                  <PageTitle title="Buttons" />
-                  <Buttons />
-                  </ProtectedRoute>
-                </>
-                
-              }
-            />
-          </Routes>
-        </DefaultLayout>
+          <DefaultLayout>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="StockItUp Dashboard | StockItUp - Stock Portfolio Tracker" />
+                      <ECommerce />
+                    </ProtectedRoute>
+                  </>
+                }
+              />
+              <Route
+                path="/stock/:symbol"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="Stock Page" />
+                      <Stock />
+                    </ProtectedRoute>
+                  </>
+                }
+              />
+              <Route
+                path="/update-portfolio"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="Update Portfolio" />
+                      <Portfolio />
+                    </ProtectedRoute>
+                  </>
+                }
+              />
+              <Route
+                path="/calendar"
+                element={
+                  <>
+                    <PageTitle title="Calendar " />
+                    <Calendar />
+                  </>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="Profile" />
+                      <Profile />
+                    </ProtectedRoute>
+                  </>
+                }
+              />
+              <Route
+                path="/forms/form-elements"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="Form Elements " />
+                      <FormElements />
+                    </ProtectedRoute>
+                  </>
+                }
+              />
+              <Route
+                path="/forms/form-layout"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="Form Layout " />
+                      <FormLayout />
+                    </ProtectedRoute>
+                  </>
+                }
+              />
+              <Route
+                path="/tables"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="Tables " />
+                      <Tables />
+                    </ProtectedRoute>
+                  </>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="Settings" />
+                      <Settings />
+                    </ProtectedRoute>
+                  </>
+                }
+              />
+              <Route
+                path="/chart"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="Basic Chart" />
+                      <Chart />
+                    </ProtectedRoute>
+                  </>
+                }
+              />
+              <Route
+                path="/ui/alerts"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="Alerts " />
+                      <Alerts />
+                    </ProtectedRoute>
+                  </>
+                }
+              />
+              <Route
+                path="/ui/buttons"
+                element={
+                  <>
+                    <ProtectedRoute>
+                      <PageTitle title="Buttons" />
+                      <Buttons />
+                    </ProtectedRoute>
+                  </>
+
+                }
+              />
+            </Routes>
+          </DefaultLayout>
         </HoldingsProvider>
       )}
     </>

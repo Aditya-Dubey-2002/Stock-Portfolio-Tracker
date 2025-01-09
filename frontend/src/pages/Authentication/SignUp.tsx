@@ -207,7 +207,7 @@ const SignUp: React.FC = () => {
             <div className="hidden w-full xl:block xl:w-1/2">
               <div className="py-17.5 px-26 text-center">
                 <Link className="mb-5.5 inline-block" to="/">
-                <h1 className="text-4xl hidden font-bold tracking-wide text-white">StockItUp</h1>
+                <h1 className="text-4xl hidden dark:block font-bold tracking-wide text-white">StockItUp</h1>
                 <h1 className="text-4xl dark:hidden font-bold tracking-wide text-black">StockItUp</h1>
                 </Link>
                 <p className="2xl:px-20">

@@ -12,6 +12,7 @@ interface HoldingsContextProps {
   loading: boolean;
   error: string | null;
   updateHoldings: () => void;
+  fetchInitialHoldings: () =>void;
 }
 
 export const HoldingsContext = createContext<HoldingsContextProps | undefined>(undefined);
@@ -179,6 +180,7 @@ export const HoldingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         loading,
         error,
         updateHoldings,
+        fetchInitialHoldings,
       }}
     >
       {children}

@@ -77,16 +77,16 @@ const SignIn: React.FC = () => {
 
   return (
     <>
-      <div className='w-full' >
+      <div className='w-full bg-white dark:bg-boxdark' >
         {/* <Breadcrumb pageName="Sign In" /> */}
 
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-wrap items-center">
             <div className="hidden w-full xl:block xl:w-1/2">
               <div className="py-17.5 px-26 text-center">
-                <Link className="mb-5.5 inline-block" to="/">
+                <Link className="inline-block" to="/">
                   {/* <img className="hidden dark:block" src={Logo} alt="Logo" /> */}
-                  <h1 className="text-4xl hidden font-bold tracking-wide text-white">StockItUp</h1>
+                  <h1 className="text-4xl hidden dark:block font-bold tracking-wide text-white">StockItUp</h1>
                   <h1 className="text-4xl dark:hidden font-bold tracking-wide text-black">StockItUp</h1>
                   {/* <img className="dark:hidden" src={LogoDark} alt="Logo" /> */}
                 </Link>
