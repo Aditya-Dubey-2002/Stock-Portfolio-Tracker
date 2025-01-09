@@ -190,7 +190,7 @@ const HoldingsTable = () => {
             onClick={() => handleSort("stockName")}
           >
             <h5 className="text-sm font-medium uppercase xsm:text-base flex items-center gap-1">
-              Name {renderSortIcon("stockName")}
+              Stock Symbol {renderSortIcon("stockName")}
             </h5>
           </div>
 
