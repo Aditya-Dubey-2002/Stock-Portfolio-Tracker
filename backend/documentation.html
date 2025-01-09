@@ -1,0 +1,372 @@
+<h2><a id="StockItUp_API_Documentation_0"></a>StockItUp API Documentation</h2>
+<h3 class="code-line" data-line-start=2 data-line-end=3 ><a id="Base_URL_2"></a>Base URL</h3>
+<ul>
+<li class="has-line-data" data-line-start="3" data-line-end="4"><strong>Production</strong>: <code>https://stock-portfolio-tracker-2oud.onrender.com</code></li>
+<li class="has-line-data" data-line-start="4" data-line-end="6"><strong>Local</strong>: <code>http://localhost:5000</code></li>
+</ul>
+<hr>
+<h3 class="code-line" data-line-start=8 data-line-end=9 ><a id="Authentication_Routes_8"></a>Authentication Routes</h3>
+<h4 class="code-line" data-line-start=10 data-line-end=11 ><a id="Register_User_10"></a>Register User</h4>
+<p class="has-line-data" data-line-start="11" data-line-end="12"><strong>POST</strong> <code>/api/auth/register</code></p>
+<ul>
+<li class="has-line-data" data-line-start="12" data-line-end="13"><strong>Request Body</strong>:</li>
+</ul>
+<pre><code class="has-line-data" data-line-start="14" data-line-end="20" class="language-json">{
+  "<span class="hljs-attribute">fullName</span>": <span class="hljs-value"><span class="hljs-string">"John Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@example.com"</span></span>,
+  "<span class="hljs-attribute">password</span>": <span class="hljs-value"><span class="hljs-string">"securePassword123"</span>
+</span>}
+</code></pre>
+<ul>
+<li class="has-line-data" data-line-start="20" data-line-end="40"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="21" data-line-end="27"><strong>201 Created</strong>:<pre><code class="has-line-data" data-line-start="23" data-line-end="27" class="language-json">{
+  "<span class="hljs-attribute">token</span>": <span class="hljs-value"><span class="hljs-string">"&lt;JWT Token&gt;"</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="27" data-line-end="33"><strong>400 Bad Request</strong>:<pre><code class="has-line-data" data-line-start="29" data-line-end="33" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"User already exists"</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="33" data-line-end="40"><strong>500 Internal Server Error</strong>:<pre><code class="has-line-data" data-line-start="35" data-line-end="39" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Server error"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 class="code-line" data-line-start=40 data-line-end=41 ><a id="Login_User_40"></a>Login User</h4>
+<p class="has-line-data" data-line-start="41" data-line-end="42"><strong>POST</strong> <code>/api/auth/login</code></p>
+<ul>
+<li class="has-line-data" data-line-start="42" data-line-end="43"><strong>Request Body</strong>:</li>
+</ul>
+<pre><code class="has-line-data" data-line-start="44" data-line-end="49" class="language-json">{
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@example.com"</span></span>,
+  "<span class="hljs-attribute">password</span>": <span class="hljs-value"><span class="hljs-string">"securePassword123"</span>
+</span>}
+</code></pre>
+<ul>
+<li class="has-line-data" data-line-start="49" data-line-end="69"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="50" data-line-end="56"><strong>200 OK</strong>:<pre><code class="has-line-data" data-line-start="52" data-line-end="56" class="language-json">{
+  "<span class="hljs-attribute">token</span>": <span class="hljs-value"><span class="hljs-string">"&lt;JWT Token&gt;"</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="56" data-line-end="62"><strong>400 Bad Request</strong>:<pre><code class="has-line-data" data-line-start="58" data-line-end="62" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid credentials"</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="62" data-line-end="69"><strong>500 Internal Server Error</strong>:<pre><code class="has-line-data" data-line-start="64" data-line-end="68" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Server error"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="code-line" data-line-start=71 data-line-end=72 ><a id="User_Routes_71"></a>User Routes</h3>
+<h4 class="code-line" data-line-start=73 data-line-end=74 ><a id="Get_User_Profile_73"></a>Get User Profile</h4>
+<p class="has-line-data" data-line-start="74" data-line-end="75"><strong>GET</strong> <code>/api/user/profile</code></p>
+<ul>
+<li class="has-line-data" data-line-start="75" data-line-end="77"><strong>Headers</strong>:
+<ul>
+<li class="has-line-data" data-line-start="76" data-line-end="77">Authorization: <code>Bearer &lt;JWT Token&gt;</code></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="77" data-line-end="103"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="78" data-line-end="90"><strong>200 OK</strong>:<pre><code class="has-line-data" data-line-start="80" data-line-end="90" class="language-json">{
+  "<span class="hljs-attribute">userDetails</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">fullName</span>": <span class="hljs-value"><span class="hljs-string">"John Doe"</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@example.com"</span></span>,
+    "<span class="hljs-attribute">bio</span>": <span class="hljs-value"><span class="hljs-string">"Investor and trader"</span></span>,
+    "<span class="hljs-attribute">balance</span>": <span class="hljs-value"><span class="hljs-number">10000.50</span></span>,
+    "<span class="hljs-attribute">image</span>": <span class="hljs-value"><span class="hljs-string">"&lt;Profile Image URL&gt;"</span>
+  </span>}
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="90" data-line-end="96"><strong>401 Unauthorized</strong>:<pre><code class="has-line-data" data-line-start="92" data-line-end="96" class="language-json">{
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"Access denied, token missing"</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="96" data-line-end="103"><strong>404 Not Found</strong>:<pre><code class="has-line-data" data-line-start="98" data-line-end="102" class="language-json">{
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"User not found"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="code-line" data-line-start=105 data-line-end=106 ><a id="Holdings_Routes_105"></a>Holdings Routes</h3>
+<h4 class="code-line" data-line-start=107 data-line-end=108 ><a id="Get_User_Holdings_107"></a>Get User Holdings</h4>
+<p class="has-line-data" data-line-start="108" data-line-end="109"><strong>GET</strong> <code>/api/holdings/:userId</code></p>
+<ul>
+<li class="has-line-data" data-line-start="109" data-line-end="111"><strong>Headers</strong>:
+<ul>
+<li class="has-line-data" data-line-start="110" data-line-end="111">Authorization: <code>Bearer &lt;JWT Token&gt;</code></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="111" data-line-end="144"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="112" data-line-end="131"><strong>200 OK</strong>:<pre><code class="has-line-data" data-line-start="114" data-line-end="131" class="language-json">[
+  {
+    "<span class="hljs-attribute">holdingId</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    "<span class="hljs-attribute">stockId</span>": <span class="hljs-value"><span class="hljs-string">"AAPL"</span></span>,
+    "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">10</span></span>,
+    "<span class="hljs-attribute">buyPrice</span>": <span class="hljs-value"><span class="hljs-number">145.50</span></span>,
+    "<span class="hljs-attribute">totalPrice</span>": <span class="hljs-value"><span class="hljs-number">1455.00</span>
+  </span>},
+  {
+    "<span class="hljs-attribute">holdingId</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">stockId</span>": <span class="hljs-value"><span class="hljs-string">"MSFT"</span></span>,
+    "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+    "<span class="hljs-attribute">buyPrice</span>": <span class="hljs-value"><span class="hljs-number">300.00</span></span>,
+    "<span class="hljs-attribute">totalPrice</span>": <span class="hljs-value"><span class="hljs-number">1500.00</span>
+  </span>}
+]
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="131" data-line-end="137"><strong>401 Unauthorized</strong>:<pre><code class="has-line-data" data-line-start="133" data-line-end="137" class="language-json">{
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"Access denied, token missing"</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="137" data-line-end="144"><strong>404 Not Found</strong>:<pre><code class="has-line-data" data-line-start="139" data-line-end="143" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"No holdings found"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="code-line" data-line-start=146 data-line-end=147 ><a id="Order_Routes_146"></a>Order Routes</h3>
+<h4 class="code-line" data-line-start=148 data-line-end=149 ><a id="Create_Order_148"></a>Create Order</h4>
+<p class="has-line-data" data-line-start="149" data-line-end="150"><strong>POST</strong> <code>/api/orders</code></p>
+<ul>
+<li class="has-line-data" data-line-start="150" data-line-end="152"><strong>Headers</strong>:
+<ul>
+<li class="has-line-data" data-line-start="151" data-line-end="152">Authorization: <code>Bearer &lt;JWT Token&gt;</code></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="152" data-line-end="153"><strong>Request Body</strong>:</li>
+</ul>
+<pre><code class="has-line-data" data-line-start="154" data-line-end="161" class="language-json">{
+  "<span class="hljs-attribute">stockId</span>": <span class="hljs-value"><span class="hljs-string">"AAPL"</span></span>,
+  "<span class="hljs-attribute">orderType</span>": <span class="hljs-value"><span class="hljs-string">"buy"</span></span>,
+  "<span class="hljs-attribute">price</span>": <span class="hljs-value"><span class="hljs-number">150.00</span></span>,
+  "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">5</span>
+</span>}
+</code></pre>
+<ul>
+<li class="has-line-data" data-line-start="161" data-line-end="189"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="162" data-line-end="176"><strong>201 Created</strong>:<pre><code class="has-line-data" data-line-start="164" data-line-end="176" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Buy order placed successfully"</span></span>,
+  "<span class="hljs-attribute">order</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">orderId</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    "<span class="hljs-attribute">userId</span>": <span class="hljs-value"><span class="hljs-number">101</span></span>,
+    "<span class="hljs-attribute">stockId</span>": <span class="hljs-value"><span class="hljs-string">"AAPL"</span></span>,
+    "<span class="hljs-attribute">orderType</span>": <span class="hljs-value"><span class="hljs-string">"buy"</span></span>,
+    "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+    "<span class="hljs-attribute">amount</span>": <span class="hljs-value"><span class="hljs-number">750.00</span>
+  </span>}
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="176" data-line-end="182"><strong>400 Bad Request</strong>:<pre><code class="has-line-data" data-line-start="178" data-line-end="182" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Insufficient balance"</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="182" data-line-end="189"><strong>500 Internal Server Error</strong>:<pre><code class="has-line-data" data-line-start="184" data-line-end="188" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Transaction failed after multiple retries"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 class="code-line" data-line-start=189 data-line-end=190 ><a id="Get_Orders_189"></a>Get Orders</h4>
+<p class="has-line-data" data-line-start="190" data-line-end="191"><strong>GET</strong> <code>/api/orders</code></p>
+<ul>
+<li class="has-line-data" data-line-start="191" data-line-end="193"><strong>Headers</strong>:
+<ul>
+<li class="has-line-data" data-line-start="192" data-line-end="193">Authorization: <code>Bearer &lt;JWT Token&gt;</code></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="193" data-line-end="219"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="194" data-line-end="206"><strong>200 OK</strong>:<pre><code class="has-line-data" data-line-start="196" data-line-end="206" class="language-json">[
+  {
+    "<span class="hljs-attribute">orderId</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    "<span class="hljs-attribute">stockId</span>": <span class="hljs-value"><span class="hljs-string">"AAPL"</span></span>,
+    "<span class="hljs-attribute">orderType</span>": <span class="hljs-value"><span class="hljs-string">"buy"</span></span>,
+    "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+    "<span class="hljs-attribute">amount</span>": <span class="hljs-value"><span class="hljs-number">750.00</span>
+  </span>}
+]
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="206" data-line-end="212"><strong>404 Not Found</strong>:<pre><code class="has-line-data" data-line-start="208" data-line-end="212" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"No orders found"</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="212" data-line-end="219"><strong>500 Internal Server Error</strong>:<pre><code class="has-line-data" data-line-start="214" data-line-end="218" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Failed to fetch orders"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="code-line" data-line-start=221 data-line-end=222 ><a id="Stock_Routes_221"></a>Stock Routes</h3>
+<h4 class="code-line" data-line-start=223 data-line-end=224 ><a id="Get_Market_Status_223"></a>Get Market Status</h4>
+<p class="has-line-data" data-line-start="224" data-line-end="225"><strong>GET</strong> <code>/api/stock/market/status</code></p>
+<ul>
+<li class="has-line-data" data-line-start="225" data-line-end="245"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="226" data-line-end="237"><strong>200 OK</strong>:<pre><code class="has-line-data" data-line-start="228" data-line-end="237" class="language-json">{
+"<span class="hljs-attribute">exchange</span>": <span class="hljs-value"><span class="hljs-string">"US"</span></span>,
+"<span class="hljs-attribute">holiday</span>": <span class="hljs-value"><span class="hljs-literal">null</span></span>,
+"<span class="hljs-attribute">isOpen</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+"<span class="hljs-attribute">session</span>": <span class="hljs-value"><span class="hljs-string">"pre-market"</span></span>,
+"<span class="hljs-attribute">timezone</span>": <span class="hljs-value"><span class="hljs-string">"America/New_York"</span></span>,
+"<span class="hljs-attribute">t</span>": <span class="hljs-value"><span class="hljs-number">1697018041</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="237" data-line-end="245"><strong>500 Internal Server Error</strong>:<pre><code class="has-line-data" data-line-start="239" data-line-end="244" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error fetching market status"</span></span>,
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"Error details"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 class="code-line" data-line-start=245 data-line-end=246 ><a id="Get_Stock_List_245"></a>Get Stock List</h4>
+<p class="has-line-data" data-line-start="246" data-line-end="247"><strong>GET</strong> <code>/api/stock/list</code></p>
+<ul>
+<li class="has-line-data" data-line-start="247" data-line-end="270"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="248" data-line-end="262"><strong>200 OK</strong>:<pre><code class="has-line-data" data-line-start="250" data-line-end="262" class="language-json">[
+  {
+    "<span class="hljs-attribute">currency</span>": <span class="hljs-value"><span class="hljs-string">"USD"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"UAN POWER CORP"</span></span>,
+    "<span class="hljs-attribute">displaySymbol</span>": <span class="hljs-value"><span class="hljs-string">"UPOW"</span></span>,
+    "<span class="hljs-attribute">figi</span>": <span class="hljs-value"><span class="hljs-string">"BBG000BGHYF2"</span></span>,
+    "<span class="hljs-attribute">mic</span>": <span class="hljs-value"><span class="hljs-string">"OTCM"</span></span>,
+    "<span class="hljs-attribute">symbol</span>": <span class="hljs-value"><span class="hljs-string">"UPOW"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Common Stock"</span>
+</span>},
+]
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="262" data-line-end="270"><strong>500 Internal Server Error</strong>:<pre><code class="has-line-data" data-line-start="264" data-line-end="269" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error fetching stock list"</span></span>,
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"Error details"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 class="code-line" data-line-start=270 data-line-end=271 ><a id="Get_Stock_Quote_270"></a>Get Stock Quote</h4>
+<p class="has-line-data" data-line-start="271" data-line-end="272"><strong>GET</strong> <code>/api/stock/quote/:symbol</code></p>
+<ul>
+<li class="has-line-data" data-line-start="272" data-line-end="292"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="273" data-line-end="284"><strong>200 OK</strong>:<pre><code class="has-line-data" data-line-start="275" data-line-end="284" class="language-json">{
+  "<span class="hljs-attribute">c</span>": <span class="hljs-value"><span class="hljs-number">261.74</span></span>,
+  "<span class="hljs-attribute">h</span>": <span class="hljs-value"><span class="hljs-number">263.31</span></span>,
+  "<span class="hljs-attribute">l</span>": <span class="hljs-value"><span class="hljs-number">260.68</span></span>,
+  "<span class="hljs-attribute">o</span>": <span class="hljs-value"><span class="hljs-number">261.07</span></span>,
+  "<span class="hljs-attribute">pc</span>": <span class="hljs-value"><span class="hljs-number">259.45</span></span>,
+  "<span class="hljs-attribute">t</span>": <span class="hljs-value"><span class="hljs-number">1582641000</span> 
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="284" data-line-end="292"><strong>500 Internal Server Error</strong>:<pre><code class="has-line-data" data-line-start="286" data-line-end="291" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error fetching stock quote"</span></span>,
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"Error details"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 class="code-line" data-line-start=292 data-line-end=293 ><a id="Get_Stock_Details_for_Portfolio_Metrics_292"></a>Get Stock Details for Portfolio Metrics</h4>
+<p class="has-line-data" data-line-start="293" data-line-end="294"><strong>GET</strong> <code>/api/stock/details/:symbol</code></p>
+<ul>
+<li class="has-line-data" data-line-start="294" data-line-end="326"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="295" data-line-end="312"><strong>200 OK</strong>:<pre><code class="has-line-data" data-line-start="297" data-line-end="312" class="language-json">{
+  "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"US"</span></span>,
+  "<span class="hljs-attribute">currency</span>": <span class="hljs-value"><span class="hljs-string">"USD"</span></span>,
+  "<span class="hljs-attribute">exchange</span>": <span class="hljs-value"><span class="hljs-string">"NASDAQ/NMS (GLOBAL MARKET)"</span></span>,
+  "<span class="hljs-attribute">ipo</span>": <span class="hljs-value"><span class="hljs-string">"1980-12-12"</span></span>,
+  "<span class="hljs-attribute">marketCapitalization</span>": <span class="hljs-value"><span class="hljs-number">1415993</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Apple Inc"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"14089961010"</span></span>,
+  "<span class="hljs-attribute">shareOutstanding</span>": <span class="hljs-value"><span class="hljs-number">4375.47998046875</span></span>,
+  "<span class="hljs-attribute">ticker</span>": <span class="hljs-value"><span class="hljs-string">"AAPL"</span></span>,
+  "<span class="hljs-attribute">weburl</span>": <span class="hljs-value"><span class="hljs-string">"https://www.apple.com/"</span></span>,
+  "<span class="hljs-attribute">logo</span>": <span class="hljs-value"><span class="hljs-string">"https://static.finnhub.io/logo/87cb30d8-80df-11ea-8951-00000000092a.png"</span></span>,
+  "<span class="hljs-attribute">finnhubIndustry</span>":<span class="hljs-value"><span class="hljs-string">"Technology"</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="312" data-line-end="318"><strong>404 Not Found</strong>:<pre><code class="has-line-data" data-line-start="314" data-line-end="318" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Stock details not found"</span>
+</span>}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="318" data-line-end="326"><strong>500 Internal Server Error</strong>:<pre><code class="has-line-data" data-line-start="320" data-line-end="325" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error fetching stock details"</span></span>,
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"Error details"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 class="code-line" data-line-start=326 data-line-end=327 ><a id="Get_Top_200_Stock_List_326"></a>Get Top 200 Stock List</h4>
+<p class="has-line-data" data-line-start="327" data-line-end="328"><strong>GET</strong> <code>/api/stock/100list</code></p>
+<ul>
+<li class="has-line-data" data-line-start="328" data-line-end="351"><strong>Response</strong>:
+<ul>
+<li class="has-line-data" data-line-start="329" data-line-end="344"><strong>200 OK</strong>:<pre><code class="has-line-data" data-line-start="331" data-line-end="344" class="language-json">[
+  {
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Apple Inc."</span></span>,
+    "<span class="hljs-attribute">symbol</span>": <span class="hljs-value"><span class="hljs-string">"AAPL"</span></span>,
+    "<span class="hljs-attribute">category</span>": <span class="hljs-value"><span class="hljs-string">"Technology"</span>
+  </span>},
+  {
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Amazon.com, Inc."</span></span>,
+    "<span class="hljs-attribute">symbol</span>": <span class="hljs-value"><span class="hljs-string">"AMZN"</span></span>,
+    "<span class="hljs-attribute">category</span>": <span class="hljs-value"><span class="hljs-string">"Consumer Discretionary"</span>
+  </span>}
+]
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="344" data-line-end="351"><strong>500 Internal Server Error</strong>:<pre><code class="has-line-data" data-line-start="346" data-line-end="351" class="language-json">{
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error fetching stock list"</span></span>,
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"Error details"</span>
+</span>}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
