@@ -81,25 +81,18 @@ This project was developed as part of the **CapX Full Stack Developer Internship
 
 ## 💻 Technologies Used
 
-### Frontend
-- [React.js](https://reactjs.org/): A JavaScript library for building user interfaces.
-- [TypeScript](https://www.typescriptlang.org/): Adds static typing to JavaScript for better code quality.
-- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript): A programming language used alongside TypeScript.
-- [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework for quick styling.
-- [TailAdmin](https://tailadmin.com/): A pre-designed dashboard template used for UI initialization.
-- [React Router](https://reactrouter.com/): For handling page navigation within the app.
-- [Axios](https://axios-http.com/): For making HTTP requests to the backend.
-- [ApexCharts](https://apexcharts.com/), [ECharts](https://echarts.apache.org/): Libraries for interactive charting and visualizations.
-- [React Toastify](https://fkhadra.github.io/react-toastify/), [React Hot Toast](https://react-hot-toast.com/): For notification and alert functionality.
+### **Frontend**
+- **React.js**: For building dynamic and interactive user interfaces.  
+- **TypeScript**: Adds type safety for better code quality.  
+- **Tailwind CSS**: A fast, utility-first framework for styling.  
 
-### Backend
-- [Node.js](https://nodejs.org/): JavaScript runtime used for server-side scripting.
-- [Express.js](https://expressjs.com/): Web framework for building RESTful APIs.
-- [Sequelize ORM](https://sequelize.org/): For interacting with the MySQL database in an object-oriented way.
-- [MySQL](https://www.mysql.com/): Relational database management system used to store stock data.
-- [JWT](https://jwt.io/): For implementing secure user authentication.
-- [Axios](https://axios-http.com/): For fetching real-time stock price data from external APIs.
-- [Bcrypt.js](https://www.npmjs.com/package/bcryptjs): For securely hashing passwords.
+---
+
+### **Backend**
+- **Node.js**: JavaScript runtime for server-side scripting.  
+- **Express.js**: Lightweight framework for building RESTful APIs.  
+- **MySQL**: Relational database system for managing stock data.  
+- **JWT**: Ensures secure user authentication.  
 
 ### Deployment
 - **Frontend**: [Vercel](https://vercel.com/): Platform for deploying frontend applications.
