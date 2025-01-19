@@ -95,7 +95,7 @@ const Footer = () => {
                         </defs>
                     </svg>
                 </Link>
-                <Link
+                {/* <Link
                     to="#"
                     className="hover:text-primary"
                     aria-label="social-icon"
@@ -120,7 +120,7 @@ const Footer = () => {
                             </clipPath>
                         </defs>
                     </svg>
-                </Link>
+                </Link> */}
                 <Link
                     to="#"
                     className="hover:text-primary"
