@@ -5,7 +5,7 @@ const getUserProfile = async (req, res) => {
 
   try {
     const [user] = await db.query(
-      'SELECT fullName, email, bio, balance, image FROM users WHERE userId ='+userId,
+      'SELECT fullName, email, bio, balance, image, profit FROM users WHERE userId ='+userId,
       [userId]
     );
 

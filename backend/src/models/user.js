@@ -33,6 +33,11 @@ const User = sequelize.define('User', {
     image: {
         type: Sequelize.STRING, // Storing the image as a URL or file path
         allowNull: true, // Image can be null
+    },
+    profit: {
+        type: Sequelize.DECIMAL(10, 2), // Storing the profit with up to 10 digits, 2 of which are decimals
+        allowNull: false,
+        defaultValue: 0.00, // Default profit for new users
     }
 }, {
     timestamps: true, // Automatically adds `createdAt` and `updatedAt` fields

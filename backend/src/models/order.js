@@ -37,6 +37,10 @@ const Order = sequelize.define('Order', {
     type: DataTypes.DECIMAL(10, 2), // Total amount for the order (quantity * price)
     allowNull: false,
   },
+  profit: {
+      type: DataTypes.DECIMAL(10, 2), // Profit or loss for sell orders
+      allowNull: true, // This will be null for buy orders
+    },
 }, {
   timestamps: false,
 });

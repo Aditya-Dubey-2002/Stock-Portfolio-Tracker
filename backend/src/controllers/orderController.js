@@ -85,10 +85,13 @@ const createOrder = async (req, res) => {
 
                 let totalQuantityToSell = quantity;
                 let totalAmount = 0;
+                let totalGain = 0;
+                let quantitySold = 0;
+                // let totalProfit = 0;
 
                 // Sort holdings by buy price (FIFO)
                 holdings.sort((a, b) => a.buyPrice - b.buyPrice);
-
+                // let profit = 0;
                 for (const holding of holdings) {
                     if (totalQuantityToSell <= 0) break;
 
@@ -97,22 +100,37 @@ const createOrder = async (req, res) => {
                     if (availableQuantity <= totalQuantityToSell) {
                         totalAmount += availableQuantity * price;
                         totalQuantityToSell -= availableQuantity;
+                        quantitySold = availableQuantity;
                         await holding.destroy({ transaction });
                     } else {
                         totalAmount += totalQuantityToSell * price;
                         holding.quantity = availableQuantity - totalQuantityToSell;
+                        quantitySold = totalQuantityToSell;
                         await holding.save({ transaction });
                         totalQuantityToSell = 0;
                     }
                 }
-
+                
+                let totalBoughtValue = 0;
+                let cnt=0;
+                for(let holding of holdings){
+                    totalBoughtValue += parseFloat(holding.buyPrice);
+                    cnt++;
+                    if(cnt==quantitySold){
+                        break;
+                    }   
+                }
+                totalGain = price*parseInt(quantitySold)-parseFloat(totalBoughtValue);
+                
+                // console.log(totalBoughtValue);
                 if (totalQuantityToSell > 0) {
                     throw new Error('Not enough stock to sell');
                 }
 
                 user.balance = parseFloat(user.balance) + totalAmount;
+                user.profit = parseFloat(user.profit) + totalGain;
                 await user.save({ transaction });
-
+                totalGain = totalGain.toFixed(2);
                 const order = await Order.create(
                     {
                         userId,
@@ -120,12 +138,14 @@ const createOrder = async (req, res) => {
                         orderType: 'sell',
                         quantity,
                         amount: totalAmount,
+                        profit: totalGain,
                     },
                     { transaction }
                 );
-
+                
+                const msg = "Sell order placed successfully with a net profit of $" + parseFloat(totalGain);
                 await transaction.commit();
-                return res.status(201).json({ message: 'Sell order placed successfully', order });
+                return res.status(201).json({ message: msg,totalGain, order });
             } else {
                 throw new Error('Invalid order type');
             }
