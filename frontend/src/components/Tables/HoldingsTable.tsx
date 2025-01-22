@@ -14,6 +14,7 @@ const HoldingsTable = () => {
     holdingQuantities,
     loading,
     error,
+    updateHoldings
   } = useHoldings();
 
   console.log(holdingCurrentValues);
@@ -43,7 +44,7 @@ const HoldingsTable = () => {
 
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: '', direction: null });
-  const [userBalance, setUserBalance] = useState('User Balance Loading...');
+  const [userBalance, setUserBalance] = useState<String|number>('User Balance Loading...');
   const [userName, setUserName] = useState('User');
   const token = localStorage.getItem('token');
 
@@ -55,12 +56,14 @@ const HoldingsTable = () => {
         },
       });
       let profileBalance = (response.data.userDetails.balance);
-      profileBalance = profileBalance.toFixed(2);
+      profileBalance = parseFloat(profileBalance).toFixed(2);
       setUserBalance(profileBalance);
       setUserName(response.data.userDetails.fullName);
     } catch (err) {
-      console.log('Error fetching User balance');
+      console.log('Error fetching User balance'+err);
     }
+    // finally{
+    // }
   };
 
   useEffect(() => {

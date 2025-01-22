@@ -138,7 +138,7 @@ const ChartThree: React.FC = () => {
     ],
   };
 
-  return (loading?<Loader statusMessage={null}/>:<>
+  return (loading ? <Loader statusMessage={null} /> : <>
     <div className="sm:px-7.5 col-span-12 rounded-lg border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5">
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
@@ -146,7 +146,7 @@ const ChartThree: React.FC = () => {
             Portfolio Distribution
           </h5>
         </div>
-        <div>
+        <div className="relative">
           <select
             onChange={(e) =>
               setViewMode(e.target.value as 'currentValue' | 'investment')
@@ -157,8 +157,10 @@ const ChartThree: React.FC = () => {
             <option value="currentValue">By Current Value</option>
             <option value="investment">By Investment</option>
           </select>
-          {/* <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <svg
+
+          {/* Down arrow icon */}
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            <svg
               width="20"
               height="20"
               viewBox="0 0 20 20"
@@ -173,9 +175,9 @@ const ChartThree: React.FC = () => {
                 strokeLinejoin="round"
               />
             </svg>
-          </span> */}
-
+          </span>
         </div>
+
       </div>
 
       <div className="mb-3">
@@ -189,7 +191,7 @@ const ChartThree: React.FC = () => {
         </div>
       </div>
     </div>
-    </>
+  </>
   );
 };
 

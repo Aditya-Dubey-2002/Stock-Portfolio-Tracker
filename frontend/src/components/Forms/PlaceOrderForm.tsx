@@ -26,7 +26,7 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
   const [loading, setLoading] = useState(false); // To handle loading state
   const [orderType, setOrderType] = useState('buy');
 
-  const {fetchInitialHoldings} = useHoldings();
+  const { fetchInitialHoldings } = useHoldings();
 
   // Define the StockOption type
   interface StockOption {
@@ -112,7 +112,7 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
         // Handle error, maybe set stockPrice to null or show an error message
         setStockPrice(undefined); // Or any default value
       }
-      finally{
+      finally {
         setLoading(false);
       }
     }
@@ -146,9 +146,9 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
 
   const handlePlaceOrder = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    
+
     if (!selectedStock) {
-      if(!stockSymbol){
+      if (!stockSymbol) {
         alert("Please select a stock or enter a valid stock symbol.");
         setOrderStatus('Please select a stock.');
         return;
@@ -183,12 +183,14 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
       if (response.status === 201) {
         setOrderStatus('Order placed successfully.');
         alert(response.data.message);
-        setLoading(false);
+        // console.log(response.data)
+        // setLoading(false);
         navigate('/update-portfolio');
         fetchInitialHoldings();
         // window.location.reload();
       } else {
         alert(response.data.message);
+        
         setOrderStatus('Error placing order.');
         alert(setOrderStatus);
       }
@@ -250,6 +252,7 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
                     type="number"
                     placeholder="Stock Price"
                     value={stockPrice}
+                    min={0}
                     onChange={(e) => setStockPrice(parseFloat(e.target.value))}
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     readOnly={placeAtCurrentPrice}
@@ -263,10 +266,21 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
                     type="number"
                     placeholder="Quantity"
                     value={quantity}
-                    onChange={(e) => setQuantity(parseFloat(e.target.value))}
+                    min={1} // Keeps the min attribute for browser validation
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value) || 1; // Default to 1 if empty or invalid
+                      setQuantity(Math.max(1, value)); // Prevent values less than 1
+                    }}
+                    // onKeyDown={(e) => {
+                    //   if (e.key === "ArrowDown" && quantity <= 1) {
+                    //     e.preventDefault(); // Prevent going below 1 with the down arrow
+                    //   }
+                    // }}
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
+
+
 
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">Order Type</label>

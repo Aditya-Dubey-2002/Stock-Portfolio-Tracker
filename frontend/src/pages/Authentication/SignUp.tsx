@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
+import Footer from '../../components/Footer';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';

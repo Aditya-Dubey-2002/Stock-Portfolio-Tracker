@@ -15,6 +15,7 @@ interface UserProfile {
   bio: string;
   balance: number;
   image: string;
+  profit: number;
 }
 
 const Profile: React.FC = () => {
@@ -43,6 +44,7 @@ const Profile: React.FC = () => {
         });
 
         setUserProfile(response.data.userDetails);
+        // console.log(response.data);
         // console.log(response) // Store the user details in state
       } catch (err: any) {
         console.error('Error fetching profile:', err);
@@ -160,6 +162,16 @@ const Profile: React.FC = () => {
                 </span>
 
               </div>
+              <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
+                <span className="text-sm">Realized Profit</span>
+                <span
+                  className={`font-semibold ${userProfile.profit < 0 ? 'text-red-500' : 'text-green-500'
+                    }`}
+                >
+                  ${userProfile.profit}
+                </span>
+              </div>
+
             </div>
 
             <OrdersTable />

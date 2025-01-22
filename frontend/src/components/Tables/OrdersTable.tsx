@@ -3,6 +3,7 @@ import config from '../../config';
 import axios from 'axios';
 // Define the structure of the data
 interface Order {
+  profit: any;
   orderId: number;
   userId: number;
   stockId: string;
@@ -15,16 +16,16 @@ interface Order {
 const OrdersTable = () => {
   // Specify the type of the state
   const [ordersData, setOrdersData] = useState<Order[]>([]);
-  
+
   const token = localStorage.getItem('token');
   useEffect(() => {
     // Fetch orders data from the API
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${config.SERVER_URL}/api/orders`,{
-            headers : {
-                Authorization : `Bearer ${token}`
-            }
+        const response = await axios.get(`${config.SERVER_URL}/api/orders`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
         const data = response.data;
         data.reverse();
@@ -44,7 +45,7 @@ const OrdersTable = () => {
       </h4>
 
       <div className="flex flex-col overflow-y-auto" style={{ maxHeight: '350px' }}>
-        <div className="grid grid-cols-4 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
+        <div className="grid grid-cols-4 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-6">
           <div className="p-2.5 xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">Stock</h5>
           </div>
@@ -60,15 +61,17 @@ const OrdersTable = () => {
           <div className=" p-2.5 text-center block xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">Amount</h5>
           </div>
+          <div className=" p-2.5 text-center block xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">Profit/Loss</h5>
+          </div>
         </div>
 
         {ordersData.map((order, key) => (
           <div
-            className={`grid grid-cols-4 sm:grid-cols-5 ${
-              key === ordersData.length - 1
+            className={`grid grid-cols-4 sm:grid-cols-6 ${key === ordersData.length - 1
                 ? ''
                 : 'border-b border-stroke dark:border-strokedark'
-            }`}
+              }`}
             key={order.orderId}
           >
             <div className="flex items-center gap-3 p-2.5 xl:p-5">
@@ -77,9 +80,8 @@ const OrdersTable = () => {
 
             <div className="flex items-center justify-center p-2.5 xl:p-5">
               <p
-                className={`${
-                  order.orderType === 'buy' ? 'text-green-500' : 'text-red-500'
-                }`}
+                className={`${order.orderType === 'buy' ? 'text-green-500' : 'text-red-500'
+                  }`}
               >
                 {order.orderType}
               </p>
@@ -96,8 +98,22 @@ const OrdersTable = () => {
             </div>
 
             <div className="items-center justify-center p-2.5 flex xl:p-5">
-              <p className="text-meta-3">${order.amount}</p>
+              <p className="text-blue-500">${order.amount}</p>
             </div>
+
+            <div className="items-center justify-center p-2.5 flex xl:p-5">
+              {order.orderType === 'sell'&& (order.profit!==null) ? (
+                <p
+                  className={`${order.profit >= 0 ? 'text-green-500' : 'text-red-500'
+                    }`}
+                >
+                  ${parseFloat(order.profit).toFixed(2)}
+                </p>
+              ) : (
+                <p className="text-gray-500">N/A</p>
+              )}
+            </div>
+
           </div>
         ))}
       </div>
