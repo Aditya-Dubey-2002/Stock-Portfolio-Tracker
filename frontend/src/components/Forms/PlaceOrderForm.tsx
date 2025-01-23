@@ -186,7 +186,7 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
         alert(response.data.message);
         // console.log(response.data)
         // setLoading(false);
-        if(holdingStocks.length===1){
+        if(holdingStocks.length===1&&orderType==="sell"){
           location.reload();
         }
         else

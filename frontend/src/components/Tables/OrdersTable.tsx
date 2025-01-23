@@ -52,7 +52,7 @@ const OrdersTable = () => {
           <div className="p-2.5 text-center xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">Type</h5>
           </div>
-          <div className="p-2.5 text-center xl:p-5">
+          <div className="hidden sm:flex p-2.5 text-center xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">Time</h5>
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
@@ -87,7 +87,7 @@ const OrdersTable = () => {
               </p>
             </div>
 
-            <div className="flex items-center justify-center p-2.5 xl:p-5">
+            <div className="hidden sm:flex items-center justify-center p-2.5 xl:p-5">
               <p className="text-black dark:text-white">
                 {new Date(order.orderTime).toLocaleString()}
               </p>
