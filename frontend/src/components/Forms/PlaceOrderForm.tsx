@@ -24,9 +24,10 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
   const [placeAtCurrentPrice, setPlaceAtCurrentPrice] = useState(true); // Checkbox state
   const [orderStatus, setOrderStatus] = useState(''); // To store order status message
   const [loading, setLoading] = useState(false); // To handle loading state
+  const [orderLoading,setOrderLoading] = useState(false);
   const [orderType, setOrderType] = useState('buy');
 
-  const { fetchInitialHoldings } = useHoldings();
+  const { fetchInitialHoldings,holdingStocks } = useHoldings();
 
   // Define the StockOption type
   interface StockOption {
@@ -160,7 +161,7 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
       return;
     }
 
-    setLoading(true);
+    setOrderLoading(true);
     setOrderStatus(''); // Clear previous status message
 
     try {
@@ -185,6 +186,10 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
         alert(response.data.message);
         // console.log(response.data)
         // setLoading(false);
+        if(holdingStocks.length===1){
+          location.reload();
+        }
+        else
         navigate('/update-portfolio');
         fetchInitialHoldings();
         // window.location.reload();
@@ -200,7 +205,7 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
       setOrderStatus('Error placing order.');
       // alert(setOrderStatus);
     } finally {
-      setLoading(false);
+      setOrderLoading(false);
     }
   };
 
@@ -319,7 +324,7 @@ const PlaceOrderForm: React.FC<PlaceOrderFormProps> = ({ selectedStockSymbol }) 
                   // disabled={loading} // Disable the button while loading
                   className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                 >
-                  {loading ? 'Placing Order...' : 'Place Order'}
+                  {orderLoading ? 'Placing Order...' : 'Place Order'}
                   {/* Place Order */}
                 </button>
 
