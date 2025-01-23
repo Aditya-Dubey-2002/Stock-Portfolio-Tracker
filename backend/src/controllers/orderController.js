@@ -83,7 +83,7 @@ const createOrder = async (req, res) => {
                     throw new Error('No holdings for this stock');
                 }
 
-                let totalQuantityToSell = quantity;
+                let totalQuantityToSell = parseInt(quantity);
                 let totalAmount = 0;
                 let totalGain = 0;
                 let quantitySold = 0;
@@ -91,6 +91,9 @@ const createOrder = async (req, res) => {
 
                 // Sort holdings by buy price (FIFO)
                 holdings.sort((a, b) => a.buyPrice - b.buyPrice);
+                for(const holding of holdings){
+                    console.log(holding.buyPrice);
+                }
                 // let profit = 0;
                 for (const holding of holdings) {
                     if (totalQuantityToSell <= 0) break;
@@ -98,14 +101,14 @@ const createOrder = async (req, res) => {
                     const availableQuantity = holding.quantity;
 
                     if (availableQuantity <= totalQuantityToSell) {
-                        totalAmount += availableQuantity * price;
-                        totalQuantityToSell -= availableQuantity;
-                        quantitySold = availableQuantity;
+                        totalAmount += parseFloat(availableQuantity * price);
+                        totalQuantityToSell -= parseInt(availableQuantity);
+                        quantitySold += parseInt(availableQuantity);
                         await holding.destroy({ transaction });
                     } else {
-                        totalAmount += totalQuantityToSell * price;
-                        holding.quantity = availableQuantity - totalQuantityToSell;
-                        quantitySold = totalQuantityToSell;
+                        totalAmount += parseFloat(totalQuantityToSell * price);
+                        holding.quantity = parseInt(availableQuantity) - totalQuantityToSell;
+                        quantitySold += parseInt(totalQuantityToSell);
                         await holding.save({ transaction });
                         totalQuantityToSell = 0;
                     }
@@ -114,13 +117,24 @@ const createOrder = async (req, res) => {
                 let totalBoughtValue = 0;
                 let cnt=0;
                 for(let holding of holdings){
-                    totalBoughtValue += parseFloat(holding.buyPrice);
-                    cnt++;
+                    if(parseInt(holding.quantity)+parseInt(cnt)<=parseFloat(quantitySold)){
+                    totalBoughtValue = parseFloat(totalBoughtValue) + parseFloat(parseFloat(holding.buyPrice)*parseInt(holding.quantity));
+                    cnt+=parseInt(holding.quantity);
+                    }
+                    else{
+                    totalBoughtValue = parseFloat(totalBoughtValue) + parseFloat(parseFloat(holding.buyPrice)*parseInt(quantitySold-parseInt(cnt)));
+                    cnt=quantitySold;
+                    }
                     if(cnt==quantitySold){
                         break;
                     }   
                 }
-                totalGain = price*parseInt(quantitySold)-parseFloat(totalBoughtValue);
+                totalGain = parseFloat(price*parseInt(quantitySold))-parseFloat(totalBoughtValue);
+                console.log('Total Bought value:',totalBoughtValue);
+                console.log(price);
+                console.log(quantitySold);
+                console.log(totalGain);
+                
                 
                 // console.log(totalBoughtValue);
                 if (totalQuantityToSell > 0) {
