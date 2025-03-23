@@ -73,9 +73,6 @@ This project was developed as part of the **CapX Full Stack Developer Internship
 9. [🚧 Challenges, Limitations, and Future Improvements](#-challenges-limitations-and-future-improvements)  
    - [🔥 Challenges Faced](#-challenges-faced)  
    - [🚫 Limitations and 🌟 Future Improvements](#-limitations-and--future-improvements)  
-10. [🤝 Contribution](#-contribution)  
-11. [📜 License](#-license)  
-12. [🙌 Acknowledgments](#-acknowledgments)  
 
 ---
 
@@ -827,49 +824,6 @@ Approach:
    Introducing a feature for automated order placement when target values are matched would greatly enhance user experience. This functionality is highly promising and could make the app smarter and more proactive in future updates.
 
 By addressing these challenges and implementing the proposed improvements, the application is on the right track to becoming a more powerful and engaging tool for users. 🚀
-
----
-
-## 🤝 Contribution
-
-We welcome contributions to enhance this project! To get started:  
-1. Fork the repository.  
-2. Clone your fork locally:  
-   ```bash
-   git clone https://github.com/<your-username>/<repo-name>.git
-   ```
-3. Create a new branch for your feature or fix:
-```bash
-git checkout -b feature/your-feature-name
-```
-4. Make your changes and commit them with clear, descriptive messages.
-Push your branch to your forked repository:
-```bash
-git push origin feature/your-feature-name
-```
-5. Open a pull request on the original repository.
-
-Guidelines:
-
-- Ensure code is well-documented and follows best practices.
-- Write clear and concise commit messages.
-- Check for existing issues or discussions related to your contribution.
-- Respect the coding style and structure of the project.
----
-## 📜 License
-
-This project is licensed under the **MIT License**.  
-You are free to use, modify, and distribute the code, as long as proper credit is given to the original author.  
-
-For more details, refer to the [LICENSE](./LICENSE) file in the repository.
-
----
-
-## 🙌 Acknowledgments
-
-Special thanks to **TailAdmin** for their pre-designed dashboard template, which significantly streamlined the UI development process. 🎨
-And to everyone in the open-source community for their valuable contributions! 🎉
-
 
 
 
