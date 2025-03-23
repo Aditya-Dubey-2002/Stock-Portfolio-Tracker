@@ -5,8 +5,6 @@ StockItUp is a modern **stock portfolio tracker application** designed to help u
 - ➕ **Add**, ✏️ **update**, 📄 **view**, and ❌ **delete stocks** from their portfolio effortlessly.  
 - 💡 Track their portfolio’s total value dynamically using **real-time stock prices** integrated from external APIs.
 
-This project was developed as part of the **CapX Full Stack Developer Internship Hiring Assignment** to demonstrate end-to-end application development skills, including frontend, backend, database integration, and deployment.
-
 ## 🚀 Deployment Links
 - **Live Application**: [StockItUp](https://stock-portfolio-tracker-adityadubey-five.vercel.app/)  
 - **Backend API Base URL**: [https://stock-portfolio-tracker-2oud.onrender.com](https://stock-portfolio-tracker-2oud.onrender.com) 
